@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07111f" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Aurora Forecast</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="stars" aria-hidden="true"></div>
+
+    <header class="hero" id="top">
+      <nav class="topbar" aria-label="Primary">
+        <div class="brand">
+          <span class="brand-mark">✦</span>
+          <span>Aurora Forecast</span>
+        </div>
+        <div class="nav-links">
+          <a href="#forecast">Forecast</a>
+          <a href="#map">Map</a>
+          <a href="#alerts">Alerts</a>
+          <a href="#learn">Learn</a>
+        </div>
+      </nav>
+
+      <section class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Live aurora conditions, location by location</p>
+          <h1>See the northern lights before the sky decides.</h1>
+          <p class="lede">
+            A clean, mobile-first aurora website with a live space-weather dashboard,
+            local visibility map, night-window planner, location forecasts, and alert tools.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button primary" href="#forecast">Check tonight</a>
+            <a class="button secondary" href="#alerts">Set a watch</a>
+          </div>
+
+          <div class="meta-row">
+            <span class="meta-pill">Updated <strong id="updatedAt">—</strong></span>
+            <span class="meta-pill">Source <strong id="dataSource">—</strong></span>
+            <span class="meta-pill">Location <strong id="activeLocation">Stockholm</strong></span>
+          </div>
+        </div>
+
+        <aside class="hero-panel" aria-label="Current space weather">
+          <div class="panel-title">
+            <span class="live-dot"></span>
+            Current conditions
+          </div>
+
+          <div class="stat-grid">
+            <article class="stat-card accent">
+              <span>Kp</span>
+              <strong id="kpValue">—</strong>
+              <small id="kpLabel">—</small>
+            </article>
+            <article class="stat-card">
+              <span>Solar wind</span>
+              <strong id="windValue">—</strong>
+              <small>km/s</small>
+            </article>
+            <article class="stat-card">
+              <span>Bz</span>
+              <strong id="bzValue">—</strong>
+              <small>nT</small>
+            </article>
+            <article class="stat-card">
+              <span>Cloud cover</span>
+              <strong id="cloudValue">—</strong>
+              <small>estimate</small>
+            </article>
+          </div>
+
+          <div class="chance-box">
+            <div>
+              <p>Tonight’s chance</p>
+              <strong id="chanceValue">—</strong>
+            </div>
+            <div class="chance-bar">
+              <span id="chanceFill"></span>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </header>
+
+    <main>
+      <section class="section" id="forecast">
+        <div class="section-head">
+          <p class="eyebrow">Forecast</p>
+          <h2>Best viewing times tonight</h2>
+        </div>
+
+        <div class="forecast-layout">
+          <article class="card window-card">
+            <h3 id="windowTitle">Best window</h3>
+            <p id="windowText" class="muted">Calculating…</p>
+            <div class="window-times">
+              <div>
+                <span>Sunset</span>
+                <strong id="sunsetValue">—</strong>
+              </div>
+              <div>
+                <span>Darkest hour</span>
+                <strong id="darkHourValue">—</strong>
+              </div>
+              <div>
+                <span>Sunrise</span>
+                <strong id="sunriseValue">—</strong>
+              </div>
+            </div>
+          </article>
+
+          <article class="card timeline-card">
+            <div class="card-head">
+              <h3>Hourly aurora forecast</h3>
+              <p>Chance by hour based on Kp, darkness, and cloud estimate.</p>
+            </div>
+            <div id="timeline" class="timeline" aria-label="Hourly forecast chart"></div>
+          </article>
+        </div>
+
+        <div class="grid-3" id="cityRankings"></div>
+      </section>
+
+      <section class="section" id="planner">
+        <div class="section-head">
+          <p class="eyebrow">Location planner</p>
+          <h2>Will I see it from here?</h2>
+        </div>
+
+        <div class="card planner-card">
+          <form id="locationForm" class="planner-form">
+            <label>
+              City or place
+              <input id="cityInput" type="text" value="Stockholm" placeholder="Stockholm, Tromsø, Reykjavík…" />
+            </label>
+            <label>
+              Search location
+              <div class="search-row">
+                <input id="searchInput" type="text" placeholder="Search by city or country" />
+                <button type="button" id="searchButton" class="button secondary search-button">Search</button>
+              </div>
+            </label>
+            <div id="searchResults" class="search-results" aria-label="Location search results"></div>
+            <label>
+              Latitude
+              <input id="latInput" type="number" step="0.0001" value="59.3293" />
+            </label>
+            <label>
+              Longitude
+              <input id="lonInput" type="number" step="0.0001" value="18.0686" />
+            </label>
+            <label>
+              Estimated cloud cover (%)
+              <input id="cloudInput" type="range" min="0" max="100" value="45" />
+              <span id="cloudPreview">45%</span>
+            </label>
+
+            <div class="preset-row" id="presetRow" aria-label="Preset locations"></div>
+
+            <div class="planner-actions">
+              <button type="submit" class="button primary">Update forecast</button>
+              <button type="button" id="useCurrent" class="button secondary">Use current city</button>
+            </div>
+          </form>
+
+          <aside class="result-panel">
+            <div class="result-score">
+              <span>Visibility score</span>
+              <strong id="visibilityScore">—</strong>
+            </div>
+            <p id="resultSummary" class="muted">Enter a location to see the forecast.</p>
+            <ul id="resultNotes" class="bullet-list"></ul>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" id="map">
+        <div class="section-head">
+          <p class="eyebrow">Map</p>
+          <h2>Approximate visibility map</h2>
+        </div>
+
+        <div class="map-layout">
+          <article class="card map-card">
+            <div class="map-top">
+              <div>
+                <h3>Aurora oval</h3>
+                <p class="muted">The glow moves south when Kp rises.</p>
+              </div>
+              <span class="map-badge" id="mapBadge">Kp —</span>
+            </div>
+
+            <div class="map-canvas" id="mapCanvas" aria-label="Aurora visibility map">
+              <div class="map-grid"></div>
+              <div class="aurora-band" id="auroraBand"></div>
+              <div class="city-pin sweden">Stockholm</div>
+              <div class="city-pin norway">Tromsø</div>
+              <div class="city-pin iceland">Reykjavík</div>
+              <div class="city-pin canada">Fairbanks</div>
+            </div>
+
+            <div class="legend">
+              <span><i class="legend-glow"></i> Stronger aurora zone</span>
+              <span><i class="legend-line"></i> Approximate visibility edge</span>
+            </div>
+          </article>
+
+          <article class="card city-list-card">
+            <h3>Best places right now</h3>
+            <div id="bestCities" class="city-list"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="alerts">
+        <div class="section-head">
+          <p class="eyebrow">Alerts</p>
+          <h2>Save a watchlist and get notified</h2>
+        </div>
+
+        <div class="alerts-layout">
+          <article class="card alert-card">
+            <form id="alertForm" class="alert-form">
+              <label>
+                Email for alert setup
+                <input id="emailInput" type="email" placeholder="you@example.com" />
+              </label>
+
+              <label>
+                Alert webhook URL (optional)
+                <input id="webhookInput" type="text" placeholder="https://your-backend.example.com/aurora-alert" />
+              </label>
+
+              <label>
+                Alert threshold: <strong id="thresholdValue">60%</strong>
+                <input id="thresholdInput" type="range" min="20" max="95" value="60" />
+              </label>
+
+              <div class="toggle-row">
+                <label class="toggle">
+                  <input id="notifyToggle" type="checkbox" />
+                  <span>Browser notifications</span>
+                </label>
+                <label class="toggle">
+                  <input id="saveToggle" type="checkbox" checked />
+                  <span>Save this location</span>
+                </label>
+              </div>
+
+              <div class="planner-actions">
+                <button type="submit" class="button primary">Save watch</button>
+                <button type="button" id="testAlert" class="button secondary">Test alert</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="card watch-card">
+            <h3>Watchlist</h3>
+            <div id="watchlist" class="watchlist"></div>
+            <p class="muted small">
+              Email and push alerts need a backend to deliver them. This site stores your watch settings
+              locally and can trigger browser notifications while the page is open.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="learn">
+        <div class="section-head">
+          <p class="eyebrow">Learn</p>
+          <h2>What the numbers mean</h2>
+        </div>
+
+        <div class="learn-grid">
+          <article class="card info-card">
+            <h3>Kp index</h3>
+            <p>
+              A measure of geomagnetic activity. Higher Kp means the aurora oval can move farther south.
+            </p>
+          </article>
+          <article class="card info-card">
+            <h3>Bz</h3>
+            <p>
+              When Bz turns negative, the solar wind couples better with Earth’s magnetic field.
+            </p>
+          </article>
+          <article class="card info-card">
+            <h3>Cloud cover</h3>
+            <p>
+              The sky can be perfect aurora weather and still stay hidden if clouds block the view.
+            </p>
+          </article>
+          <article class="card info-card">
+            <h3>Dark sky window</h3>
+            <p>
+              The best chance is usually after sunset and before sunrise, away from city lights.
+            </p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
+      <a href="#top">Back to top</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
