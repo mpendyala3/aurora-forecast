@@ -27,7 +27,6 @@ const els = {
   darkHourValue: document.querySelector('#darkHourValue'),
   timeline: document.querySelector('#timeline'),
   cityRankings: document.querySelector('#cityRankings'),
-  cityInput: document.querySelector('#cityInput'),
   searchInput: document.querySelector('#searchInput'),
   searchButton: document.querySelector('#searchButton'),
   searchResults: document.querySelector('#searchResults'),
@@ -423,12 +422,12 @@ function renderPresets() {
 function markActivePreset(name) {
   document.querySelectorAll('.preset-chip').forEach((btn) => {
     btn.classList.toggle('active', btn.textContent === name);
+    btn.setAttribute('aria-pressed', String(btn.classList.contains('active')));
   });
 }
 
 function setLocation(next, shouldRefresh = true) {
   state.location = { ...next };
-  els.cityInput.value = next.name;
   els.latInput.value = next.lat.toFixed(4);
   els.lonInput.value = next.lon.toFixed(4);
   els.cloudInput.value = next.cloud;
@@ -744,7 +743,7 @@ els.cloudInput.addEventListener('input', () => {
 els.locationForm.addEventListener('submit', (event) => {
   event.preventDefault();
   const chosen = {
-    name: els.cityInput.value.trim() || 'Custom location',
+    name: state.location?.name || 'Selected city',
     lat: Number(els.latInput.value),
     lon: Number(els.lonInput.value),
     cloud: Number(els.cloudInput.value),

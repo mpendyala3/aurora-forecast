@@ -141,10 +141,13 @@
 
         <div class="card planner-card">
           <form id="locationForm" class="planner-form">
-            <label>
-              City or place
-              <input id="cityInput" type="text" value="Stockholm" placeholder="Stockholm, Tromsø, Reykjavík…" />
-            </label>
+            <div class="preset-section">
+              <div class="preset-section-head">
+                <strong>Choose a city</strong>
+                <span class="muted">Selected city is highlighted</span>
+              </div>
+              <div class="preset-row" id="presetRow" aria-label="Preset locations"></div>
+            </div>
             <label>
               Search location
               <div class="search-row">
@@ -166,8 +169,6 @@
               <input id="cloudInput" type="range" min="0" max="100" value="45" />
               <span id="cloudPreview">45%</span>
             </label>
-
-            <div class="preset-row" id="presetRow" aria-label="Preset locations"></div>
 
             <div class="planner-actions">
               <button type="submit" class="button primary">Update forecast</button>
