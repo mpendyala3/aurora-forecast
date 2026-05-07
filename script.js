@@ -89,6 +89,7 @@ const state = {
 };
 
 let searchDebounceTimer = null;
+let topBarFrame = null;
 
 function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 function round(v, digits = 0) { return Number(v.toFixed(digits)); }
@@ -139,6 +140,19 @@ function applyTheme(preference = state.themePreference) {
   if (themeMeta) themeMeta.setAttribute('content', actualTheme === 'light' ? '#eef4ff' : '#07111f');
   syncThemeButtons();
   syncDefaultThemeButtonIcon();
+}
+
+function syncTopBarState() {
+  const compact = Boolean(viewportMedia?.matches) && window.scrollY < 18;
+  document.body.classList.toggle('mobile-topbar-compact', compact);
+}
+
+function scheduleTopBarStateSync() {
+  if (topBarFrame) return;
+  topBarFrame = window.requestAnimationFrame(() => {
+    topBarFrame = null;
+    syncTopBarState();
+  });
 }
 
 function startOfMonth(date, offset = 0) {
@@ -1004,6 +1018,11 @@ if (systemThemeMedia?.addEventListener) {
 if (viewportMedia?.addEventListener) {
   viewportMedia.addEventListener('change', syncDefaultThemeButtonIcon);
 }
+
+window.addEventListener('scroll', scheduleTopBarStateSync, { passive: true });
+window.addEventListener('resize', scheduleTopBarStateSync);
+
+syncTopBarState();
 
 els.cloudInput.addEventListener('input', () => {
   els.cloudPreview.textContent = `${els.cloudInput.value}%`;
