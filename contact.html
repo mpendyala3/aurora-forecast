@@ -22,27 +22,70 @@
     <main class="page-main">
       <section class="card page-hero">
         <p class="eyebrow">Contact us</p>
-        <h1>Reach out when you’re ready.</h1>
+        <h1>Talk to Aurora Hunt.</h1>
         <p class="lede">
-          For now, Aurora Hunt keeps contact simple and privacy-safe. Tour submissions and alerts live on the main site,
-          and official email routing will be added when the real contact address is ready.
+          Send questions, partnership ideas, support notes, or feature requests through the form below.
         </p>
       </section>
 
       <section class="page-grid">
         <article class="card page-card">
-          <h2>Partnerships</h2>
-          <p>Tour operators and travel partners can use the Tours submission flow on the main page.</p>
+          <h2>Contact form</h2>
+          <form class="contact-form" action="https://formspree.io/f/mlgzwlro" method="POST" data-formspree>
+            <input type="hidden" name="_subject" value="Aurora Hunt contact form" />
+
+            <div class="contact-split">
+              <label>
+                Your name
+                <input name="name" type="text" placeholder="Murali" required />
+              </label>
+
+              <label>
+                Your email
+                <input name="email" type="email" placeholder="you@example.com" autocomplete="off" required />
+              </label>
+            </div>
+
+            <label>
+              What is this about?
+              <select name="topic" required>
+                <option value="">Choose one</option>
+                <option>Support</option>
+                <option>Partnership</option>
+                <option>Feature request</option>
+                <option>Bug report</option>
+                <option>Other</option>
+              </select>
+            </label>
+
+            <label>
+              Message
+              <textarea name="message" rows="6" placeholder="Tell us what you need or what you’d like to build." required></textarea>
+            </label>
+
+            <div class="planner-actions">
+              <button type="submit" class="button primary">Send message</button>
+            </div>
+
+            <div id="contactStatus" class="contact-status" aria-live="polite" hidden></div>
+          </form>
         </article>
+
         <article class="card page-card">
-          <h2>Support</h2>
-          <p>If you spot a bug or want a feature, send it through the site once the contact route is live.</p>
+          <h2>What to send</h2>
+          <p>
+            Partnerships, operator suggestions, bug reports, or ideas for making Aurora Hunt more useful.
+          </p>
+          <ul class="page-list">
+            <li>Tour operator collaborations</li>
+            <li>Feature requests and UX feedback</li>
+            <li>Support questions or site issues</li>
+          </ul>
+          <div class="page-note">
+            No personal email is shown on this page. Messages go through Formspree.
+          </div>
         </article>
       </section>
-
-      <div class="page-note">
-        We’ll wire a proper contact form once the final email setup is in place.
-      </div>
     </main>
 
     <footer class="footer">
@@ -51,5 +94,39 @@
         <a href="index.html">Back home</a>
       </div>
     </footer>
+
+    <script>
+      const form = document.querySelector('.contact-form');
+      const status = document.querySelector('#contactStatus');
+
+      function showStatus(kind, message) {
+        if (!status) return;
+        status.hidden = false;
+        status.className = `contact-status ${kind}`;
+        status.innerHTML = `
+          <strong>${kind === 'success' ? 'Sent' : 'Try again'}</strong>
+          <span>${message}</span>
+        `;
+      }
+
+      form?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const response = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: formData,
+        }).catch(() => null);
+
+        if (response?.ok) {
+          form.reset();
+          showStatus('success', 'Message sent — we’ll get back to you soon.');
+          return;
+        }
+
+        showStatus('error', 'Something hiccupped. Please try again in a moment.');
+      });
+    </script>
   </body>
 </html>

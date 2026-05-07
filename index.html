@@ -421,34 +421,29 @@
       <section class="section" id="alerts">
         <div class="section-head">
           <p class="eyebrow">Alerts</p>
-          <h2>Save a watchlist and get notified</h2>
+          <h2>Save an alert and get notified</h2>
         </div>
 
         <div class="alerts-layout">
           <article class="card alert-card">
-            <form id="alertForm" class="alert-form">
+            <form id="alertForm" class="alert-form" action="https://formspree.io/f/xqendboy" method="POST" data-formspree>
               <label>
                 Email for alert setup
-                <input id="emailInput" type="email" placeholder="you@example.com" autocomplete="off" />
-              </label>
-
-              <label>
-                Alert webhook URL (optional)
-                <input id="webhookInput" type="text" placeholder="https://your-backend.example.com/aurora-alert" />
+                <input id="emailInput" name="email" type="email" placeholder="you@example.com" autocomplete="off" required />
               </label>
 
               <label>
                 Alert threshold: <strong id="thresholdValue">60%</strong>
-                <input id="thresholdInput" type="range" min="20" max="95" value="60" />
+                <input id="thresholdInput" name="threshold" type="range" min="20" max="95" value="60" />
               </label>
 
               <div class="toggle-row">
                 <label class="toggle">
-                  <input id="notifyToggle" type="checkbox" />
+                  <input id="notifyToggle" name="browser_notifications" type="checkbox" />
                   <span>Browser notifications</span>
                 </label>
                 <label class="toggle">
-                  <input id="saveToggle" type="checkbox" checked />
+                  <input id="saveToggle" name="save_location" type="checkbox" checked />
                   <span>Save this location</span>
                 </label>
               </div>
@@ -457,17 +452,11 @@
                 <button type="submit" class="button primary">Save watch</button>
                 <button type="button" id="testAlert" class="button secondary">Test alert</button>
               </div>
-            </form>
+
+            <p id="alertStatus" class="muted small"></p>
+          </form>
           </article>
 
-          <article class="card watch-card">
-            <h3>Watchlist</h3>
-            <div id="watchlist" class="watchlist"></div>
-            <p class="muted small">
-              Email and push alerts need a backend to deliver them. This site stores your watch settings
-              locally and can trigger browser notifications while the page is open.
-            </p>
-          </article>
         </div>
       </section>
 

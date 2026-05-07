@@ -25,35 +25,35 @@
         <p class="eyebrow">Tours</p>
         <h1>Submit a new operator</h1>
         <p class="lede">
-          Suggest a reputable aurora tour company or operator. This form stores submissions locally for now.
+          Suggest a reputable aurora tour company or operator. Submissions are sent to hello@aurorahunt.live.
         </p>
       </section>
 
       <section class="card page-card">
-        <form id="tourForm" class="tour-form">
+        <form id="tourForm" class="tour-form" action="https://formspree.io/f/mjglerqr" method="POST" data-formspree>
           <label>
             Operator / company name
-            <input id="tourNameInput" type="text" placeholder="Aurora Adventures Ltd" required />
+            <input id="tourNameInput" name="operator_name" type="text" placeholder="Aurora Adventures Ltd" required />
           </label>
 
           <label>
             Website
-            <input id="tourWebsiteInput" type="url" placeholder="https://example.com" required />
+            <input id="tourWebsiteInput" name="website" type="url" placeholder="https://example.com" required />
           </label>
 
           <label>
             Region
-            <input id="tourRegionInput" type="text" placeholder="Tromsø, Norway" required />
+            <input id="tourRegionInput" name="region" type="text" placeholder="Tromsø, Norway" required />
           </label>
 
           <label>
             Contact email
-            <input id="tourEmailInput" type="email" placeholder="hello@example.com" autocomplete="off" />
+            <input id="tourEmailInput" name="contact_email" type="email" placeholder="hello@example.com" autocomplete="off" />
           </label>
 
           <label>
             Type of tour
-            <select id="tourTypeInput">
+            <select id="tourTypeInput" name="tour_type">
               <option>Aurora chase</option>
               <option>Northern lights cruise</option>
               <option>Private tour</option>
@@ -64,18 +64,14 @@
 
           <label>
             Short description
-            <textarea id="tourDescriptionInput" rows="4" placeholder="What makes this operator stand out?"></textarea>
+            <textarea id="tourDescriptionInput" name="description" rows="4" placeholder="What makes this operator stand out?"></textarea>
           </label>
 
           <button type="submit" class="button primary">Submit operator</button>
         </form>
-        <div class="page-note" id="tourStatus">Submissions are saved locally in your browser.</div>
+        <div class="page-note" id="tourStatus">We’ll send this to hello@aurorahunt.live.</div>
       </section>
 
-      <section class="card page-card">
-        <h2>Recent submissions</h2>
-        <div id="tourSubmissions" class="tour-submissions"></div>
-      </section>
     </main>
 
     <footer class="footer">
@@ -86,7 +82,6 @@
     </footer>
 
     <script>
-      const STORAGE_KEY = 'aurora-forecast-v1';
       const els = {
         tourForm: document.querySelector('#tourForm'),
         tourNameInput: document.querySelector('#tourNameInput'),
@@ -96,68 +91,9 @@
         tourTypeInput: document.querySelector('#tourTypeInput'),
         tourDescriptionInput: document.querySelector('#tourDescriptionInput'),
         tourStatus: document.querySelector('#tourStatus'),
-        tourSubmissions: document.querySelector('#tourSubmissions'),
       };
 
-      function loadSubmissions() {
-        try {
-          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-          return Array.isArray(saved.tourSubmissions) ? saved.tourSubmissions : [];
-        } catch {
-          return [];
-        }
-      }
-
-      function saveSubmissions(submissions) {
-        try {
-          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-          localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...saved, tourSubmissions: submissions }));
-        } catch {
-          // ignore
-        }
-      }
-
-      function renderSubmissions() {
-        const submissions = loadSubmissions();
-        els.tourSubmissions.innerHTML = '';
-        if (!submissions.length) {
-          const empty = document.createElement('p');
-          empty.className = 'muted';
-          empty.textContent = 'No operator submissions yet.';
-          els.tourSubmissions.appendChild(empty);
-          return;
-        }
-
-        submissions.slice(0, 6).forEach((item) => {
-          const row = document.createElement('div');
-          row.className = 'tour-submission-item';
-          const details = document.createElement('div');
-          const title = document.createElement('strong');
-          title.textContent = item.name;
-          const meta = document.createElement('span');
-          meta.textContent = `${item.region} · ${item.type}`;
-          const desc = document.createElement('p');
-          desc.textContent = item.description || 'No description provided.';
-          details.append(title, meta, desc);
-
-          const link = document.createElement('a');
-          link.className = 'button secondary';
-          link.textContent = 'Website';
-          link.target = '_blank';
-          link.rel = 'noreferrer';
-          try {
-            const parsed = new URL(item.website);
-            link.href = ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '#';
-          } catch {
-            link.href = '#';
-          }
-
-          row.append(details, link);
-          els.tourSubmissions.appendChild(row);
-        });
-      }
-
-      els.tourForm.addEventListener('submit', (event) => {
+      els.tourForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         let website = els.tourWebsiteInput.value.trim();
         try {
@@ -168,26 +104,24 @@
           alert('Please enter a valid website URL starting with http:// or https://');
           return;
         }
+        const formData = new FormData(els.tourForm);
+        formData.set('_subject', 'Aurora Hunt operator submission');
+        formData.set('website', website);
 
-        const submission = {
-          name: els.tourNameInput.value.trim(),
-          website,
-          region: els.tourRegionInput.value.trim(),
-          email: els.tourEmailInput.value.trim(),
-          type: els.tourTypeInput.value,
-          description: els.tourDescriptionInput.value.trim(),
-          submittedAt: new Date().toISOString(),
-        };
+        const response = await fetch('https://formspree.io/f/mjglerqr', {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: formData,
+        }).catch(() => null);
 
-        const submissions = loadSubmissions();
-        submissions.unshift(submission);
-        saveSubmissions(submissions.slice(0, 10));
-        els.tourForm.reset();
-        els.tourStatus.textContent = 'Submission saved locally.';
-        renderSubmissions();
+        if (response?.ok) {
+          els.tourForm.reset();
+          els.tourStatus.textContent = 'Sent to hello@aurorahunt.live.';
+          return;
+        }
+
+        els.tourStatus.textContent = 'Something hiccupped. Please try again in a moment.';
       });
-
-      renderSubmissions();
     </script>
   </body>
 </html>

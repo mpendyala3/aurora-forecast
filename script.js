@@ -67,7 +67,6 @@ const els = {
   tourDescriptionInput: document.querySelector('#tourDescriptionInput'),
   tourSubmissions: document.querySelector('#tourSubmissions'),
   emailInput: document.querySelector('#emailInput'),
-  webhookInput: document.querySelector('#webhookInput'),
   thresholdInput: document.querySelector('#thresholdInput'),
   thresholdValue: document.querySelector('#thresholdValue'),
   notifyToggle: document.querySelector('#notifyToggle'),
@@ -94,7 +93,6 @@ const state = {
   weather: null,
   location: { ...PRESETS[0] },
   threshold: 60,
-  webhookUrl: '',
   notify: false,
   saveLocation: true,
   watchlist: [],
@@ -231,23 +229,6 @@ async function fetchJson(url, timeoutMs = 8000) {
     const response = await fetch(url, { signal: controller.signal, cache: 'no-store' });
     if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
     return await response.json();
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-async function postJson(url, body, timeoutMs = 8000) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      signal: controller.signal,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
-    return true;
   } finally {
     clearTimeout(timer);
   }
@@ -428,14 +409,13 @@ function buildFallbackWeather(now = new Date()) {
   return { kp, solarWind, bz, density, cloud, updated: now, source: 'Local fallback' };
 }
 
-async function sendAlertWebhook(payload) {
-  if (!state.webhookUrl) return false;
-  try {
-    await postJson(state.webhookUrl, payload);
-    return true;
-  } catch {
-    return false;
-  }
+async function postFormspree(endpoint, formData) {
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
+    body: formData,
+  });
+  return response.ok;
 }
 
 async function loadLiveData(location = state.location) {
@@ -911,7 +891,6 @@ function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const saved = JSON.parse(raw);
-    if (saved.webhookUrl) state.webhookUrl = saved.webhookUrl;
     if (typeof saved.threshold === 'number') state.threshold = saved.threshold;
     if (typeof saved.notify === 'boolean') state.notify = saved.notify;
     if (typeof saved.saveLocation === 'boolean') state.saveLocation = saved.saveLocation;
@@ -928,7 +907,6 @@ function loadState() {
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    webhookUrl: state.webhookUrl,
     threshold: state.threshold,
     notify: state.notify,
     saveLocation: state.saveLocation,
@@ -942,6 +920,7 @@ function saveState() {
 }
 
 function renderWatchlist() {
+  if (!els.watchlist) return;
   els.watchlist.innerHTML = '';
   if (!state.watchlist.length) {
     const empty = document.createElement('p');
@@ -1084,7 +1063,6 @@ function notifyIfNeeded() {
 }
 
 function syncAlertUI() {
-  els.webhookInput.value = state.webhookUrl;
   els.thresholdInput.value = state.threshold;
   els.thresholdValue.textContent = `${state.threshold}%`;
   els.notifyToggle.checked = state.notify;
@@ -1225,10 +1203,10 @@ els.thresholdInput.addEventListener('input', () => {
 
 els.alertForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  state.webhookUrl = els.webhookInput.value.trim();
   state.threshold = Number(els.thresholdInput.value);
   state.notify = els.notifyToggle.checked;
   state.saveLocation = els.saveToggle.checked;
+  const alertStatus = document.querySelector('#alertStatus');
 
   if (state.notify) {
     const ok = await requestNotificationPermission();
@@ -1247,14 +1225,20 @@ els.alertForm.addEventListener('submit', async (event) => {
     renderWatchlist();
   }
 
-  if (state.webhookUrl) {
-    await sendAlertWebhook({
-      type: 'watch-saved',
-      threshold: state.threshold,
-      location: state.location,
-      weather: state.weather,
-      timestamp: new Date().toISOString(),
-    });
+  const alertData = new FormData(els.alertForm);
+  alertData.set('_subject', 'Aurora Hunt alert watch');
+  alertData.set('location_name', state.location.name);
+  alertData.set('latitude', String(state.location.lat));
+  alertData.set('longitude', String(state.location.lon));
+  alertData.set('cloud_cover', String(state.location.cloud));
+  alertData.set('weather_kp', String(state.weather?.kp ?? ''));
+  alertData.set('weather_bz', String(Number.isFinite(state.weather?.bz) ? state.weather.bz.toFixed(1) : ''));
+
+  const sent = await postFormspree('https://formspree.io/f/xqendboy', alertData).catch(() => false);
+  if (alertStatus) {
+    alertStatus.textContent = sent
+      ? 'Saved and sent to hello@aurorahunt.live.'
+      : 'Saved locally. Sending to hello@aurorahunt.live failed just now.';
   }
 
   saveState();
@@ -1310,15 +1294,14 @@ els.testAlert.addEventListener('click', async () => {
   if (ok) {
     new Notification('Aurora forecast test', { body: 'Your alert system is connected.' });
   }
-  if (state.webhookUrl) {
-    const sent = await sendAlertWebhook({
-      type: 'test-alert',
-      location: state.location,
-      weather: state.weather,
-      timestamp: new Date().toISOString(),
-    });
-    if (sent) return alert('Test alert sent to your webhook.');
-  }
+  const testData = new FormData(els.alertForm);
+  testData.set('_subject', 'Aurora Hunt test alert');
+  testData.set('location_name', state.location.name);
+  testData.set('latitude', String(state.location.lat));
+  testData.set('longitude', String(state.location.lon));
+  testData.set('cloud_cover', String(state.location.cloud));
+  const sent = await postFormspree('https://formspree.io/f/xqendboy', testData).catch(() => false);
+  if (sent) return alert('Test alert sent to hello@aurorahunt.live.');
   if (!ok) alert('Notifications are not available here, but your watch settings are saved locally.');
 });
 
