@@ -52,6 +52,10 @@ const els = {
   resultSummary: document.querySelector('#resultSummary'),
   resultNotes: document.querySelector('#resultNotes'),
   mapBadge: document.querySelector('#mapBadge'),
+  mapBzChip: document.querySelector('#mapBzChip'),
+  mapWindChip: document.querySelector('#mapWindChip'),
+  mapDarkChip: document.querySelector('#mapDarkChip'),
+  mapCanvas: document.querySelector('#mapCanvas'),
   auroraBand: document.querySelector('#auroraBand'),
   bestCities: document.querySelector('#bestCities'),
   tourForm: document.querySelector('#tourForm'),
@@ -78,6 +82,7 @@ const themeMeta = document.querySelector('meta[name="theme-color"]');
 const themeButtons = [...document.querySelectorAll('[data-theme-option]')];
 const systemThemeMedia = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 const viewportMedia = window.matchMedia ? window.matchMedia('(max-width: 700px)') : null;
+const mapFocusButtons = [...document.querySelectorAll('[data-map-focus]')];
 
 const STORAGE_KEY = 'aurora-forecast-v1';
 
@@ -94,6 +99,7 @@ const state = {
   lastNotifiedKey: null,
   calendarOffset: 0,
   calendarSelectedDate: new Date(),
+  mapFocus: 'global',
   themePreference: 'system',
 };
 
@@ -793,11 +799,29 @@ function renderRankings() {
 function renderMap() {
   const kp = state.weather.kp;
   els.mapBadge.textContent = `Kp ${kp}`;
-  const width = clamp(18 + kp * 8, 24, 92);
-  const top = clamp(60 - kp * 3, 8, 46);
-  els.auroraBand.style.inset = `${top}px 18px auto 18px`;
-  els.auroraBand.style.height = `${Math.max(170, width * 2.7)}px`;
-  els.auroraBand.style.opacity = `${0.45 + kp * 0.06}`;
+  const focus = state.mapFocus || 'global';
+  const focusConfig = {
+    global: { top: clamp(58 - kp * 3, 8, 44), side: 18, heightMul: 2.65, widthScale: 1, shift: 0 },
+    nordics: { top: clamp(54 - kp * 3.3, 6, 40), side: 26, heightMul: 2.45, widthScale: 0.92, shift: 8 },
+    'north-america': { top: clamp(62 - kp * 2.8, 10, 48), side: 22, heightMul: 2.85, widthScale: 1.05, shift: -8 },
+    iceland: { top: clamp(50 - kp * 3.2, 8, 38), side: 20, heightMul: 2.35, widthScale: 0.84, shift: 16 },
+  }[focus] || { top: 18, side: 18, heightMul: 2.65, widthScale: 1, shift: 0 };
+  const width = clamp((18 + kp * 8) * focusConfig.widthScale, 24, 96);
+  const top = focusConfig.top;
+  els.auroraBand.style.inset = `${top}px ${focusConfig.side}px auto ${focusConfig.side}px`;
+  els.auroraBand.style.height = `${Math.max(170, width * focusConfig.heightMul)}px`;
+  els.auroraBand.style.opacity = `${0.44 + kp * 0.06}`;
+  els.auroraBand.style.transform = `translateY(${18 - focusConfig.shift}px) scale(${1 + kp * 0.0025})`;
+  els.mapCanvas.dataset.focus = focus;
+  els.mapBzChip.textContent = Number.isFinite(state.weather.bz) ? `Bz ${state.weather.bz.toFixed(1)}` : 'Bz —';
+  els.mapWindChip.textContent = `Wind ${state.weather.solarWind ?? '—'} km/s`;
+  const darkNow = isDark(new Date(), sunTime(new Date(), state.location.lat, state.location.lon, true), sunTime(new Date(), state.location.lat, state.location.lon, false));
+  els.mapDarkChip.textContent = darkNow ? 'Night: yes' : 'Night: no';
+  mapFocusButtons.forEach((button) => {
+    const active = button.dataset.mapFocus === focus;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
 }
 
 function renderBestCities() {
@@ -885,6 +909,7 @@ function loadState() {
     if (Array.isArray(saved.tourSubmissions)) state.tourSubmissions = saved.tourSubmissions;
     if (typeof saved.lastNotifiedKey === 'string') state.lastNotifiedKey = saved.lastNotifiedKey;
     if (saved.location) state.location = { ...state.location, ...saved.location };
+    if (typeof saved.mapFocus === 'string') state.mapFocus = saved.mapFocus;
     if (typeof saved.themePreference === 'string') state.themePreference = saved.themePreference;
   } catch {
     // ignore corrupt storage
@@ -901,6 +926,7 @@ function saveState() {
     location: state.location,
     watchlist: state.watchlist,
     tourSubmissions: state.tourSubmissions,
+    mapFocus: state.mapFocus,
     lastNotifiedKey: state.lastNotifiedKey,
     themePreference: state.themePreference,
   }));
@@ -1069,6 +1095,13 @@ if (systemThemeMedia?.addEventListener) {
 if (viewportMedia?.addEventListener) {
   viewportMedia.addEventListener('change', syncDefaultThemeButtonIcon);
 }
+
+mapFocusButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    state.mapFocus = button.dataset.mapFocus || 'global';
+    renderMap();
+  });
+});
 
 window.addEventListener('scroll', scheduleTopBarStateSync, { passive: true });
 window.addEventListener('resize', scheduleTopBarStateSync);

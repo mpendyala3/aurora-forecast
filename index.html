@@ -250,7 +250,7 @@
       <section class="section" id="map">
         <div class="section-head">
           <p class="eyebrow">Map</p>
-          <h2>Approximate visibility map</h2>
+          <h2>Aurora visibility map</h2>
         </div>
 
         <div class="map-layout">
@@ -258,14 +258,33 @@
             <div class="map-top">
               <div>
                 <h3>Aurora oval</h3>
-                <p class="muted">The glow moves south when Kp rises.</p>
+                <p class="muted">Watch the band shift south as geomagnetic activity rises.</p>
               </div>
               <span class="map-badge" id="mapBadge">Kp —</span>
             </div>
 
+            <div class="map-toolbar" aria-label="Map focus options">
+              <button type="button" class="map-filter active" data-map-focus="global">Global</button>
+              <button type="button" class="map-filter" data-map-focus="nordics">Nordics</button>
+              <button type="button" class="map-filter" data-map-focus="north-america">North America</button>
+              <button type="button" class="map-filter" data-map-focus="iceland">Iceland</button>
+            </div>
+
+            <div class="map-metrics">
+              <span class="map-chip" id="mapBzChip">Bz —</span>
+              <span class="map-chip" id="mapWindChip">Wind —</span>
+              <span class="map-chip" id="mapDarkChip">Night —</span>
+            </div>
+
             <div class="map-canvas" id="mapCanvas" aria-label="Aurora visibility map">
+              <div class="map-night"></div>
               <div class="map-grid"></div>
+              <div class="map-focus-ring"></div>
               <div class="aurora-band" id="auroraBand"></div>
+              <div class="map-region region-north-america">North America</div>
+              <div class="map-region region-greenland">Greenland</div>
+              <div class="map-region region-nordics">Nordics</div>
+              <div class="map-region region-siberia">Siberia</div>
               <div class="city-pin sweden">Stockholm</div>
               <div class="city-pin norway">Tromsø</div>
               <div class="city-pin iceland">Reykjavík</div>
