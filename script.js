@@ -65,6 +65,11 @@ const els = {
   watchlist: document.querySelector('#watchlist'),
 };
 
+const root = document.documentElement;
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+const themeButtons = [...document.querySelectorAll('[data-theme-option]')];
+const systemThemeMedia = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
 const STORAGE_KEY = 'aurora-forecast-v1';
 
 const state = {
@@ -79,6 +84,7 @@ const state = {
   lastNotifiedKey: null,
   calendarOffset: 0,
   calendarSelectedDate: new Date(),
+  themePreference: 'system',
 };
 
 let searchDebounceTimer = null;
@@ -102,6 +108,25 @@ function normalize(value, max) {
   let out = value % max;
   if (out < 0) out += max;
   return out;
+}
+
+function getSystemTheme() {
+  return systemThemeMedia?.matches ? 'dark' : 'light';
+}
+
+function syncThemeButtons() {
+  themeButtons.forEach((button) => {
+    const active = button.dataset.themeOption === state.themePreference;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+}
+
+function applyTheme(preference = state.themePreference) {
+  const actualTheme = preference === 'system' ? getSystemTheme() : preference;
+  root.dataset.theme = actualTheme;
+  if (themeMeta) themeMeta.setAttribute('content', actualTheme === 'light' ? '#eef4ff' : '#07111f');
+  syncThemeButtons();
 }
 
 function startOfMonth(date, offset = 0) {
@@ -805,6 +830,12 @@ async function refreshLive() {
   notifyIfNeeded();
 }
 
+function setThemePreference(preference) {
+  state.themePreference = preference;
+  applyTheme(preference);
+  saveState();
+}
+
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -818,6 +849,7 @@ function loadState() {
     if (Array.isArray(saved.watchlist)) state.watchlist = saved.watchlist;
     if (typeof saved.lastNotifiedKey === 'string') state.lastNotifiedKey = saved.lastNotifiedKey;
     if (saved.location) state.location = { ...state.location, ...saved.location };
+    if (typeof saved.themePreference === 'string') state.themePreference = saved.themePreference;
   } catch {
     // ignore corrupt storage
   }
@@ -833,6 +865,7 @@ function saveState() {
     location: state.location,
     watchlist: state.watchlist,
     lastNotifiedKey: state.lastNotifiedKey,
+    themePreference: state.themePreference,
   }));
 }
 
@@ -944,6 +977,16 @@ function syncAlertUI() {
   els.thresholdValue.textContent = `${state.threshold}%`;
   els.notifyToggle.checked = state.notify;
   els.saveToggle.checked = state.saveLocation;
+}
+
+themeButtons.forEach((button) => {
+  button.addEventListener('click', () => setThemePreference(button.dataset.themeOption || 'system'));
+});
+
+if (systemThemeMedia?.addEventListener) {
+  systemThemeMedia.addEventListener('change', () => {
+    if (state.themePreference === 'system') applyTheme('system');
+  });
 }
 
 els.cloudInput.addEventListener('input', () => {
@@ -1121,6 +1164,7 @@ if (state.location && state.location.name) {
 if (state.email) els.emailInput.value = state.email;
 renderWatchlist();
 state.weather = buildFallbackWeather();
+applyTheme(state.themePreference);
 updateWeather();
 renderCalendar();
 refresh();
