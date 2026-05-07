@@ -606,10 +606,36 @@ input[type="range"] { width: 100%; }
 @media (max-width: 700px) {
   .hero, main, .footer { width: min(100vw - 18px, 1180px); }
   .topbar { flex-direction: column; align-items: start; }
-  .nav-links { gap: 12px; }
-  .hero-copy, .hero-panel, .card { padding: 18px; border-radius: 20px; }
+  .nav-links { gap: 10px; font-size: 0.95rem; }
+  .hero-copy, .hero-panel, .card { padding: 16px; border-radius: 18px; }
+  .hero { padding-top: 12px; }
+  .hero-grid { gap: 14px; }
+  .section { padding-top: 20px; }
   .window-times { grid-template-columns: 1fr; }
-  .timeline { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .timeline { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; min-height: 220px; }
+  .bar-wrap { min-height: 150px; }
+  .bar { border-radius: 10px; }
+  .stat-grid { grid-template-columns: 1fr; }
+  .stat-card strong { font-size: 1.7rem; }
+  .chance-box strong { font-size: 1.8rem; }
+  .result-score strong { font-size: 2rem; }
+  .compare-head { flex-direction: column; align-items: start; }
+  .compare-badge { font-size: 0.82rem; }
+  .city-score strong { font-size: 1.2rem; }
+  .city-list-item { flex-direction: column; align-items: start; }
+  .map-canvas { height: 300px; }
+  .learn-grid { gap: 10px; }
   .footer { flex-direction: column; }
   h1 { max-width: 9ch; }
+}
+
+@media (max-width: 420px) {
+  .hero-copy, .hero-panel, .card { padding: 14px; }
+  .hero-actions, .planner-actions { gap: 8px; }
+  .button { min-height: 42px; padding: 0 14px; }
+  .meta-row { gap: 8px; }
+  .meta-pill { padding: 8px 10px; }
+  .timeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .map-canvas { height: 260px; }
+  .compare-list li, .watch-item, .search-result { padding: 12px; }
 }

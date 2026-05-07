@@ -1,27 +1,42 @@
 # Aurora Hunt
 
-A polished aurora-hunting website built with plain HTML, CSS, and JavaScript.
+Aurora Hunt is a browser-based aurora hunting site built with plain HTML, CSS, and JavaScript.
+It combines live space-weather data, local weather, location planning, and simple guidance so you can judge
+whether the northern lights are actually worth chasing tonight.
 
-## Features
+## What it does
 
-- Live NOAA Kp data with local fallback
-- Live Open-Meteo cloud/weather data by location
-- Kp, Bz, solar wind, cloud cover, and aurora chance
-- Location-based planner with presets
-- Real location search and reverse geocoding
-- Approximate visibility map
-- Hourly viewing window and best-time guidance
-- Watchlist, alert settings, and webhook-ready alerts
-- Local browser notifications when available
-- Built-in explainers for aurora numbers
+- Pulls live NOAA Kp and solar wind data in the browser
+- Pulls live cloud and weather estimates from Open-Meteo
+- Falls back to a local model if a feed fails
+- Scores aurora visibility by location
+- Shows a best-time window for darkness
+- Ranks preset cities by current odds
+- Supports search and reverse geocoding
+- Draws an approximate aurora oval / visibility map
+- Saves watch settings locally
+- Can trigger browser notifications
+- Can send webhook alerts to your own backend
 
-## Notes
+## Why it feels useful
 
-- NOAA and weather requests happen in the browser.
-- If a feed fails, the site falls back to a local model instead of breaking.
-- The site is fully usable without a backend.
-- Email/push delivery can be connected through your own webhook or backend later.
+- Turns raw numbers into plain-language guidance
+- Works without a backend
+- Degrades gracefully when feeds are unavailable
+- Gives a quick answer for "should I go out now?"
+- Includes a comparison section that explains why Aurora Hunt is easier to use than typical forecast apps
+
+## Data sources
+
+- NOAA SWPC: planetary K-index and solar wind feeds
+- Open-Meteo: weather, cloud cover, and geocoding
 
 ## Run locally
 
-Open `index.html` in a browser, or serve the folder with a static server.
+Open `index.html` in a browser, or serve the folder with any static server.
+
+## Files
+
+- `index.html` — page structure and content
+- `styles.css` — visual design and responsive layout
+- `script.js` — data loading, scoring, rendering, and alerts
