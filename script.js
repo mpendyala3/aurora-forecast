@@ -31,6 +31,13 @@ const els = {
   calendarPrev: document.querySelector('#calendarPrev'),
   calendarNext: document.querySelector('#calendarNext'),
   forecastCalendar: document.querySelector('#forecastCalendar'),
+  calendarSelectedLabel: document.querySelector('#calendarSelectedLabel'),
+  calendarSelectedSummary: document.querySelector('#calendarSelectedSummary'),
+  calendarSelectedScore: document.querySelector('#calendarSelectedScore'),
+  calendarSelectedMoon: document.querySelector('#calendarSelectedMoon'),
+  calendarSelectedSunset: document.querySelector('#calendarSelectedSunset'),
+  calendarSelectedSunrise: document.querySelector('#calendarSelectedSunrise'),
+  calendarBestNights: document.querySelector('#calendarBestNights'),
   searchInput: document.querySelector('#searchInput'),
   searchButton: document.querySelector('#searchButton'),
   searchResults: document.querySelector('#searchResults'),
@@ -71,6 +78,7 @@ const state = {
   watchlist: [],
   lastNotifiedKey: null,
   calendarOffset: 0,
+  calendarSelectedDate: new Date(),
 };
 
 let searchDebounceTimer = null;
@@ -102,6 +110,10 @@ function startOfMonth(date, offset = 0) {
 
 function formatMonthYear(date) {
   return date.toLocaleString([], { month: 'long', year: 'numeric' });
+}
+
+function formatCalendarDate(date) {
+  return date.toLocaleString([], { weekday: 'long', month: 'short', day: 'numeric' });
 }
 
 function moonAge(date) {
@@ -478,12 +490,71 @@ function generateCalendarScore(location, weather, date) {
   return clamp(scoreChance(simulatedLocation, simulated, night) + moonPenalty, 0, 100);
 }
 
+function calendarDetailForDate(date) {
+  const score = generateCalendarScore(state.location, state.weather, date);
+  const moon = moonInfo(date);
+  const sunrise = sunTime(date, state.location.lat, state.location.lon, true);
+  const sunset = sunTime(date, state.location.lat, state.location.lon, false);
+  return {
+    date,
+    score,
+    moon,
+    sunrise,
+    sunset,
+    summary:
+      score >= 76 ? 'Very strong night for chasing the lights.' :
+      score >= 51 ? 'A good watch night if skies stay clear.' :
+      score >= 26 ? 'Possible, but not a strong bet.' :
+      'Low odds unless conditions improve.',
+  };
+}
+
+function renderCalendarDetails(date) {
+  const details = calendarDetailForDate(date);
+  els.calendarSelectedLabel.textContent = formatCalendarDate(details.date);
+  els.calendarSelectedSummary.textContent = details.summary;
+  els.calendarSelectedScore.textContent = `${details.score}%`;
+  els.calendarSelectedMoon.textContent = details.moon.label;
+  els.calendarSelectedSunset.textContent = details.sunset ? toLocalTime(details.sunset) : '—';
+  els.calendarSelectedSunrise.textContent = details.sunrise ? toLocalTime(details.sunrise) : '—';
+}
+
+function renderBestCalendarNights(base) {
+  const daysInMonth = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
+  const candidates = Array.from({ length: daysInMonth }, (_, index) => {
+    const date = new Date(base.getFullYear(), base.getMonth(), index + 1);
+    const details = calendarDetailForDate(date);
+    return details;
+  }).sort((a, b) => b.score - a.score).slice(0, 3);
+
+  els.calendarBestNights.innerHTML = '';
+  candidates.forEach((item, index) => {
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'calendar-best-item';
+    row.innerHTML = `
+      <strong>#${index + 1} · ${formatCalendarDate(item.date)}</strong>
+      <span>${item.score}% · ${item.moon.label} · ${item.sunset ? toLocalTime(item.sunset) : 'no sunset'}→${item.sunrise ? toLocalTime(item.sunrise) : 'no sunrise'}</span>
+    `;
+    row.addEventListener('click', () => {
+      state.calendarSelectedDate = item.date;
+      renderCalendar();
+    });
+    els.calendarBestNights.appendChild(row);
+  });
+}
+
 function renderCalendar() {
   const base = startOfMonth(new Date(), state.calendarOffset);
   const firstDay = new Date(base.getFullYear(), base.getMonth(), 1);
   const startPadding = firstDay.getDay();
   const daysInMonth = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
   const totalCells = 42;
+  const selected = state.calendarSelectedDate;
+
+  if (!selected || selected.getFullYear() !== base.getFullYear() || selected.getMonth() !== base.getMonth()) {
+    state.calendarSelectedDate = new Date(base.getFullYear(), base.getMonth(), 1);
+  }
 
   els.calendarMonthLabel.textContent = formatMonthYear(base);
   els.forecastCalendar.innerHTML = '';
@@ -498,6 +569,12 @@ function renderCalendar() {
     tile.type = 'button';
     tile.className = `calendar-day ${inMonth ? scoreClass(score) : 'outside'}`;
     tile.disabled = !inMonth;
+    const selectedDay = inMonth
+      && state.calendarSelectedDate
+      && state.calendarSelectedDate.getFullYear() === cellDate.getFullYear()
+      && state.calendarSelectedDate.getMonth() === cellDate.getMonth()
+      && state.calendarSelectedDate.getDate() === cellDate.getDate();
+    if (selectedDay) tile.classList.add('selected');
     tile.innerHTML = `
       <span class="calendar-day-top">
         <strong>${inMonth ? dayNum : ''}</strong>
@@ -510,8 +587,15 @@ function renderCalendar() {
       tile.classList.add('today');
     }
     tile.setAttribute('aria-label', inMonth ? `${cellDate.toDateString()} — ${score}% chance — ${moon.label}` : '');
+    tile.addEventListener('click', () => {
+      state.calendarSelectedDate = cellDate;
+      renderCalendar();
+    });
     els.forecastCalendar.appendChild(tile);
   }
+
+  renderCalendarDetails(state.calendarSelectedDate);
+  renderBestCalendarNights(base);
 }
 
 function renderPresets() {
@@ -902,11 +986,13 @@ els.searchInput.addEventListener('keydown', (event) => {
 
 els.calendarPrev.addEventListener('click', () => {
   state.calendarOffset -= 1;
+  state.calendarSelectedDate = new Date();
   renderCalendar();
 });
 
 els.calendarNext.addEventListener('click', () => {
   state.calendarOffset += 1;
+  state.calendarSelectedDate = new Date();
   renderCalendar();
 });
 

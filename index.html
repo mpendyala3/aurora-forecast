@@ -19,6 +19,7 @@
         </div>
         <div class="nav-links">
           <a href="#forecast">Forecast</a>
+          <a href="#calendar">Calendar</a>
           <a href="#map">Map</a>
           <a href="#alerts">Alerts</a>
           <a href="#compare">Compare</a>
@@ -165,6 +166,24 @@
           </div>
 
           <div id="forecastCalendar" class="forecast-calendar" aria-label="Forecast calendar"></div>
+
+          <div class="calendar-details-wrap">
+            <article class="calendar-details" aria-live="polite">
+              <h4 id="calendarSelectedLabel">Select a day</h4>
+              <p id="calendarSelectedSummary" class="muted">Tap a day to see its watch score, moon phase, and night window.</p>
+              <div class="calendar-detail-grid">
+                <div><span>Watch chance</span><strong id="calendarSelectedScore">—</strong></div>
+                <div><span>Moon</span><strong id="calendarSelectedMoon">—</strong></div>
+                <div><span>Sunset</span><strong id="calendarSelectedSunset">—</strong></div>
+                <div><span>Sunrise</span><strong id="calendarSelectedSunrise">—</strong></div>
+              </div>
+            </article>
+
+            <article class="calendar-best">
+              <h4>Best nights this month</h4>
+              <div id="calendarBestNights" class="calendar-best-list"></div>
+            </article>
+          </div>
         </article>
       </section>
 
