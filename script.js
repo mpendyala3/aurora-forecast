@@ -68,6 +68,8 @@ const state = {
   lastNotifiedKey: null,
 };
 
+let searchDebounceTimer = null;
+
 function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 function round(v, digits = 0) { return Number(v.toFixed(digits)); }
 function pad(n) { return String(n).padStart(2, '0'); }
@@ -695,9 +697,34 @@ function renderSearchResults(results) {
       });
       els.searchInput.value = label;
       els.searchResults.innerHTML = '';
+      els.searchInput.setAttribute('aria-expanded', 'false');
     });
     els.searchResults.appendChild(row);
   });
+
+  els.searchInput.setAttribute('aria-expanded', 'true');
+}
+
+function clearSearchResults() {
+  els.searchResults.innerHTML = '';
+  els.searchInput.setAttribute('aria-expanded', 'false');
+}
+
+async function runLiveSearch(query) {
+  const trimmed = query.trim();
+  if (trimmed.length < 2) {
+    clearSearchResults();
+    return;
+  }
+
+  els.searchResults.innerHTML = '<p class="muted small">Searching…</p>';
+  try {
+    const results = await searchLocations(trimmed);
+    renderSearchResults(results);
+  } catch {
+    els.searchResults.innerHTML = '<p class="muted small">Search failed. Try again later.</p>';
+    els.searchInput.setAttribute('aria-expanded', 'true');
+  }
 }
 
 async function requestNotificationPermission() {
@@ -752,21 +779,24 @@ els.locationForm.addEventListener('submit', (event) => {
 });
 
 els.searchButton.addEventListener('click', async () => {
-  const query = els.searchInput.value.trim();
-  if (!query) return;
-  els.searchResults.innerHTML = '<p class="muted small">Searching…</p>';
-  try {
-    const results = await searchLocations(query);
-    renderSearchResults(results);
-  } catch {
-    els.searchResults.innerHTML = '<p class="muted small">Search failed. Try again later.</p>';
-  }
+  await runLiveSearch(els.searchInput.value);
+});
+
+els.searchInput.addEventListener('input', () => {
+  clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(() => runLiveSearch(els.searchInput.value), 250);
 });
 
 els.searchInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
     event.preventDefault();
     els.searchButton.click();
+  }
+});
+
+document.addEventListener('click', (event) => {
+  if (!els.searchResults.contains(event.target) && event.target !== els.searchInput) {
+    clearSearchResults();
   }
 });
 

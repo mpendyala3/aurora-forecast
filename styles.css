@@ -359,6 +359,12 @@ label { display: grid; gap: 8px; color: #dce7f6; font-weight: 700; }
 .search-results {
   display: grid;
   gap: 8px;
+  max-height: 240px;
+  overflow: auto;
+  padding: 8px;
+  border-radius: 16px;
+  background: rgba(3, 10, 18, 0.72);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 .search-result {
   display: flex;
@@ -372,6 +378,10 @@ label { display: grid; gap: 8px; color: #dce7f6; font-weight: 700; }
   cursor: pointer;
 }
 .search-result:hover { border-color: rgba(111,255,210,0.28); }
+.search-result:focus-visible {
+  outline: 2px solid rgba(111,255,210,0.8);
+  outline-offset: 2px;
+}
 .search-result small { color: var(--muted); }
 input[type="text"], input[type="number"], input[type="email"] {
   width: 100%;
