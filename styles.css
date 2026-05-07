@@ -154,13 +154,101 @@ main,
 .theme-pill {
   min-height: 34px;
   min-width: 34px;
-  padding: 0 10px;
+  padding: 0 8px;
   border-radius: 999px;
   border: 1px solid transparent;
   background: transparent;
   color: var(--muted);
   font-weight: 800;
   font-size: 1rem;
+  display: grid;
+  place-items: center;
+}
+
+.theme-icon {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  color: currentColor;
+}
+
+.theme-icon-moon {
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.theme-icon-moon::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 40%;
+  border-radius: 50%;
+  background: var(--card);
+}
+
+.theme-icon-sun {
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow:
+    0 -8px 0 -6px currentColor,
+    0 8px 0 -6px currentColor,
+    -8px 0 0 -6px currentColor,
+    8px 0 0 -6px currentColor,
+    5.6px 5.6px 0 -6px currentColor,
+    -5.6px -5.6px 0 -6px currentColor,
+    5.6px -5.6px 0 -6px currentColor,
+    -5.6px 5.6px 0 -6px currentColor;
+}
+
+.theme-icon-device {
+  width: 17px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  background: transparent;
+}
+
+.theme-icon-device::before,
+.theme-icon-device::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: currentColor;
+}
+
+.theme-icon-desktop::before {
+  top: -4px;
+  width: 8px;
+  height: 2px;
+  border-radius: 2px;
+}
+
+.theme-icon-desktop::after {
+  bottom: -4px;
+  width: 12px;
+  height: 2px;
+  border-radius: 2px;
+}
+
+.theme-icon-mobile {
+  width: 12px;
+  height: 18px;
+  border-radius: 4px;
+}
+
+.theme-icon-mobile::before {
+  inset: 1.5px 2px 3px;
+  border: 1.5px solid currentColor;
+  border-radius: 2.5px;
+  background: transparent;
+}
+
+.theme-icon-mobile::after {
+  bottom: -4px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
 }
 
 .theme-pill.active {

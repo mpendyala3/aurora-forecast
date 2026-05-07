@@ -126,7 +126,10 @@ function syncThemeButtons() {
 function syncDefaultThemeButtonIcon() {
   const defaultButton = themeButtons.find((button) => button.dataset.themeOption === 'system');
   if (!defaultButton) return;
-  defaultButton.textContent = viewportMedia?.matches ? '📱' : '🖥️';
+  const icon = defaultButton.querySelector('.theme-icon');
+  if (!icon) return;
+  icon.classList.toggle('theme-icon-mobile', Boolean(viewportMedia?.matches));
+  icon.classList.toggle('theme-icon-desktop', !viewportMedia?.matches);
   defaultButton.setAttribute('aria-label', viewportMedia?.matches ? 'Default theme mobile' : 'Default theme desktop');
 }
 
