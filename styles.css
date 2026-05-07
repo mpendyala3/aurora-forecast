@@ -920,6 +920,26 @@ input[type="range"] { width: 100%; }
     linear-gradient(180deg, rgba(2,6,14,0.12), rgba(2,6,14,0.36));
   opacity: 0.9;
 }
+.map-silhouette {
+  position: absolute;
+  inset: 0;
+  opacity: 0.42;
+  filter: drop-shadow(0 0 18px rgba(111,255,210,0.05));
+}
+.land {
+  position: absolute;
+  display: block;
+  background: linear-gradient(180deg, rgba(208,224,245,0.24), rgba(164,187,217,0.08));
+  border: 1px solid rgba(190,209,232,0.12);
+  border-radius: 50% 40% 44% 56% / 46% 52% 48% 54%;
+  transform: rotate(-8deg);
+}
+.land.north-america { left: 7%; top: 24%; width: 26%; height: 22%; transform: rotate(-14deg) skewX(-6deg); }
+.land.greenland { left: 33%; top: 15%; width: 9%; height: 11%; transform: rotate(10deg); }
+.land.europe { left: 47%; top: 28%; width: 12%; height: 14%; transform: rotate(6deg); }
+.land.asia { left: 60%; top: 18%; width: 30%; height: 24%; transform: rotate(10deg) skewX(4deg); }
+.land.south-america { left: 24%; top: 54%; width: 12%; height: 22%; transform: rotate(-22deg); }
+.land.africa { left: 47%; top: 47%; width: 14%; height: 20%; transform: rotate(-4deg); }
 .map-grid {
   position: absolute;
   inset: 0;
