@@ -133,10 +133,20 @@ function asTableRows(payload) {
   });
 }
 
+function getCaseInsensitive(row, key) {
+  if (!row || typeof row !== 'object') return undefined;
+  if (key in row) return row[key];
+  const target = String(key).toLowerCase();
+  for (const [candidate, value] of Object.entries(row)) {
+    if (candidate.toLowerCase() === target) return value;
+  }
+  return undefined;
+}
+
 function pickNumber(row, keys) {
   if (!row || typeof row !== 'object') return null;
   for (const key of keys) {
-    const value = row[key] ?? row[key.toLowerCase()] ?? row[key.toUpperCase()];
+    const value = getCaseInsensitive(row, key);
     const num = Number(value);
     if (Number.isFinite(num)) return num;
   }
@@ -146,7 +156,7 @@ function pickNumber(row, keys) {
 function pickString(row, keys) {
   if (!row || typeof row !== 'object') return null;
   for (const key of keys) {
-    const value = row[key] ?? row[key.toLowerCase()] ?? row[key.toUpperCase()];
+    const value = getCaseInsensitive(row, key);
     if (value !== undefined && value !== null && value !== '') return String(value);
   }
   return null;
