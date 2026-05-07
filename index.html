@@ -353,6 +353,53 @@
             </p>
           </article>
 
+          <article class="card tour-submit-card">
+            <h3>Submit a new operator</h3>
+            <p class="muted small">
+              Add your tour company or a partner you trust. On this static site, submissions are saved locally for now.
+            </p>
+
+            <form id="tourForm" class="tour-form">
+              <label>
+                Operator / company name
+                <input id="tourNameInput" type="text" placeholder="Aurora Adventures Ltd" required />
+              </label>
+
+              <label>
+                Website
+                <input id="tourWebsiteInput" type="url" placeholder="https://example.com" required />
+              </label>
+
+              <label>
+                Region
+                <input id="tourRegionInput" type="text" placeholder="Tromsø, Norway" required />
+              </label>
+
+              <label>
+                Contact email
+                <input id="tourEmailInput" type="email" placeholder="hello@example.com" />
+              </label>
+
+              <label>
+                Type of tour
+                <select id="tourTypeInput">
+                  <option>Aurora chase</option>
+                  <option>Northern lights cruise</option>
+                  <option>Private tour</option>
+                  <option>Photography tour</option>
+                  <option>Multi-day package</option>
+                </select>
+              </label>
+
+              <label>
+                Short description
+                <textarea id="tourDescriptionInput" rows="4" placeholder="What makes this operator stand out?"></textarea>
+              </label>
+
+              <button type="submit" class="button primary">Submit operator</button>
+            </form>
+          </article>
+
           <div class="tour-grid">
             <article class="card tour-card">
               <div>
@@ -390,6 +437,14 @@
               <a class="button secondary tour-link" href="https://bestarctic.com/" target="_blank" rel="noreferrer">Explore options</a>
             </article>
           </div>
+
+          <article class="card tour-submissions-card">
+            <div class="tour-submissions-head">
+              <h3>Recent submissions</h3>
+              <span class="muted small">Stored on this device</span>
+            </div>
+            <div id="tourSubmissions" class="tour-submissions"></div>
+          </article>
         </div>
       </section>
 

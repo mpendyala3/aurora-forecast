@@ -54,6 +54,14 @@ const els = {
   mapBadge: document.querySelector('#mapBadge'),
   auroraBand: document.querySelector('#auroraBand'),
   bestCities: document.querySelector('#bestCities'),
+  tourForm: document.querySelector('#tourForm'),
+  tourNameInput: document.querySelector('#tourNameInput'),
+  tourWebsiteInput: document.querySelector('#tourWebsiteInput'),
+  tourRegionInput: document.querySelector('#tourRegionInput'),
+  tourEmailInput: document.querySelector('#tourEmailInput'),
+  tourTypeInput: document.querySelector('#tourTypeInput'),
+  tourDescriptionInput: document.querySelector('#tourDescriptionInput'),
+  tourSubmissions: document.querySelector('#tourSubmissions'),
   emailInput: document.querySelector('#emailInput'),
   webhookInput: document.querySelector('#webhookInput'),
   thresholdInput: document.querySelector('#thresholdInput'),
@@ -82,6 +90,7 @@ const state = {
   notify: false,
   saveLocation: true,
   watchlist: [],
+  tourSubmissions: [],
   lastNotifiedKey: null,
   calendarOffset: 0,
   calendarSelectedDate: new Date(),
@@ -873,6 +882,7 @@ function loadState() {
     if (typeof saved.notify === 'boolean') state.notify = saved.notify;
     if (typeof saved.saveLocation === 'boolean') state.saveLocation = saved.saveLocation;
     if (Array.isArray(saved.watchlist)) state.watchlist = saved.watchlist;
+    if (Array.isArray(saved.tourSubmissions)) state.tourSubmissions = saved.tourSubmissions;
     if (typeof saved.lastNotifiedKey === 'string') state.lastNotifiedKey = saved.lastNotifiedKey;
     if (saved.location) state.location = { ...state.location, ...saved.location };
     if (typeof saved.themePreference === 'string') state.themePreference = saved.themePreference;
@@ -890,6 +900,7 @@ function saveState() {
     saveLocation: state.saveLocation,
     location: state.location,
     watchlist: state.watchlist,
+    tourSubmissions: state.tourSubmissions,
     lastNotifiedKey: state.lastNotifiedKey,
     themePreference: state.themePreference,
   }));
@@ -912,6 +923,46 @@ function renderWatchlist() {
       <span>${item.email || 'No email'} · threshold ${item.threshold}%</span>
     `;
     els.watchlist.appendChild(row);
+  });
+}
+
+function renderTourSubmissions() {
+  els.tourSubmissions.innerHTML = '';
+  if (!state.tourSubmissions.length) {
+    const empty = document.createElement('p');
+    empty.className = 'muted';
+    empty.textContent = 'No operator submissions yet. Add one with the form above.';
+    els.tourSubmissions.appendChild(empty);
+    return;
+  }
+
+  state.tourSubmissions.slice(0, 6).forEach((item) => {
+    const row = document.createElement('div');
+    row.className = 'tour-submission-item';
+    const details = document.createElement('div');
+    const title = document.createElement('strong');
+    title.textContent = item.name;
+    const meta = document.createElement('span');
+    meta.textContent = `${item.region} · ${item.type}`;
+    const desc = document.createElement('p');
+    desc.textContent = item.description || 'No description provided.';
+    details.append(title, meta, desc);
+
+    const link = document.createElement('a');
+    link.className = 'button secondary';
+    link.textContent = 'Website';
+    link.target = '_blank';
+    link.rel = 'noreferrer';
+    try {
+      const parsed = new URL(item.website);
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') link.href = parsed.href;
+      else link.href = '#';
+    } catch {
+      link.href = '#';
+    }
+
+    row.append(details, link);
+    els.tourSubmissions.appendChild(row);
   });
 }
 
@@ -1156,6 +1207,36 @@ els.alertForm.addEventListener('submit', async (event) => {
   refresh();
 });
 
+els.tourForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  let website = els.tourWebsiteInput.value.trim();
+  try {
+    const parsed = new URL(website);
+    if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('Invalid protocol');
+    website = parsed.href;
+  } catch {
+    alert('Please enter a valid website URL starting with http:// or https://');
+    return;
+  }
+
+  const submission = {
+    name: els.tourNameInput.value.trim(),
+    website,
+    region: els.tourRegionInput.value.trim(),
+    email: els.tourEmailInput.value.trim(),
+    type: els.tourTypeInput.value,
+    description: els.tourDescriptionInput.value.trim(),
+    submittedAt: new Date().toISOString(),
+  };
+
+  state.tourSubmissions.unshift(submission);
+  state.tourSubmissions = state.tourSubmissions.slice(0, 10);
+  els.tourForm.reset();
+  renderTourSubmissions();
+  saveState();
+  alert('Operator submission saved locally.');
+});
+
 els.notifyToggle.addEventListener('change', async () => {
   state.notify = els.notifyToggle.checked;
   if (state.notify) state.notify = await requestNotificationPermission();
@@ -1189,6 +1270,7 @@ els.testAlert.addEventListener('click', async () => {
 renderPresets();
 loadState();
 syncAlertUI();
+renderTourSubmissions();
 
 if (state.location && state.location.name) {
   setLocation(state.location, false);
