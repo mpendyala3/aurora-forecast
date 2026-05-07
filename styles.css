@@ -153,12 +153,14 @@ main,
 
 .theme-pill {
   min-height: 34px;
-  padding: 0 12px;
+  min-width: 34px;
+  padding: 0 10px;
   border-radius: 999px;
   border: 1px solid transparent;
   background: transparent;
   color: var(--muted);
   font-weight: 800;
+  font-size: 1rem;
 }
 
 .theme-pill.active {
