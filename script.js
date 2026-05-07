@@ -18,6 +18,8 @@ const els = {
   cloudValue: document.querySelector('#cloudValue'),
   chanceValue: document.querySelector('#chanceValue'),
   chanceFill: document.querySelector('#chanceFill'),
+  summaryLabel: document.querySelector('#summaryLabel'),
+  summaryText: document.querySelector('#summaryText'),
   windowTitle: document.querySelector('#windowTitle'),
   windowText: document.querySelector('#windowText'),
   sunsetValue: document.querySelector('#sunsetValue'),
@@ -64,6 +66,7 @@ const state = {
   notify: false,
   saveLocation: true,
   watchlist: [],
+  lastNotifiedKey: null,
 };
 
 function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
@@ -360,6 +363,33 @@ function scoreChance(location, weather, time = new Date()) {
   return clamp(Math.round(score), 0, 100);
 }
 
+function buildForecastSummary(location, weather) {
+  const chance = scoreChance(location, weather);
+  const dark = isDark(new Date(), sunTime(new Date(), location.lat, location.lon, true), sunTime(new Date(), location.lat, location.lon, false));
+  const cloud = Number.isFinite(location.cloud) ? location.cloud : 50;
+
+  if (chance >= 75) return ['Great odds', dark ? 'Dark, active, and worth stepping outside now.' : 'Strong activity, but wait for darkness.' ];
+  if (chance >= 55) return ['Good watch night', cloud > 55 ? 'Aurora activity is decent; clouds are the main limiter.' : 'A solid night if you have a dark horizon.'];
+  if (chance >= 35) return ['Borderline', dark ? 'Possible, but you’ll need patience and a clear patch of sky.' : 'Not ideal yet — check again after sunset.'];
+  return ['Low odds', 'Probably not a strong aurora night unless conditions improve.'];
+}
+
+function buildConditionHints(location, weather) {
+  const hints = [];
+  if (weather.kp >= 5) hints.push('Geomagnetic activity is strong enough to push the aurora farther south.');
+  else if (weather.kp >= 3) hints.push('Kp is watchable, but the best chance stays in the north.');
+  else hints.push('Space weather is quiet right now.');
+
+  if (Number.isFinite(weather.bz) && weather.bz < 0) hints.push('Bz is negative, which helps aurora energy coupling.');
+  else if (Number.isFinite(weather.bz)) hints.push('Bz is not helping much yet.');
+
+  if (location.cloud > 60) hints.push('Clouds are likely the biggest problem tonight.');
+  else if (location.cloud > 35) hints.push('Cloud cover is moderate, so clear breaks still matter.');
+  else hints.push('Skies look fairly clear from this estimate.');
+
+  return hints.slice(0, 3);
+}
+
 function isDark(now, sunrise, sunset) {
   if (!sunrise || !sunset) return now.getHours() < 6 || now.getHours() > 20;
   return now < sunrise || now > sunset;
@@ -436,6 +466,9 @@ function renderChance(location = state.location) {
   els.chanceValue.textContent = `${chance}%`;
   els.chanceFill.style.width = `${chance}%`;
   els.chanceFill.style.filter = `hue-rotate(${Math.max(0, 120 - chance)}deg)`;
+  const [label, text] = buildForecastSummary(location, state.weather);
+  els.summaryLabel.textContent = label;
+  els.summaryText.textContent = text;
   return chance;
 }
 
@@ -457,7 +490,8 @@ function renderWindow(location = state.location) {
 
   const best = `${toLocalTime(windowStart)} — ${toLocalTime(windowEnd)}`;
   els.windowTitle.textContent = 'Best window';
-  els.windowText.textContent = `Plan for the darkest stretch: ${best}.`;
+  const hints = buildConditionHints(location, state.weather);
+  els.windowText.textContent = `Plan for the darkest stretch: ${best}. ${hints[0] || ''}`;
   els.darkHourValue.textContent = `${toLocalTime(new Date((windowStart.getTime() + windowEnd.getTime()) / 2))}`;
 }
 
@@ -551,7 +585,7 @@ function renderResult(location = state.location) {
   els.visibilityScore.textContent = `${chance}%`;
   els.resultSummary.textContent = `${location.name}: ${chance}% aurora visibility right now.`;
   els.resultNotes.innerHTML = '';
-  notes.forEach((note) => {
+  [...notes, ...buildConditionHints(location, state.weather).slice(0, 2)].forEach((note) => {
     const li = document.createElement('li');
     li.textContent = note;
     els.resultNotes.appendChild(li);
@@ -591,6 +625,7 @@ function loadState() {
     if (typeof saved.notify === 'boolean') state.notify = saved.notify;
     if (typeof saved.saveLocation === 'boolean') state.saveLocation = saved.saveLocation;
     if (Array.isArray(saved.watchlist)) state.watchlist = saved.watchlist;
+    if (typeof saved.lastNotifiedKey === 'string') state.lastNotifiedKey = saved.lastNotifiedKey;
     if (saved.location) state.location = { ...state.location, ...saved.location };
   } catch {
     // ignore corrupt storage
@@ -606,6 +641,7 @@ function saveState() {
     saveLocation: state.saveLocation,
     location: state.location,
     watchlist: state.watchlist,
+    lastNotifiedKey: state.lastNotifiedKey,
   }));
 }
 
@@ -676,9 +712,13 @@ async function requestNotificationPermission() {
 function notifyIfNeeded() {
   const chance = scoreChance(state.location, state.weather);
   if (chance < state.threshold || !state.notify || !('Notification' in window) || Notification.permission !== 'granted') return;
+  const key = `${state.location.name}|${state.location.lat.toFixed(2)}|${state.location.lon.toFixed(2)}|${state.threshold}|${new Date().toDateString()}`;
+  if (state.lastNotifiedKey === key) return;
   new Notification('Aurora watch triggered', {
     body: `${state.location.name} is at ${chance}% — above your ${state.threshold}% threshold.`,
   });
+  state.lastNotifiedKey = key;
+  saveState();
 }
 
 function syncAlertUI() {

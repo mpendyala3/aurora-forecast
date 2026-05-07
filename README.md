@@ -1,6 +1,6 @@
-# Aurora Forecast
+# Aurora Hunt
 
-A polished aurora forecast website built with plain HTML, CSS, and JavaScript.
+A polished aurora-hunting website built with plain HTML, CSS, and JavaScript.
 
 ## Features
 

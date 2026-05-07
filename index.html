@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#07111f" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Aurora Forecast</title>
+    <title>Aurora Hunt</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -15,12 +15,13 @@
       <nav class="topbar" aria-label="Primary">
         <div class="brand">
           <span class="brand-mark">✦</span>
-          <span>Aurora Forecast</span>
+          <span>Aurora Hunt</span>
         </div>
         <div class="nav-links">
           <a href="#forecast">Forecast</a>
           <a href="#map">Map</a>
           <a href="#alerts">Alerts</a>
+          <a href="#compare">Compare</a>
           <a href="#learn">Learn</a>
         </div>
       </nav>
@@ -83,6 +84,11 @@
             <div class="chance-bar">
               <span id="chanceFill"></span>
             </div>
+          </div>
+
+          <div class="forecast-note">
+            <strong id="summaryLabel">—</strong>
+            <p id="summaryText" class="muted">—</p>
           </div>
         </aside>
       </section>
@@ -301,6 +307,41 @@
             <p>
               The best chance is usually after sunset and before sunrise, away from city lights.
             </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="compare">
+        <div class="section-head">
+          <p class="eyebrow">Compare</p>
+          <h2>Why Aurora Hunt stands out</h2>
+        </div>
+
+        <div class="compare-layout">
+          <article class="card compare-card winner">
+            <div class="compare-head">
+              <h3>Aurora Hunt</h3>
+              <span class="compare-badge">Recommended</span>
+            </div>
+            <ul class="compare-list">
+              <li><strong>No backend required</strong><span>Works fully in the browser, with graceful fallbacks if feeds fail.</span></li>
+              <li><strong>Location-aware planning</strong><span>Search, reverse geocode, and presets make it easy to check any spot.</span></li>
+              <li><strong>Clearer guidance</strong><span>Turns Kp, Bz, clouds, and darkness into plain-language advice.</span></li>
+              <li><strong>Better for checking tonight</strong><span>Hourly chance bars, best-window timing, and a fast visibility summary.</span></li>
+            </ul>
+          </article>
+
+          <article class="card compare-card">
+            <div class="compare-head">
+              <h3>Typical forecast apps</h3>
+              <span class="compare-badge muted-badge">Often cluttered</span>
+            </div>
+            <ul class="compare-list">
+              <li><strong>More switching around</strong><span>Data, maps, and alerts are often split across multiple screens.</span></li>
+              <li><strong>Less context</strong><span>Numbers can be shown without explaining what they mean for your location.</span></li>
+              <li><strong>Heavier setups</strong><span>Many rely on accounts, logins, or extra services to unlock the useful parts.</span></li>
+              <li><strong>Weaker fallback behavior</strong><span>If a feed is down, the experience can break instead of degrading cleanly.</span></li>
+            </ul>
           </article>
         </div>
       </section>
