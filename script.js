@@ -72,7 +72,6 @@ const els = {
   notifyToggle: document.querySelector('#notifyToggle'),
   saveToggle: document.querySelector('#saveToggle'),
   alertForm: document.querySelector('#alertForm'),
-  testAlert: document.querySelector('#testAlert'),
   watchlist: document.querySelector('#watchlist'),
 };
 
@@ -1287,22 +1286,6 @@ els.notifyToggle.addEventListener('change', async () => {
 els.saveToggle.addEventListener('change', () => {
   state.saveLocation = els.saveToggle.checked;
   saveState();
-});
-
-els.testAlert.addEventListener('click', async () => {
-  const ok = await requestNotificationPermission();
-  if (ok) {
-    new Notification('Aurora forecast test', { body: 'Your alert system is connected.' });
-  }
-  const testData = new FormData(els.alertForm);
-  testData.set('_subject', 'Aurora Hunt test alert');
-  testData.set('location_name', state.location.name);
-  testData.set('latitude', String(state.location.lat));
-  testData.set('longitude', String(state.location.lon));
-  testData.set('cloud_cover', String(state.location.cloud));
-  const sent = await postFormspree('https://formspree.io/f/xqendboy', testData).catch(() => false);
-  if (sent) return alert('Test alert sent to hello@aurorahunt.live.');
-  if (!ok) alert('Notifications are not available here, but your watch settings are saved locally.');
 });
 
 renderPresets();
