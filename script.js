@@ -94,7 +94,6 @@ const state = {
   weather: null,
   location: { ...PRESETS[0] },
   threshold: 60,
-  email: '',
   webhookUrl: '',
   notify: false,
   saveLocation: true,
@@ -912,7 +911,6 @@ function loadState() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const saved = JSON.parse(raw);
-    if (saved.email) state.email = saved.email;
     if (saved.webhookUrl) state.webhookUrl = saved.webhookUrl;
     if (typeof saved.threshold === 'number') state.threshold = saved.threshold;
     if (typeof saved.notify === 'boolean') state.notify = saved.notify;
@@ -930,7 +928,6 @@ function loadState() {
 
 function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    email: state.email,
     webhookUrl: state.webhookUrl,
     threshold: state.threshold,
     notify: state.notify,
@@ -958,7 +955,7 @@ function renderWatchlist() {
     row.className = 'watch-item';
     row.innerHTML = `
       <strong>${item.location}</strong>
-      <span>${item.email || 'No email'} · threshold ${item.threshold}%</span>
+      <span>Threshold ${item.threshold}%</span>
     `;
     els.watchlist.appendChild(row);
   });
@@ -1086,7 +1083,6 @@ function notifyIfNeeded() {
 }
 
 function syncAlertUI() {
-  els.emailInput.value = state.email;
   els.webhookInput.value = state.webhookUrl;
   els.thresholdInput.value = state.threshold;
   els.thresholdValue.textContent = `${state.threshold}%`;
@@ -1228,7 +1224,6 @@ els.thresholdInput.addEventListener('input', () => {
 
 els.alertForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  state.email = els.emailInput.value.trim();
   state.webhookUrl = els.webhookInput.value.trim();
   state.threshold = Number(els.thresholdInput.value);
   state.notify = els.notifyToggle.checked;
@@ -1243,7 +1238,6 @@ els.alertForm.addEventListener('submit', async (event) => {
   if (state.saveLocation) {
     state.watchlist.unshift({
       location: state.location.name,
-      email: state.email,
       threshold: state.threshold,
       lat: state.location.lat,
       lon: state.location.lon,
@@ -1255,7 +1249,6 @@ els.alertForm.addEventListener('submit', async (event) => {
   if (state.webhookUrl) {
     await sendAlertWebhook({
       type: 'watch-saved',
-      email: state.email,
       threshold: state.threshold,
       location: state.location,
       weather: state.weather,
@@ -1317,7 +1310,6 @@ els.testAlert.addEventListener('click', async () => {
   if (state.webhookUrl) {
     const sent = await sendAlertWebhook({
       type: 'test-alert',
-      email: state.email,
       location: state.location,
       weather: state.weather,
       timestamp: new Date().toISOString(),
@@ -1338,7 +1330,6 @@ if (state.location && state.location.name) {
   setLocation(PRESETS[0], false);
 }
 
-if (state.email) els.emailInput.value = state.email;
 renderWatchlist();
 state.weather = buildFallbackWeather();
 applyTheme(state.themePreference);
