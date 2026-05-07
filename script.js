@@ -1236,8 +1236,8 @@ els.alertForm.addEventListener('submit', async (event) => {
   const sent = await postFormspree('https://formspree.io/f/xqendboy', alertData).catch(() => false);
   if (alertStatus) {
     alertStatus.textContent = sent
-      ? 'Saved and sent to hello@aurorahunt.live.'
-      : 'Saved locally. Sending to hello@aurorahunt.live failed just now.';
+      ? 'Saved and sent successfully.'
+      : 'Saved locally. Sending failed just now.';
   }
 
   saveState();

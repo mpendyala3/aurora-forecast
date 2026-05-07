@@ -68,7 +68,7 @@
 
           <button type="submit" class="button primary">Submit operator</button>
         </form>
-        <div class="page-note" id="tourStatus">We’ll send this to hello@aurorahunt.live.</div>
+        <div class="page-note" id="tourStatus">We’ll review submissions after they’re sent.</div>
       </section>
 
     </main>
@@ -115,7 +115,7 @@
 
         if (response?.ok) {
           els.tourForm.reset();
-          els.tourStatus.textContent = 'Sent to hello@aurorahunt.live.';
+          els.tourStatus.textContent = 'Submission sent successfully.';
           return;
         }
 
