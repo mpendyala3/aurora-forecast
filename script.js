@@ -69,6 +69,7 @@ const root = document.documentElement;
 const themeMeta = document.querySelector('meta[name="theme-color"]');
 const themeButtons = [...document.querySelectorAll('[data-theme-option]')];
 const systemThemeMedia = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+const viewportMedia = window.matchMedia ? window.matchMedia('(max-width: 700px)') : null;
 
 const STORAGE_KEY = 'aurora-forecast-v1';
 
@@ -122,11 +123,19 @@ function syncThemeButtons() {
   });
 }
 
+function syncDefaultThemeButtonIcon() {
+  const defaultButton = themeButtons.find((button) => button.dataset.themeOption === 'system');
+  if (!defaultButton) return;
+  defaultButton.textContent = viewportMedia?.matches ? '📱' : '🖥️';
+  defaultButton.setAttribute('aria-label', viewportMedia?.matches ? 'Default theme mobile' : 'Default theme desktop');
+}
+
 function applyTheme(preference = state.themePreference) {
   const actualTheme = preference === 'system' ? getSystemTheme() : preference;
   root.dataset.theme = actualTheme;
   if (themeMeta) themeMeta.setAttribute('content', actualTheme === 'light' ? '#eef4ff' : '#07111f');
   syncThemeButtons();
+  syncDefaultThemeButtonIcon();
 }
 
 function startOfMonth(date, offset = 0) {
@@ -987,6 +996,10 @@ if (systemThemeMedia?.addEventListener) {
   systemThemeMedia.addEventListener('change', () => {
     if (state.themePreference === 'system') applyTheme('system');
   });
+}
+
+if (viewportMedia?.addEventListener) {
+  viewportMedia.addEventListener('change', syncDefaultThemeButtonIcon);
 }
 
 els.cloudInput.addEventListener('input', () => {
