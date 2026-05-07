@@ -1153,12 +1153,23 @@ input[type="range"] { width: 100%; }
   .nav-links {
     order: 3;
     width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
     gap: 10px;
     font-size: 0.92rem;
     overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
     white-space: nowrap;
     padding-bottom: 2px;
     scrollbar-width: none;
+  }
+  .nav-links a {
+    flex: 0 0 auto;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
   }
   .nav-links::-webkit-scrollbar { display: none; }
   .theme-switch {
@@ -1187,6 +1198,9 @@ input[type="range"] { width: 100%; }
   body.mobile-topbar-compact .nav-links {
     gap: 8px;
     font-size: 0.84rem;
+  }
+  body.mobile-topbar-compact .nav-links a {
+    padding: 5px 9px;
   }
   .hero-copy, .hero-panel, .card { padding: 16px; border-radius: 18px; }
   .hero { padding-top: 118px; }
