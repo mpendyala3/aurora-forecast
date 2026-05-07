@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07111f" />
+    <title>Submit New Operator · Aurora Hunt</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="stars" aria-hidden="true"></div>
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Aurora Hunt home">
+        <span class="brand-mark">✦</span>
+        <span>Aurora Hunt</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#tours">Tours</a>
+      </div>
+    </header>
+
+    <main class="page-main">
+      <section class="card page-hero">
+        <p class="eyebrow">Tours</p>
+        <h1>Submit a new operator</h1>
+        <p class="lede">
+          Suggest a reputable aurora tour company or operator. This form stores submissions locally for now.
+        </p>
+      </section>
+
+      <section class="card page-card">
+        <form id="tourForm" class="tour-form">
+          <label>
+            Operator / company name
+            <input id="tourNameInput" type="text" placeholder="Aurora Adventures Ltd" required />
+          </label>
+
+          <label>
+            Website
+            <input id="tourWebsiteInput" type="url" placeholder="https://example.com" required />
+          </label>
+
+          <label>
+            Region
+            <input id="tourRegionInput" type="text" placeholder="Tromsø, Norway" required />
+          </label>
+
+          <label>
+            Contact email
+            <input id="tourEmailInput" type="email" placeholder="hello@example.com" autocomplete="off" />
+          </label>
+
+          <label>
+            Type of tour
+            <select id="tourTypeInput">
+              <option>Aurora chase</option>
+              <option>Northern lights cruise</option>
+              <option>Private tour</option>
+              <option>Photography tour</option>
+              <option>Multi-day package</option>
+            </select>
+          </label>
+
+          <label>
+            Short description
+            <textarea id="tourDescriptionInput" rows="4" placeholder="What makes this operator stand out?"></textarea>
+          </label>
+
+          <button type="submit" class="button primary">Submit operator</button>
+        </form>
+        <div class="page-note" id="tourStatus">Submissions are saved locally in your browser.</div>
+      </section>
+
+      <section class="card page-card">
+        <h2>Recent submissions</h2>
+        <div id="tourSubmissions" class="tour-submissions"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-bottom">
+        <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
+        <a href="index.html">Back home</a>
+      </div>
+    </footer>
+
+    <script>
+      const STORAGE_KEY = 'aurora-forecast-v1';
+      const els = {
+        tourForm: document.querySelector('#tourForm'),
+        tourNameInput: document.querySelector('#tourNameInput'),
+        tourWebsiteInput: document.querySelector('#tourWebsiteInput'),
+        tourRegionInput: document.querySelector('#tourRegionInput'),
+        tourEmailInput: document.querySelector('#tourEmailInput'),
+        tourTypeInput: document.querySelector('#tourTypeInput'),
+        tourDescriptionInput: document.querySelector('#tourDescriptionInput'),
+        tourStatus: document.querySelector('#tourStatus'),
+        tourSubmissions: document.querySelector('#tourSubmissions'),
+      };
+
+      function loadSubmissions() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+          return Array.isArray(saved.tourSubmissions) ? saved.tourSubmissions : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function saveSubmissions(submissions) {
+        try {
+          const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...saved, tourSubmissions: submissions }));
+        } catch {
+          // ignore
+        }
+      }
+
+      function renderSubmissions() {
+        const submissions = loadSubmissions();
+        els.tourSubmissions.innerHTML = '';
+        if (!submissions.length) {
+          const empty = document.createElement('p');
+          empty.className = 'muted';
+          empty.textContent = 'No operator submissions yet.';
+          els.tourSubmissions.appendChild(empty);
+          return;
+        }
+
+        submissions.slice(0, 6).forEach((item) => {
+          const row = document.createElement('div');
+          row.className = 'tour-submission-item';
+          const details = document.createElement('div');
+          const title = document.createElement('strong');
+          title.textContent = item.name;
+          const meta = document.createElement('span');
+          meta.textContent = `${item.region} · ${item.type}`;
+          const desc = document.createElement('p');
+          desc.textContent = item.description || 'No description provided.';
+          details.append(title, meta, desc);
+
+          const link = document.createElement('a');
+          link.className = 'button secondary';
+          link.textContent = 'Website';
+          link.target = '_blank';
+          link.rel = 'noreferrer';
+          try {
+            const parsed = new URL(item.website);
+            link.href = ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '#';
+          } catch {
+            link.href = '#';
+          }
+
+          row.append(details, link);
+          els.tourSubmissions.appendChild(row);
+        });
+      }
+
+      els.tourForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        let website = els.tourWebsiteInput.value.trim();
+        try {
+          const parsed = new URL(website);
+          if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('Invalid protocol');
+          website = parsed.href;
+        } catch {
+          alert('Please enter a valid website URL starting with http:// or https://');
+          return;
+        }
+
+        const submission = {
+          name: els.tourNameInput.value.trim(),
+          website,
+          region: els.tourRegionInput.value.trim(),
+          email: els.tourEmailInput.value.trim(),
+          type: els.tourTypeInput.value,
+          description: els.tourDescriptionInput.value.trim(),
+          submittedAt: new Date().toISOString(),
+        };
+
+        const submissions = loadSubmissions();
+        submissions.unshift(submission);
+        saveSubmissions(submissions.slice(0, 10));
+        els.tourForm.reset();
+        els.tourStatus.textContent = 'Submission saved locally.';
+        renderSubmissions();
+      });
+
+      renderSubmissions();
+    </script>
+  </body>
+</html>

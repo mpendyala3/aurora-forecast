@@ -962,6 +962,7 @@ function renderWatchlist() {
 }
 
 function renderTourSubmissions() {
+  if (!els.tourSubmissions) return;
   els.tourSubmissions.innerHTML = '';
   if (!state.tourSubmissions.length) {
     const empty = document.createElement('p');
@@ -1260,35 +1261,37 @@ els.alertForm.addEventListener('submit', async (event) => {
   refresh();
 });
 
-els.tourForm.addEventListener('submit', (event) => {
-  event.preventDefault();
-  let website = els.tourWebsiteInput.value.trim();
-  try {
-    const parsed = new URL(website);
-    if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('Invalid protocol');
-    website = parsed.href;
-  } catch {
-    alert('Please enter a valid website URL starting with http:// or https://');
-    return;
-  }
+if (els.tourForm) {
+  els.tourForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    let website = els.tourWebsiteInput.value.trim();
+    try {
+      const parsed = new URL(website);
+      if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('Invalid protocol');
+      website = parsed.href;
+    } catch {
+      alert('Please enter a valid website URL starting with http:// or https://');
+      return;
+    }
 
-  const submission = {
-    name: els.tourNameInput.value.trim(),
-    website,
-    region: els.tourRegionInput.value.trim(),
-    email: els.tourEmailInput.value.trim(),
-    type: els.tourTypeInput.value,
-    description: els.tourDescriptionInput.value.trim(),
-    submittedAt: new Date().toISOString(),
-  };
+    const submission = {
+      name: els.tourNameInput.value.trim(),
+      website,
+      region: els.tourRegionInput.value.trim(),
+      email: els.tourEmailInput.value.trim(),
+      type: els.tourTypeInput.value,
+      description: els.tourDescriptionInput.value.trim(),
+      submittedAt: new Date().toISOString(),
+    };
 
-  state.tourSubmissions.unshift(submission);
-  state.tourSubmissions = state.tourSubmissions.slice(0, 10);
-  els.tourForm.reset();
-  renderTourSubmissions();
-  saveState();
-  alert('Operator submission saved locally.');
-});
+    state.tourSubmissions.unshift(submission);
+    state.tourSubmissions = state.tourSubmissions.slice(0, 10);
+    els.tourForm.reset();
+    renderTourSubmissions();
+    saveState();
+    alert('Operator submission saved locally.');
+  });
+}
 
 els.notifyToggle.addEventListener('change', async () => {
   state.notify = els.notifyToggle.checked;
