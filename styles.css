@@ -84,6 +84,11 @@ main,
   font-weight: 800;
   letter-spacing: 0.02em;
 }
+.brand:hover,
+.brand:focus-visible {
+  color: var(--text);
+  text-shadow: 0 0 16px rgba(111,255,210,0.18);
+}
 .brand-mark {
   width: 34px;
   height: 34px;
