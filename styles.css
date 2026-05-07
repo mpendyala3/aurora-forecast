@@ -156,6 +156,7 @@ h1 {
   align-items: center;
   justify-content: center;
   font-weight: 800;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease, filter 0.18s ease;
 }
 .button.primary {
   background: linear-gradient(135deg, var(--accent), #97ffe0);
@@ -165,6 +166,41 @@ h1 {
   color: var(--text);
   border-color: rgba(255,255,255,0.14);
   background: rgba(255,255,255,0.03);
+}
+
+.button:hover,
+.button:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(111,255,210,0.45);
+  box-shadow: 0 0 0 1px rgba(111,255,210,0.18) inset, 0 12px 28px rgba(0, 0, 0, 0.22);
+}
+
+.button.primary:hover,
+.button.primary:focus-visible {
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 14px 30px rgba(111,255,210,0.16);
+}
+
+.button.secondary:hover,
+.button.secondary:focus-visible {
+  background: rgba(111,255,210,0.08);
+  border-color: rgba(111,255,210,0.55);
+  box-shadow: 0 0 0 1px rgba(111,255,210,0.22) inset, 0 0 18px rgba(111,255,210,0.16);
+}
+
+.nav-links a,
+.preset-chip,
+.search-result,
+.city-list-item,
+.calendar-day,
+.calendar-best-item,
+.toggle {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease, opacity 0.18s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: var(--text);
+  text-shadow: 0 0 16px rgba(111,255,210,0.25);
 }
 
 .meta-row {
@@ -346,6 +382,22 @@ h1 {
 .calendar-day.today { box-shadow: 0 0 0 2px rgba(111,255,210,0.55) inset; }
 .calendar-day.selected { box-shadow: 0 0 0 2px rgba(255,255,255,0.7) inset, 0 0 0 1px rgba(111,255,210,0.18); }
 
+.calendar-day:not(.outside):hover,
+.calendar-day:not(.outside):focus-visible,
+.calendar-best-item:hover,
+.calendar-best-item:focus-visible,
+.toggle:hover,
+.toggle:focus-within {
+  transform: translateY(-1px);
+  border-color: rgba(111,255,210,0.42);
+  box-shadow: 0 0 0 1px rgba(111,255,210,0.16) inset, 0 0 20px rgba(111,255,210,0.12);
+}
+
+.calendar-day:not(.outside):hover,
+.calendar-day:not(.outside):focus-visible {
+  background: rgba(255,255,255,0.06);
+}
+
 .calendar-day-top {
   display: flex;
   justify-content: space-between;
@@ -422,6 +474,11 @@ h1 {
   border-radius: 12px;
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.06);
+}
+
+.calendar-best-item:hover,
+.calendar-best-item:focus-visible {
+  background: rgba(111,255,210,0.06);
 }
 
 .calendar-best-item strong { display: block; margin-bottom: 4px; }
@@ -560,6 +617,12 @@ label { display: grid; gap: 8px; color: #dce7f6; font-weight: 700; }
   outline: 2px solid rgba(111,255,210,0.8);
   outline-offset: 2px;
 }
+.search-result:hover,
+.search-result:focus-visible {
+  transform: translateY(-1px);
+  background: rgba(111,255,210,0.06);
+  box-shadow: 0 0 0 1px rgba(111,255,210,0.16) inset, 0 0 18px rgba(111,255,210,0.10);
+}
 .search-result small { color: var(--muted); }
 input[type="text"], input[type="number"], input[type="email"] {
   width: 100%;
@@ -593,6 +656,13 @@ input[type="range"] { width: 100%; }
 
 .preset-chip.active::before {
   content: '✓ ';
+}
+
+.preset-chip:hover,
+.preset-chip:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(111,255,210,0.5);
+  box-shadow: 0 0 0 1px rgba(111,255,210,0.16) inset, 0 0 18px rgba(111,255,210,0.14);
 }
 
 .result-panel {
@@ -707,6 +777,12 @@ input[type="range"] { width: 100%; }
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.06);
 }
+.city-list-item:hover,
+.city-list-item:focus-visible {
+  transform: translateY(-1px);
+  border-color: rgba(111,255,210,0.28);
+  box-shadow: 0 0 0 1px rgba(111,255,210,0.14) inset, 0 0 18px rgba(111,255,210,0.10);
+}
 .city-list-item strong { display: block; }
 .city-list-item span { color: var(--muted); font-size: 0.94rem; }
 
@@ -801,6 +877,12 @@ input[type="range"] { width: 100%; }
 .compare-list span {
   color: var(--muted);
   line-height: 1.55;
+}
+
+.compare-list li:hover,
+.compare-list li:focus-within {
+  border-color: rgba(111,255,210,0.28);
+  box-shadow: 0 0 0 1px rgba(111,255,210,0.12) inset, 0 0 18px rgba(111,255,210,0.08);
 }
 .info-card p { color: #d7e4f4; line-height: 1.7; margin-bottom: 0; }
 
