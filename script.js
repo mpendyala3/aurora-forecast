@@ -80,9 +80,13 @@ const els = {
 const root = document.documentElement;
 const themeMeta = document.querySelector('meta[name="theme-color"]');
 const themeButtons = [...document.querySelectorAll('[data-theme-option]')];
+const navLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
 const systemThemeMedia = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 const viewportMedia = window.matchMedia ? window.matchMedia('(max-width: 700px)') : null;
 const mapFocusButtons = [...document.querySelectorAll('[data-map-focus]')];
+const navSections = navLinks
+  .map((link) => document.querySelector(link.getAttribute('href')))
+  .filter(Boolean);
 
 const STORAGE_KEY = 'aurora-forecast-v1';
 
@@ -167,6 +171,14 @@ function scheduleTopBarStateSync() {
   topBarFrame = window.requestAnimationFrame(() => {
     topBarFrame = null;
     syncTopBarState();
+  });
+}
+
+function syncNavActive(sectionId) {
+  navLinks.forEach((link) => {
+    const active = link.getAttribute('href') === `#${sectionId}`;
+    link.classList.toggle('active', active);
+    link.setAttribute('aria-current', active ? 'page' : 'false');
   });
 }
 
@@ -1100,6 +1112,21 @@ mapFocusButtons.forEach((button) => {
   button.addEventListener('click', () => {
     state.mapFocus = button.dataset.mapFocus || 'global';
     renderMap();
+  });
+});
+
+if (navSections.length && 'IntersectionObserver' in window) {
+  const navObserver = new IntersectionObserver((entries) => {
+    const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+    if (visible?.target?.id) syncNavActive(visible.target.id);
+  }, { rootMargin: '-30% 0px -55% 0px', threshold: [0.12, 0.2, 0.35] });
+  navSections.forEach((section) => navObserver.observe(section));
+}
+
+navLinks.forEach((link) => {
+  link.addEventListener('click', () => {
+    const href = link.getAttribute('href') || '';
+    if (href.startsWith('#')) syncNavActive(href.slice(1));
   });
 });
 
