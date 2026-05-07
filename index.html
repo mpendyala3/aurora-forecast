@@ -133,6 +133,41 @@
         <div class="grid-3" id="cityRankings"></div>
       </section>
 
+      <section class="section" id="calendar">
+        <div class="section-head">
+          <p class="eyebrow">Calendar</p>
+          <h2>Monthly forecast calendar</h2>
+        </div>
+
+        <article class="card calendar-card">
+          <div class="calendar-top">
+            <div>
+              <h3 id="calendarMonthLabel">—</h3>
+              <p class="muted">Color shows watch chance. Moon tags mark new moon and full moon.</p>
+            </div>
+            <div class="calendar-actions">
+              <button type="button" id="calendarPrev" class="button secondary">←</button>
+              <button type="button" id="calendarNext" class="button secondary">→</button>
+            </div>
+          </div>
+
+          <div class="calendar-legend" aria-label="Calendar legend">
+            <span><i class="legend-swatch low"></i> Low</span>
+            <span><i class="legend-swatch medium"></i> Medium</span>
+            <span><i class="legend-swatch high"></i> High</span>
+            <span><i class="legend-swatch very-high"></i> Very high</span>
+            <span><i class="legend-moon new"></i> New moon</span>
+            <span><i class="legend-moon full"></i> Full moon</span>
+          </div>
+
+          <div class="calendar-weekdays" aria-hidden="true">
+            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+
+          <div id="forecastCalendar" class="forecast-calendar" aria-label="Forecast calendar"></div>
+        </article>
+      </section>
+
       <section class="section" id="planner">
         <div class="section-head">
           <p class="eyebrow">Location planner</p>

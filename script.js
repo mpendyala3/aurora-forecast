@@ -27,6 +27,10 @@ const els = {
   darkHourValue: document.querySelector('#darkHourValue'),
   timeline: document.querySelector('#timeline'),
   cityRankings: document.querySelector('#cityRankings'),
+  calendarMonthLabel: document.querySelector('#calendarMonthLabel'),
+  calendarPrev: document.querySelector('#calendarPrev'),
+  calendarNext: document.querySelector('#calendarNext'),
+  forecastCalendar: document.querySelector('#forecastCalendar'),
   searchInput: document.querySelector('#searchInput'),
   searchButton: document.querySelector('#searchButton'),
   searchResults: document.querySelector('#searchResults'),
@@ -66,6 +70,7 @@ const state = {
   saveLocation: true,
   watchlist: [],
   lastNotifiedKey: null,
+  calendarOffset: 0,
 };
 
 let searchDebounceTimer = null;
@@ -89,6 +94,45 @@ function normalize(value, max) {
   let out = value % max;
   if (out < 0) out += max;
   return out;
+}
+
+function startOfMonth(date, offset = 0) {
+  return new Date(date.getFullYear(), date.getMonth() + offset, 1);
+}
+
+function formatMonthYear(date) {
+  return date.toLocaleString([], { month: 'long', year: 'numeric' });
+}
+
+function moonAge(date) {
+  const synodicMonth = 29.53058867;
+  const knownNewMoon = Date.UTC(2000, 0, 6, 18, 14, 0);
+  const daysSince = (date.getTime() - knownNewMoon) / 86400000;
+  return normalize(daysSince, synodicMonth);
+}
+
+function moonInfo(date) {
+  const age = moonAge(date);
+  const synodicMonth = 29.53058867;
+  const fullAge = synodicMonth / 2;
+  const nearNew = age < 1.25 || age > synodicMonth - 1.25;
+  const nearFull = Math.abs(age - fullAge) < 1.4;
+
+  if (nearNew) return { label: 'New moon', type: 'new', age };
+  if (nearFull) return { label: 'Full moon', type: 'full', age };
+  if (age < 7.4) return { label: 'Waxing crescent', type: 'other', age };
+  if (age < 8.9) return { label: 'First quarter', type: 'other', age };
+  if (age < 14.0) return { label: 'Waxing gibbous', type: 'other', age };
+  if (age < 16.0) return { label: 'Waning gibbous', type: 'other', age };
+  if (age < 22.0) return { label: 'Last quarter', type: 'other', age };
+  return { label: 'Waning crescent', type: 'other', age };
+}
+
+function scoreClass(score) {
+  if (score >= 76) return 'very-high';
+  if (score >= 51) return 'high';
+  if (score >= 26) return 'medium';
+  return 'low';
 }
 
 async function fetchJson(url, timeoutMs = 8000) {
@@ -419,6 +463,57 @@ function generateForecast(weather, location) {
   return points;
 }
 
+function generateCalendarScore(location, weather, date) {
+  const dayIndex = Math.floor((Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 1)) / 86400000);
+  const moon = moonInfo(date);
+  const moonPenalty = moon.type === 'full' ? 8 : moon.type === 'new' ? -4 : 0;
+  const simulated = {
+    ...weather,
+    kp: clamp(Math.round((weather.kp ?? 3) + Math.sin(dayIndex / 2.8) + Math.cos(dayIndex / 5.2)), 0, 9),
+    bz: Number.isFinite(weather.bz) ? weather.bz + Math.sin(dayIndex / 3.2) * 2 : weather.bz,
+  };
+  const cloudSwing = Math.round(Math.sin(dayIndex / 3.4) * 18 + Math.cos(dayIndex / 6.1) * 8);
+  const simulatedLocation = { ...location, cloud: clamp(location.cloud + cloudSwing, 0, 100) };
+  const night = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 22, 0, 0, 0);
+  return clamp(scoreChance(simulatedLocation, simulated, night) + moonPenalty, 0, 100);
+}
+
+function renderCalendar() {
+  const base = startOfMonth(new Date(), state.calendarOffset);
+  const firstDay = new Date(base.getFullYear(), base.getMonth(), 1);
+  const startPadding = firstDay.getDay();
+  const daysInMonth = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
+  const totalCells = 42;
+
+  els.calendarMonthLabel.textContent = formatMonthYear(base);
+  els.forecastCalendar.innerHTML = '';
+
+  for (let i = 0; i < totalCells; i += 1) {
+    const dayNum = i - startPadding + 1;
+    const cellDate = new Date(base.getFullYear(), base.getMonth(), dayNum);
+    const inMonth = dayNum >= 1 && dayNum <= daysInMonth;
+    const score = inMonth ? generateCalendarScore(state.location, state.weather, cellDate) : null;
+    const moon = moonInfo(cellDate);
+    const tile = document.createElement('button');
+    tile.type = 'button';
+    tile.className = `calendar-day ${inMonth ? scoreClass(score) : 'outside'}`;
+    tile.disabled = !inMonth;
+    tile.innerHTML = `
+      <span class="calendar-day-top">
+        <strong>${inMonth ? dayNum : ''}</strong>
+        ${inMonth ? `<span class="calendar-score">${score}%</span>` : ''}
+      </span>
+      <span class="calendar-day-label">${inMonth ? (moon.type === 'new' ? 'New moon' : moon.type === 'full' ? 'Full moon' : moon.label) : ''}</span>
+      <span class="calendar-moon ${moon.type === 'new' ? 'new' : moon.type === 'full' ? 'full' : ''}">${inMonth && (moon.type === 'new' || moon.type === 'full') ? moon.label : ''}</span>
+    `;
+    if (inMonth && dayNum === new Date().getDate() && base.getMonth() === new Date().getMonth() && base.getFullYear() === new Date().getFullYear()) {
+      tile.classList.add('today');
+    }
+    tile.setAttribute('aria-label', inMonth ? `${cellDate.toDateString()} — ${score}% chance — ${moon.label}` : '');
+    els.forecastCalendar.appendChild(tile);
+  }
+}
+
 function renderPresets() {
   els.presetRow.innerHTML = '';
   PRESETS.forEach((preset) => {
@@ -607,6 +702,7 @@ function refresh() {
   state.location.cloud = Number(els.cloudInput.value);
   renderWindow(state.location);
   renderTimeline(state.location);
+  renderCalendar();
   renderRankings();
   renderMap();
   renderBestCities();
@@ -804,6 +900,16 @@ els.searchInput.addEventListener('keydown', (event) => {
   }
 });
 
+els.calendarPrev.addEventListener('click', () => {
+  state.calendarOffset -= 1;
+  renderCalendar();
+});
+
+els.calendarNext.addEventListener('click', () => {
+  state.calendarOffset += 1;
+  renderCalendar();
+});
+
 document.addEventListener('click', (event) => {
   if (!els.searchResults.contains(event.target) && event.target !== els.searchInput) {
     clearSearchResults();
@@ -930,6 +1036,7 @@ if (state.email) els.emailInput.value = state.email;
 renderWatchlist();
 state.weather = buildFallbackWeather();
 updateWeather();
+renderCalendar();
 refresh();
 refreshLive();
 
