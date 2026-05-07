@@ -24,16 +24,14 @@
       <section class="card page-hero">
         <p class="eyebrow">Tours</p>
         <h1>Submit a new operator</h1>
-        <p class="lede">
-          Suggest a reputable aurora tour company or operator. Submissions are sent to hello@aurorahunt.live.
-        </p>
+        <p class="lede">Suggest a reputable aurora tour company or operator.</p>
       </section>
 
       <section class="card page-card">
         <form id="tourForm" class="tour-form" action="https://formspree.io/f/mjglerqr" method="POST" data-formspree>
           <label>
             Operator / company name
-            <input id="tourNameInput" name="operator_name" type="text" placeholder="Aurora Adventures Ltd" required />
+            <input id="tourNameInput" name="operator_name" type="text" required />
           </label>
 
           <label>
@@ -43,7 +41,7 @@
 
           <label>
             Region
-            <input id="tourRegionInput" name="region" type="text" placeholder="Tromsø, Norway" required />
+            <input id="tourRegionInput" name="region" type="text" required />
           </label>
 
           <label>
@@ -54,6 +52,7 @@
           <label>
             Type of tour
             <select id="tourTypeInput" name="tour_type">
+              <option value="" selected disabled hidden>Select an option</option>
               <option>Aurora chase</option>
               <option>Northern lights cruise</option>
               <option>Private tour</option>
