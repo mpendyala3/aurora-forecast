@@ -95,6 +95,25 @@ html[data-theme="light"] .theme-switch {
 a { color: inherit; text-decoration: none; }
 button, input { font: inherit; }
 
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 8px;
+  transform: translate(-50%, -140%);
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--text);
+  color: var(--bg);
+  font-weight: 800;
+  z-index: 100;
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translate(-50%, 0);
+}
+
 .stars::before,
 .stars::after {
   content: "";

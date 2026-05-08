@@ -174,7 +174,8 @@ function syncNavActive(sectionId) {
   navLinks.forEach((link) => {
     const active = link.getAttribute('href') === `#${sectionId}`;
     link.classList.toggle('active', active);
-    link.setAttribute('aria-current', active ? 'page' : 'false');
+    if (active) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
   });
 }
 
