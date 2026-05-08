@@ -4,6 +4,10 @@
   const rememberSession = () => {
     try { sessionStorage.setItem('aurora-consent-v1-session', '1'); } catch {}
     try { document.cookie = 'aurora_consent_session=1; Path=/; SameSite=Lax'; } catch {}
+    try {
+      const marker = 'aurora_consent_seen=1';
+      window.name = String(window.name || '').includes(marker) ? window.name : `${window.name ? `${window.name}|` : ''}${marker}`;
+    } catch {}
   };
   const rememberPersisted = (value) => {
     try { localStorage.setItem(KEY, JSON.stringify(value)); } catch {}
