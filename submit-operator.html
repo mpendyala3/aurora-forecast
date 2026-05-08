@@ -11,9 +11,9 @@
     <meta property="og:description" content="Suggest a reputable aurora tour operator for Aurora Hunt to review." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://aurorahunt.live/submit-operator.html" />
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:title" content="Submit New Operator · Aurora Hunt" />
-    <meta property="twitter:description" content="Suggest a reputable aurora tour operator for Aurora Hunt to review." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Submit New Operator · Aurora Hunt" />
+    <meta name="twitter:description" content="Suggest a reputable aurora tour operator for Aurora Hunt to review." />
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=4" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
@@ -40,15 +40,17 @@
   </head>
   <body>
     <div class="stars" aria-hidden="true"></div>
-    <header class="topbar">
-      <a class="brand" href="index.html" aria-label="Aurora Hunt home">
-        <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" aria-hidden="true" /></span>
-        <span>Aurora Hunt</span>
-      </a>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="index.html#tours">Tours</a>
-      </div>
+    <header>
+      <nav class="topbar" aria-label="Primary">
+        <a class="brand" href="index.html" aria-label="Aurora Hunt home">
+          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" aria-hidden="true" /></span>
+          <span>Aurora Hunt</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#tours">Tours</a>
+        </div>
+      </nav>
     </header>
 
     <main class="page-main">
@@ -99,6 +101,7 @@
 
           <button type="submit" class="button primary">Submit operator</button>
         </form>
+        <noscript><p class="page-note">This form still works without JavaScript.</p></noscript>
         <div class="page-note" id="tourStatus">We’ll review submissions after they’re sent.</div>
       </section>
 
