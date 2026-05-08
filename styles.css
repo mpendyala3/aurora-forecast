@@ -26,16 +26,24 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: clip; }
 body {
   margin: 0;
   min-height: 100vh;
+  font-size: 1rem;
+  line-height: 1.6;
   background:
     radial-gradient(circle at 20% 10%, rgba(87, 125, 255, 0.18), transparent 26%),
     radial-gradient(circle at 80% 12%, rgba(111, 255, 210, 0.13), transparent 24%),
     radial-gradient(circle at 50% 80%, rgba(255, 209, 139, 0.07), transparent 28%),
     linear-gradient(180deg, #050b15 0%, var(--bg) 48%, #04080f 100%);
   color: var(--text);
+  overflow-x: clip;
+}
+
+img, svg, video, canvas {
+  max-width: 100%;
+  height: auto;
 }
 
 html[data-theme="light"] {
@@ -372,6 +380,16 @@ h1 {
   color: var(--copy);
   line-height: 1.7;
   font-size: 1.05rem;
+}
+
+.hero-copy p,
+.card p,
+.page-card p,
+.page-card li,
+.info-card p,
+.compare-list span,
+.footer-card p {
+  max-width: 65ch;
 }
 
 .hero-actions, .planner-actions {
