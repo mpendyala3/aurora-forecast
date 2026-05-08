@@ -1460,8 +1460,8 @@ textarea:focus-visible {
 /* Wider desktops get a little more breathing room. */
 @media (min-width: 1440px) {
   :root {
-    --site-width: 1320px;
-    --site-gutter: 36px;
+    --site-width: 1520px;
+    --site-gutter: 32px;
     --hero-top-padding: 104px;
     --page-top-padding: 120px;
   }
@@ -1483,8 +1483,8 @@ textarea:focus-visible {
 
 @media (min-width: 1800px) {
   :root {
-    --site-width: 1440px;
-    --site-gutter: 40px;
+    --site-width: 1680px;
+    --site-gutter: 36px;
     --page-top-padding: 128px;
   }
 
