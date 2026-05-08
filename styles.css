@@ -1608,33 +1608,8 @@ textarea:focus-visible {
   align-self: start;
   overflow: clip;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
-}
-
-.info-card-toggle {
-  display: grid;
-  gap: 10px;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  text-align: left;
   cursor: pointer;
-}
-
-.info-card-toggle h3 { margin-bottom: 0; }
-
-.expand-hint {
-  display: inline-flex;
-  align-self: start;
-  width: fit-content;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(111,255,210,0.12);
-  border: 1px solid rgba(111,255,210,0.16);
-  color: var(--text);
-  font-size: 0.84rem;
-  font-weight: 800;
+  touch-action: manipulation;
 }
 
 .info-card.expanded {
@@ -1664,19 +1639,16 @@ textarea:focus-visible {
   display: none;
 }
 
-.info-card.expanded .expand-hint {
-  background: rgba(111,255,210,0.18);
-  border-color: rgba(111,255,210,0.32);
-}
-
-.info-card.expanded .info-card-toggle {
-  cursor: default;
-}
-
 .info-card:hover,
 .info-card:focus-within {
   border-color: rgba(111,255,210,0.20);
   box-shadow: 0 0 0 1px rgba(111,255,210,0.08) inset, 0 0 20px rgba(111,255,210,0.08);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.info-card.expanded:hover,
+.info-card.expanded:focus-within {
+  transform: scale(1.02);
 }
 
 .compare-layout {

@@ -1484,30 +1484,33 @@ function setupExpandableLearnCards() {
 
   const collapseCard = (card) => {
     card.classList.remove('expanded');
-    const toggle = card.querySelector('.info-card-toggle');
     const details = card.querySelector('.info-card-details');
-    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    card.setAttribute('aria-expanded', 'false');
     if (details) details.hidden = true;
   };
 
   const expandCard = (card) => {
     cards.forEach((other) => { if (other !== card) collapseCard(other); });
     card.classList.add('expanded');
-    const toggle = card.querySelector('.info-card-toggle');
     const details = card.querySelector('.info-card-details');
-    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+    card.setAttribute('aria-expanded', 'true');
     if (details) details.hidden = false;
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   };
 
   cards.forEach((card) => {
-    const toggle = card.querySelector('.info-card-toggle');
-    if (!toggle) return;
-    toggle.addEventListener('click', () => {
+    card.addEventListener('click', () => {
       const open = card.classList.contains('expanded');
       if (open) collapseCard(card);
       else expandCard(card);
     });
-    toggle.addEventListener('keydown', (event) => {
+    card.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        const open = card.classList.contains('expanded');
+        if (open) collapseCard(card);
+        else expandCard(card);
+      }
       if (event.key === 'Escape') collapseCard(card);
     });
   });
