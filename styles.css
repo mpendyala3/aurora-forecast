@@ -8,6 +8,11 @@
   --muted: #9fb4cb;
   --copy: #d7e4f4;
   --copy-strong: #eef5ff;
+  --field-bg: rgba(10, 24, 42, 0.36);
+  --field-border: rgba(164, 194, 231, 0.18);
+  --field-border-focus: rgba(111, 255, 210, 0.42);
+  --field-text: #eef5ff;
+  --field-placeholder: #8ea5c0;
   --accent: #6fffd2;
   --accent-2: #74a7ff;
   --warm: #ffd18b;
@@ -39,6 +44,11 @@ html[data-theme="light"] {
   --muted: #42556f;
   --copy: #243a58;
   --copy-strong: #0f213b;
+  --field-bg: rgba(255, 255, 255, 0.96);
+  --field-border: rgba(67, 91, 128, 0.22);
+  --field-border-focus: rgba(76, 126, 240, 0.45);
+  --field-text: #0f213b;
+  --field-placeholder: #6d7f99;
   --accent: #0fbf98;
   --accent-2: #4c7ef0;
   --warm: #c2862f;
@@ -852,14 +862,28 @@ input[type="text"], input[type="number"], input[type="email"], input[type="url"]
   width: 100%;
   min-height: 46px;
   border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.08);
-  background: rgba(255,255,255,0.04);
-  color: var(--text);
+  border: 1px solid var(--field-border);
+  background: var(--field-bg);
+  color: var(--field-text);
   padding: 0 14px;
 }
 textarea { padding: 12px 14px; min-height: 112px; resize: vertical; }
 select { appearance: none; }
 input[type="range"] { width: 100%; }
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--field-placeholder);
+  opacity: 1;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+  border-color: var(--field-border-focus);
+  box-shadow: 0 0 0 4px rgba(111, 255, 210, 0.12);
+}
 
 .preset-row {
   display: flex;
