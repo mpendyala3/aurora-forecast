@@ -6,8 +6,14 @@
     <meta name="theme-color" content="#07111f" />
     <meta name="description" content="Aurora Hunt is a browser-based aurora forecast site with live NOAA space-weather data, webcams, location planning, and alert tools." />
     <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://aurorahunt.live/" />
     <meta property="og:title" content="Aurora Hunt" />
     <meta property="og:description" content="Live aurora conditions, location planning, webcams, and alerts in one clean browser experience." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aurorahunt.live/" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Aurora Hunt" />
+    <meta property="twitter:description" content="Live aurora conditions, location planning, webcams, and alerts in one clean browser experience." />
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=4" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
@@ -28,6 +34,15 @@
           document.documentElement.dataset.theme = 'dark';
         }
       })();
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Aurora Hunt",
+        "url": "https://aurorahunt.live/",
+        "description": "Browser-based aurora forecast site with live NOAA space-weather data, webcams, location planning, and alert tools."
+      }
     </script>
     <title>Aurora Hunt · Live aurora forecast & planning</title>
     <link rel="stylesheet" href="styles.css" />
