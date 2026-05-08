@@ -360,8 +360,8 @@ main,
 
 body.subpage .topbar {
   top: 8px;
-  padding: 8px 12px;
-  gap: 12px;
+  padding: 8px 10px;
+  gap: 10px;
   border-radius: 22px;
 }
 
@@ -430,8 +430,9 @@ body.subpage .theme-pill {
   display: flex;
   gap: 10px;
   color: var(--muted);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
+  min-width: 0;
 }
 .nav-links a {
   position: relative;
@@ -467,6 +468,10 @@ body.subpage .theme-pill {
   transform: translateX(-50%);
   background: var(--accent);
   box-shadow: 0 0 14px rgba(111,255,210,0.45);
+}
+
+.nav-links::-webkit-scrollbar {
+  display: none;
 }
 
 .theme-switch {
@@ -1845,7 +1850,7 @@ html[data-theme="light"] .consent-banner {
 }
 
 body.subpage .page-main {
-  padding-top: calc(var(--page-top-padding) - 12px);
+  padding-top: calc(var(--page-top-padding) + 12px);
 }
 
 .page-hero {
@@ -1950,12 +1955,15 @@ body.subpage .page-main {
     border-radius: 22px;
     flex-direction: row;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    gap: 8px;
   }
   .brand { flex: 0 0 auto; min-width: 0; }
   .nav-links {
-    order: 3;
-    width: 100%;
+    order: 0;
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
     display: flex;
     flex-wrap: nowrap;
     gap: 10px;
@@ -1964,7 +1972,7 @@ body.subpage .page-main {
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     white-space: nowrap;
-    padding: 2px 0 8px;
+    padding: 2px 0;
     scrollbar-width: none;
   }
   .nav-links a {
@@ -1976,7 +1984,7 @@ body.subpage .page-main {
   }
   .nav-links::-webkit-scrollbar { display: none; }
   .theme-switch {
-    order: 2;
+    order: 0;
     width: auto;
     margin-left: auto;
     flex-wrap: nowrap;
@@ -2031,6 +2039,29 @@ body.subpage .page-main {
   .calendar-details-wrap { grid-template-columns: 1fr; }
   .footer { flex-direction: column; }
   h1 { max-width: 9ch; }
+}
+
+@media (max-width: 1120px) {
+  .topbar {
+    flex-wrap: nowrap;
+  }
+
+  .nav-links {
+    flex: 1 1 auto;
+    width: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .nav-links a {
+    flex: 0 0 auto;
+  }
+
+  .theme-switch {
+    flex: 0 0 auto;
+  }
 }
 
 @media (max-width: 420px) {
