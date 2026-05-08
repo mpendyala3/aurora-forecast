@@ -11,12 +11,17 @@ whether the northern lights are actually worth chasing tonight.
 - Falls back to a local model if a feed fails
 - Scores aurora visibility by location
 - Shows a best-time window for darkness
+- Includes an hourly forecast timeline and monthly forecast calendar
 - Ranks preset cities by current odds
 - Supports search and reverse geocoding
 - Draws an approximate aurora oval / visibility map
+- Includes a webcam section with live aurora streams
+- Includes a compare section and educational explainer cards
 - Saves watch settings locally
 - Can trigger browser notifications
-- Can send webhook alerts to your own backend
+- Can send alert submissions through Formspree
+- Includes a separate operator submission form
+- Includes a light/dark/system theme switcher
 
 ## Why it feels useful
 
@@ -30,6 +35,15 @@ whether the northern lights are actually worth chasing tonight.
 
 - NOAA SWPC: planetary K-index and solar wind feeds
 - Open-Meteo: weather, cloud cover, and geocoding
+
+## Site pages
+
+- `index.html` — main dashboard
+- `about.html` — project overview
+- `contact.html` — support and partnership contact form
+- `submit-operator.html` — operator suggestion form
+- `privacy.html` — privacy policy
+- `cookies.html` — cookie and local storage notes
 
 ## Run locally
 
