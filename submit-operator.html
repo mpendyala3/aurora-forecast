@@ -10,6 +10,23 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
+    <script>
+      (() => {
+        try {
+          const raw = localStorage.getItem('aurora-forecast-v1');
+          const saved = raw ? JSON.parse(raw) : null;
+          const pref = saved?.themePreference || 'system';
+          const theme = pref === 'system'
+            ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : pref;
+          document.documentElement.dataset.theme = theme;
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'light' ? '#eef4ff' : '#07111f');
+        } catch {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
     <title>Submit New Operator · Aurora Hunt</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
