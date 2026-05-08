@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Aurora Hunt logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Aurora Wave logo">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#08111f"/>
@@ -6,31 +6,18 @@
     </linearGradient>
     <linearGradient id="aurora" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#6fffd2"/>
-      <stop offset="50%" stop-color="#74a7ff"/>
+      <stop offset="55%" stop-color="#74a7ff"/>
       <stop offset="100%" stop-color="#b98bff"/>
     </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
-      <stop offset="0%" stop-color="#6fffd2" stop-opacity="0.24"/>
+    <radialGradient id="glow" cx="50%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#6fffd2" stop-opacity="0.26"/>
       <stop offset="100%" stop-color="#6fffd2" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="earth" cx="38%" cy="34%" r="72%">
-      <stop offset="0%" stop-color="#132947"/>
-      <stop offset="62%" stop-color="#0c182d"/>
-      <stop offset="100%" stop-color="#050b15"/>
     </radialGradient>
   </defs>
   <rect width="512" height="512" rx="120" fill="url(#bg)"/>
-  <circle cx="256" cy="222" r="178" fill="url(#glow)"/>
-  <circle cx="268" cy="276" r="122" fill="url(#earth)"/>
-  <path d="M160 280c34-28 70-42 108-42s82 14 128 46" fill="none" stroke="url(#aurora)" stroke-width="28" stroke-linecap="round"/>
-  <circle cx="210" cy="232" r="4" fill="#ffd18b"/>
-  <circle cx="228" cy="244" r="3.5" fill="#ffd18b"/>
-  <circle cx="246" cy="256" r="3" fill="#ffd18b"/>
-  <circle cx="266" cy="268" r="3.5" fill="#ffd18b"/>
-  <circle cx="288" cy="280" r="3" fill="#ffd18b"/>
-  <circle cx="312" cy="290" r="3.5" fill="#ffd18b"/>
-  <circle cx="336" cy="300" r="3" fill="#ffd18b"/>
-  <circle cx="228" cy="348" r="3" fill="#ffd18b" opacity="0.65"/>
-  <circle cx="262" cy="354" r="2.5" fill="#ffd18b" opacity="0.65"/>
-  <circle cx="296" cy="350" r="3" fill="#ffd18b" opacity="0.65"/>
+  <circle cx="256" cy="224" r="170" fill="url(#glow)"/>
+  <path d="M100 292C170 208 336 196 410 124" fill="none" stroke="url(#aurora)" stroke-width="26" stroke-linecap="round"/>
+  <path d="M88 334C176 248 320 228 424 160" fill="none" stroke="#6fffd2" stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+  <circle cx="356" cy="122" r="15" fill="#f6fbff"/>
+  <path d="M356 95l5 16h17l-14 10 5 16-13-9-13 9 5-16-14-10h17z" fill="#ffd18b"/>
 </svg>
