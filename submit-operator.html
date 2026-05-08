@@ -45,9 +45,20 @@
         "description": "Suggest a trusted aurora tour operator to Aurora Hunt with this short form, helping us expand useful local options for skywatchers and trip planning quickly."
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://aurorahunt.live/"},
+          {"@type": "ListItem", "position": 2, "name": "Tours", "item": "https://aurorahunt.live/index.html#tours"},
+          {"@type": "ListItem", "position": 3, "name": "Submit operator", "item": "https://aurorahunt.live/submit-operator.html"}
+        ]
+      }
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body id="top">
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="stars" aria-hidden="true"></div>
     <header>
@@ -64,7 +75,11 @@
     </header>
 
     <main id="main-content" class="page-main">
-      <section class="card page-hero">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span aria-hidden="true">/</span><a href="index.html#tours">Tours</a><span aria-hidden="true">/</span><span aria-current="page">Submit operator</span>
+      </nav>
+
+      <section class="card page-hero" id="operator-form">
         <p class="eyebrow">Tours</p>
         <h1>Submit a new operator</h1>
         <p class="lede">Suggest a reputable aurora tour company or operator.</p>
@@ -74,13 +89,14 @@
         <form id="tourForm" class="tour-form" action="https://formspree.io/f/mjglerqr" method="POST" data-formspree>
           <label>
             Operator / company name
-            <input id="tourNameInput" name="operator_name" type="text" required />
+            <input id="tourNameInput" name="operator_name" type="text" autocomplete="organization" required />
           </label>
 
           <label>
             Website
-            <input id="tourWebsiteInput" name="website" type="url" placeholder="https://example.com" required />
+            <input id="tourWebsiteInput" name="website" type="url" placeholder="https://example.com" autocomplete="url" required />
           </label>
+          <p id="tourWebsiteError" class="field-error" aria-live="polite"></p>
 
           <label>
             Region
@@ -89,7 +105,7 @@
 
           <label>
             Contact email
-            <input id="tourEmailInput" name="contact_email" type="email" placeholder="hello@example.com" autocomplete="off" />
+            <input id="tourEmailInput" name="contact_email" type="email" placeholder="hello@example.com" autocomplete="email" />
           </label>
 
           <label>
@@ -111,6 +127,7 @@
 
           <button type="submit" class="button primary">Submit operator</button>
         </form>
+        <p class="field-hint" id="operatorHelp">We’ll validate the website format before sending. If it’s wrong, we’ll tell you inline.</p>
         <noscript><p class="page-note">This form still works without JavaScript.</p></noscript>
         <div class="page-note" id="tourStatus">We’ll review submissions after they’re sent.</div>
       </section>
@@ -120,7 +137,7 @@
     <footer class="footer">
       <div class="footer-bottom">
         <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
-        <a href="index.html">Back home</a>
+        <a href="#top">Back to top</a>
       </div>
     </footer>
 
@@ -134,17 +151,36 @@
         tourTypeInput: document.querySelector('#tourTypeInput'),
         tourDescriptionInput: document.querySelector('#tourDescriptionInput'),
         tourStatus: document.querySelector('#tourStatus'),
+        tourWebsiteError: document.querySelector('#tourWebsiteError'),
+        submitButton: document.querySelector('#tourForm button[type="submit"]'),
       };
+
+      function setWebsiteError(message) {
+        if (!els.tourWebsiteError) return;
+        els.tourWebsiteError.textContent = message || '';
+        els.tourWebsiteInput.setAttribute('aria-invalid', String(Boolean(message)));
+      }
+
+      els.tourWebsiteInput.addEventListener('input', () => setWebsiteError(''));
 
       els.tourForm.addEventListener('submit', async (event) => {
         event.preventDefault();
+        setWebsiteError('');
+        if (els.submitButton) {
+          els.submitButton.disabled = true;
+          els.submitButton.textContent = 'Sending…';
+        }
         let website = els.tourWebsiteInput.value.trim();
         try {
           const parsed = new URL(website);
           if (!['http:', 'https:'].includes(parsed.protocol)) throw new Error('Invalid protocol');
           website = parsed.href;
         } catch {
-          alert('Please enter a valid website URL starting with http:// or https://');
+          setWebsiteError('Please enter a valid website URL starting with http:// or https://.');
+          if (els.submitButton) {
+            els.submitButton.disabled = false;
+            els.submitButton.textContent = 'Submit operator';
+          }
           return;
         }
         const formData = new FormData(els.tourForm);
@@ -160,10 +196,18 @@
         if (response?.ok) {
           els.tourForm.reset();
           els.tourStatus.textContent = 'Submission sent successfully.';
+          if (els.submitButton) {
+            els.submitButton.disabled = false;
+            els.submitButton.textContent = 'Submit operator';
+          }
           return;
         }
 
         els.tourStatus.textContent = 'Something hiccupped. Please try again in a moment.';
+        if (els.submitButton) {
+          els.submitButton.disabled = false;
+          els.submitButton.textContent = 'Submit operator';
+        }
       });
     </script>
   </body>

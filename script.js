@@ -41,6 +41,9 @@ const els = {
   searchInput: document.querySelector('#searchInput'),
   searchButton: document.querySelector('#searchButton'),
   searchResults: document.querySelector('#searchResults'),
+  siteSearchInput: document.querySelector('#siteSearchInput'),
+  siteSearchButton: document.querySelector('#siteSearchButton'),
+  siteSearchResults: document.querySelector('#siteSearchResults'),
   latInput: document.querySelector('#latInput'),
   lonInput: document.querySelector('#lonInput'),
   cloudInput: document.querySelector('#cloudInput'),
@@ -104,7 +107,9 @@ const state = {
 };
 
 let searchDebounceTimer = null;
+let siteSearchDebounceTimer = null;
 let topBarFrame = null;
+let liveBootstrapped = false;
 
 function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 function round(v, digits = 0) { return Number(v.toFixed(digits)); }
@@ -126,6 +131,75 @@ function normalize(value, max) {
   if (out < 0) out += max;
   return out;
 }
+
+function normalizeSearchText(value) {
+  return String(value ?? '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function levenshtein(a, b) {
+  const s = normalizeSearchText(a);
+  const t = normalizeSearchText(b);
+  if (!s.length) return t.length;
+  if (!t.length) return s.length;
+  const prev = Array.from({ length: t.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= s.length; i += 1) {
+    let cur = [i];
+    for (let j = 1; j <= t.length; j += 1) {
+      cur[j] = Math.min(
+        prev[j] + 1,
+        cur[j - 1] + 1,
+        prev[j - 1] + (s[i - 1] === t[j - 1] ? 0 : 1),
+      );
+    }
+    prev.splice(0, prev.length, ...cur);
+  }
+  return prev[t.length];
+}
+
+function searchScore(query, text, extras = []) {
+  const q = normalizeSearchText(query);
+  if (!q) return 0;
+  const haystack = normalizeSearchText([text, ...extras].join(' '));
+  if (!haystack) return 0;
+  if (haystack.includes(q)) return 100 - Math.min(30, haystack.indexOf(q));
+
+  const qTokens = q.split(' ').filter(Boolean);
+  const hTokens = haystack.split(' ').filter(Boolean);
+  let score = 0;
+
+  qTokens.forEach((qToken) => {
+    let best = 0;
+    hTokens.forEach((hToken) => {
+      const distance = levenshtein(qToken, hToken);
+      const ratio = 1 - (distance / Math.max(qToken.length, hToken.length));
+      if (ratio > best) best = ratio;
+    });
+    if (best > 0.45) score += best * 34;
+  });
+
+  return clamp(Math.round(score), 0, 100);
+}
+
+const SITE_SEARCH_INDEX = [
+  { title: 'Forecast', href: '#forecast', description: 'Best viewing times tonight', keywords: ['aurora forecast', 'tonight', 'hourly', 'wind', 'kp'] },
+  { title: 'Calendar', href: '#calendar', description: 'Monthly forecast calendar', keywords: ['moon', 'month', 'nights', 'watch'] },
+  { title: 'Location planner', href: '#planner', description: 'See if you’ll spot it from here', keywords: ['search city', 'location', 'latitude', 'longitude'] },
+  { title: 'Aurora visibility map', href: '#map', description: 'Approximate aurora oval and focus regions', keywords: ['map', 'oval', 'north america', 'nordics'] },
+  { title: 'Live aurora telecast', href: '#webcams', description: 'Live webcam streams', keywords: ['webcam', 'camera', 'live sky'] },
+  { title: 'Tours', href: '#tours', description: 'Reputed aurora tour operators', keywords: ['operator', 'trip', 'chase', 'tour'] },
+  { title: 'Alerts', href: '#alerts', description: 'Set a watch and get notified', keywords: ['notification', 'threshold', 'watchlist'] },
+  { title: 'Learn', href: '#learn', description: 'What the numbers mean', keywords: ['kp', 'bz', 'cloud cover', 'dark sky'] },
+  { title: 'About us', href: 'about.html', description: 'How Aurora Hunt works', keywords: ['about', 'site guide', 'what we do'] },
+  { title: 'Contact us', href: 'contact.html', description: 'Support, partnerships, and feature ideas', keywords: ['contact', 'support', 'bug report'] },
+  { title: 'Privacy policy', href: 'privacy.html', description: 'How we handle data and storage', keywords: ['privacy', 'data', 'local storage'] },
+  { title: 'Cookies', href: 'cookies.html', description: 'What browser storage is used', keywords: ['cookies', 'browser storage', 'preferences'] },
+  { title: 'Submit operator', href: 'submit-operator.html', description: 'Suggest a new tour operator', keywords: ['operator', 'submit', 'tour'] },
+];
 
 function getSystemTheme() {
   return systemThemeMedia?.matches ? 'dark' : 'light';
@@ -220,6 +294,64 @@ function scoreClass(score) {
   if (score >= 51) return 'high';
   if (score >= 26) return 'medium';
   return 'low';
+}
+
+function renderSiteSearchResults(query) {
+  if (!els.siteSearchResults) return;
+  const q = query.trim();
+  els.siteSearchResults.innerHTML = '';
+
+  if (!q) {
+    const hint = document.createElement('p');
+    hint.className = 'field-hint';
+    hint.textContent = 'Try “privacy”, “contact”, “forecast”, or “map”.';
+    els.siteSearchResults.appendChild(hint);
+    return;
+  }
+
+  const results = SITE_SEARCH_INDEX
+    .map((item) => ({ ...item, score: searchScore(q, item.title, [item.description, ...(item.keywords || [])]) }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 6);
+
+  if (!results.length) {
+    const empty = document.createElement('p');
+    empty.className = 'field-hint';
+    empty.textContent = 'No direct matches. Try a simpler word.';
+    els.siteSearchResults.appendChild(empty);
+    return;
+  }
+
+  results.forEach((item) => {
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'search-result';
+    row.innerHTML = `
+      <div>
+        <strong>${item.title}</strong>
+        <small>${item.description}</small>
+      </div>
+      <span class="muted">${item.href.startsWith('#') ? 'Section' : 'Page'}</span>
+    `;
+    row.addEventListener('click', () => {
+      if (item.href.startsWith('#')) {
+        const target = document.querySelector(item.href);
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', item.href);
+      } else {
+        window.location.href = item.href;
+      }
+    });
+    els.siteSearchResults.appendChild(row);
+  });
+}
+
+function runSiteSearch(query) {
+  if (!els.siteSearchInput || !els.siteSearchResults) return;
+  els.siteSearchResults.classList.add('search-busy');
+  renderSiteSearchResults(query);
+  els.siteSearchResults.classList.remove('search-busy');
 }
 
 async function fetchJson(url, timeoutMs = 8000) {
@@ -386,6 +518,24 @@ async function searchLocations(query) {
   url.searchParams.set('format', 'json');
   const payload = await fetchJson(url.toString());
   return Array.isArray(payload?.results) ? payload.results : [];
+}
+
+function searchPresetLocations(query) {
+  const q = normalizeSearchText(query);
+  if (q.length < 2) return [];
+  return PRESETS
+    .map((preset) => ({
+      name: preset.name,
+      latitude: preset.lat,
+      longitude: preset.lon,
+      admin1: 'Preset city',
+      country: '',
+      timezone: 'local',
+      score: searchScore(q, preset.name, [`${preset.lat}`, `${preset.lon}`]),
+    }))
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4);
 }
 
 async function reverseGeocode(lat, lon) {
@@ -871,6 +1021,7 @@ function refresh() {
 
 async function refreshLive() {
   try {
+    if (!liveBootstrapped) document.body.classList.add('loading-live');
     await loadLiveData(state.location);
   } catch {
     state.weather = buildFallbackWeather();
@@ -878,6 +1029,10 @@ async function refreshLive() {
   updateWeather();
   refresh();
   notifyIfNeeded();
+  if (!liveBootstrapped) {
+    liveBootstrapped = true;
+    document.body.classList.remove('loading-live');
+  }
 }
 
 function setThemePreference(preference) {
@@ -1032,13 +1187,24 @@ async function runLiveSearch(query) {
     return;
   }
 
+  els.searchResults.classList.add('search-busy');
+  els.searchResults.setAttribute('aria-busy', 'true');
   els.searchResults.innerHTML = '<p class="muted small">Searching…</p>';
   try {
-    const results = await searchLocations(trimmed);
-    renderSearchResults(results);
+    const [remote, preset] = await Promise.all([
+      searchLocations(trimmed).catch(() => []),
+      Promise.resolve(searchPresetLocations(trimmed)),
+    ]);
+    const merged = [...preset, ...remote]
+      .filter((item, index, self) => index === self.findIndex((entry) => `${entry.latitude}|${entry.longitude}|${entry.name}` === `${item.latitude}|${item.longitude}|${item.name}`))
+      .slice(0, 6);
+    renderSearchResults(merged);
   } catch {
     els.searchResults.innerHTML = '<p class="muted small">Search failed. Try again later.</p>';
     els.searchInput.setAttribute('aria-expanded', 'true');
+  } finally {
+    els.searchResults.classList.remove('search-busy');
+    els.searchResults.removeAttribute('aria-busy');
   }
 }
 
@@ -1148,6 +1314,21 @@ els.searchInput.addEventListener('keydown', (event) => {
   }
 });
 
+if (els.siteSearchInput && els.siteSearchButton && els.siteSearchResults) {
+  renderSiteSearchResults('');
+  els.siteSearchInput.addEventListener('input', () => {
+    clearTimeout(siteSearchDebounceTimer);
+    siteSearchDebounceTimer = setTimeout(() => runSiteSearch(els.siteSearchInput.value), 150);
+  });
+  els.siteSearchButton.addEventListener('click', () => runSiteSearch(els.siteSearchInput.value));
+  els.siteSearchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      runSiteSearch(els.siteSearchInput.value);
+    }
+  });
+}
+
 els.calendarPrev.addEventListener('click', () => {
   state.calendarOffset -= 1;
   state.calendarSelectedDate = new Date();
@@ -1207,6 +1388,15 @@ els.alertForm.addEventListener('submit', async (event) => {
   state.notify = els.notifyToggle.checked;
   state.saveLocation = els.saveToggle.checked;
   const alertStatus = document.querySelector('#alertStatus');
+  const submitButton = els.alertForm.querySelector('button[type="submit"]');
+
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = 'Saving…';
+  }
+  if (alertStatus) {
+    alertStatus.textContent = 'Saving your alert settings…';
+  }
 
   if (state.notify) {
     const ok = await requestNotificationPermission();
@@ -1239,6 +1429,11 @@ els.alertForm.addEventListener('submit', async (event) => {
     alertStatus.textContent = sent
       ? 'Saved and sent successfully.'
       : 'Saved locally. Sending failed just now.';
+  }
+
+  if (submitButton) {
+    submitButton.disabled = false;
+    submitButton.textContent = 'Save alert';
   }
 
   saveState();

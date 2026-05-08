@@ -45,9 +45,19 @@
         "description": "Aurora Hunt stores only the minimum needed for preferences, alerts, and form submissions, with no account required and no ad-driven tracking or profiles."
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://aurorahunt.live/"},
+          {"@type": "ListItem", "position": 2, "name": "Privacy policy", "item": "https://aurorahunt.live/privacy.html"}
+        ]
+      }
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body id="top">
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="stars" aria-hidden="true"></div>
     <header>
@@ -63,6 +73,16 @@
     </header>
 
     <main id="main-content" class="page-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Privacy policy</span>
+      </nav>
+
+      <nav class="page-toc" aria-label="On this page">
+        <a href="#local-storage">Local storage</a>
+        <a href="#submitted-information">Submitted info</a>
+        <a href="#what-we-do-not-do">What we do not do</a>
+      </nav>
+
       <section class="card page-hero">
         <p class="eyebrow">Privacy policy</p>
         <h1>We keep personal data exposure low.</h1>
@@ -72,13 +92,13 @@
       </section>
 
       <section class="page-grid">
-        <article class="card page-card">
+        <article class="card page-card" id="local-storage">
           <h2>Local storage</h2>
           <p>
             We may store preferences such as theme, location settings, watch thresholds, and saved watchlist entries in your browser so the site feels faster.
           </p>
         </article>
-        <article class="card page-card">
+        <article class="card page-card" id="submitted-information">
           <h2>Submitted information</h2>
           <p>
             Contact, alert, and operator forms may be sent to Formspree when you submit them.
@@ -86,7 +106,7 @@
         </article>
       </section>
 
-      <section class="card page-card">
+      <section class="card page-card" id="what-we-do-not-do">
         <h2>What we do not do</h2>
         <ul class="page-list">
           <li>No account is required to browse the site</li>
@@ -103,7 +123,7 @@
     <footer class="footer">
       <div class="footer-bottom">
         <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
-        <a href="index.html">Back home</a>
+        <a href="#top">Back to top</a>
       </div>
     </footer>
   </body>

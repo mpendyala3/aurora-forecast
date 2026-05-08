@@ -45,9 +45,19 @@
         "description": "Use Aurora Hunt’s contact form for support, partnerships, bug reports, or feature ideas, and send your note quickly from any device without leaving the page."
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://aurorahunt.live/"},
+          {"@type": "ListItem", "position": 2, "name": "Contact us", "item": "https://aurorahunt.live/contact.html"}
+        ]
+      }
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body id="top">
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="stars" aria-hidden="true"></div>
     <header>
@@ -63,6 +73,15 @@
     </header>
 
     <main id="main-content" class="page-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Contact us</span>
+      </nav>
+
+      <nav class="page-toc" aria-label="On this page">
+        <a href="#contact-form">Contact form</a>
+        <a href="#what-to-send">What to send</a>
+      </nav>
+
       <section class="card page-hero">
         <p class="eyebrow">Contact us</p>
         <h1>Talk to Aurora Hunt.</h1>
@@ -72,7 +91,7 @@
       </section>
 
       <section class="page-grid">
-        <article class="card page-card">
+        <article class="card page-card" id="contact-form">
           <h2>Contact form</h2>
           <form class="contact-form" action="https://formspree.io/f/mlgzwlro" method="POST" data-formspree>
             <input type="hidden" name="_subject" value="Aurora Hunt contact form" />
@@ -80,12 +99,12 @@
             <div class="contact-split">
               <label>
                 Your name
-                <input name="name" type="text" placeholder="Your name" required />
+                <input name="name" type="text" placeholder="Your name" autocomplete="name" required />
               </label>
 
               <label>
                 Your email
-                <input name="email" type="email" placeholder="you@example.com" autocomplete="off" required />
+                <input name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
               </label>
             </div>
 
@@ -116,7 +135,7 @@
         </form>
       </article>
 
-        <article class="card page-card">
+        <article class="card page-card" id="what-to-send">
           <h2>What to send</h2>
           <p>
             Partnerships, operator suggestions, bug reports, or ideas for making Aurora Hunt more useful.
@@ -133,13 +152,14 @@
     <footer class="footer">
       <div class="footer-bottom">
         <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
-        <a href="index.html">Back home</a>
+        <a href="#top">Back to top</a>
       </div>
     </footer>
 
     <script>
       const form = document.querySelector('.contact-form');
       const status = document.querySelector('#contactStatus');
+      const submitButton = form?.querySelector('button[type="submit"]');
 
       function showStatus(kind, message) {
         if (!status) return;
@@ -154,6 +174,11 @@
       form?.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        if (submitButton) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Sending…';
+        }
+
         const formData = new FormData(form);
         const response = await fetch(form.action, {
           method: 'POST',
@@ -164,10 +189,16 @@
         if (response?.ok) {
           form.reset();
           showStatus('success', 'Message sent — we’ll get back to you soon.');
+          if (submitButton) submitButton.textContent = 'Send message';
+          if (submitButton) submitButton.disabled = false;
           return;
         }
 
         form.submit();
+        if (submitButton) {
+          submitButton.textContent = 'Send message';
+          submitButton.disabled = false;
+        }
       });
     </script>
   </body>

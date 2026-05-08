@@ -45,6 +45,16 @@
         "description": "Aurora Hunt explains the site’s purpose, how it works, and why it keeps aurora planning simple with live space-weather, maps, and practical tools for chasers."
       }
     </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://aurorahunt.live/"},
+          {"@type": "ListItem", "position": 2, "name": "About us", "item": "https://aurorahunt.live/about.html"}
+        ]
+      }
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -63,7 +73,17 @@
     </header>
 
     <main id="main-content" class="page-main">
-      <section class="card page-hero">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">About us</span>
+      </nav>
+
+      <nav class="page-toc" aria-label="On this page">
+        <a href="#what-we-do">What we do</a>
+        <a href="#why-it-exists">Why it exists</a>
+        <a href="#principles">Principles</a>
+      </nav>
+
+      <section class="card page-hero" id="about-hero">
         <p class="eyebrow">About us</p>
         <h1>Built for people chasing the northern lights.</h1>
         <p class="lede">
@@ -73,13 +93,13 @@
       </section>
 
       <section class="page-grid">
-        <article class="card page-card">
+        <article class="card page-card" id="what-we-do">
           <h2>What we do</h2>
           <p>
             We turn aurora data into something easier to understand, so you can decide quickly whether tonight is worth the drive.
           </p>
         </article>
-        <article class="card page-card">
+        <article class="card page-card" id="why-it-exists">
           <h2>Why it exists</h2>
           <p>
             Most aurora tools are cluttered or split across too many screens. Aurora Hunt keeps the useful parts together and readable.
@@ -87,7 +107,7 @@
         </article>
       </section>
 
-      <section class="card page-card">
+      <section class="card page-card" id="principles">
         <h2>Principles</h2>
         <ul class="page-list">
           <li>Fast to scan on mobile</li>
@@ -101,7 +121,7 @@
     <footer class="footer">
       <div class="footer-bottom">
         <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
-        <a href="index.html">Back home</a>
+        <a href="#top">Back to top</a>
       </div>
     </footer>
   </body>
