@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Aurora Hunt logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#08111f"/>
+      <stop offset="100%" stop-color="#11284a"/>
+    </linearGradient>
+    <linearGradient id="aurora" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6fffd2"/>
+      <stop offset="50%" stop-color="#74a7ff"/>
+      <stop offset="100%" stop-color="#b98bff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#6fffd2" stop-opacity="0.26"/>
+      <stop offset="70%" stop-color="#6fffd2" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#6fffd2" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#bg)"/>
+  <circle cx="256" cy="220" r="185" fill="url(#glow)"/>
+  <path d="M108 292C168 210 344 196 404 120" fill="none" stroke="url(#aurora)" stroke-width="26" stroke-linecap="round" stroke-opacity="0.92"/>
+  <path d="M92 332C176 250 324 228 420 156" fill="none" stroke="#6fffd2" stroke-width="10" stroke-linecap="round" stroke-opacity="0.52"/>
+  <path d="M136 336C214 282 296 276 376 216" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-opacity="0.18"/>
+  <circle cx="364" cy="154" r="16" fill="#f6fbff"/>
+  <path d="M364 126l5 17h18l-14 10 5 17-14-10-14 10 5-17-14-10h18z" fill="#ffd18b" opacity="0.95"/>
+  <path d="M186 370h140c24 0 44 20 44 44v8H142v-8c0-24 20-44 44-44z" fill="#eaf4ff" opacity="0.94"/>
+  <circle cx="256" cy="404" r="16" fill="#0f213b" opacity="0.92"/>
+</svg>
