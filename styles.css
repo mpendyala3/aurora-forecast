@@ -358,6 +358,44 @@ main,
   backdrop-filter: blur(18px);
 }
 
+body.subpage .topbar {
+  top: 8px;
+  padding: 8px 12px;
+  gap: 12px;
+  border-radius: 22px;
+}
+
+body.subpage .brand {
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+body.subpage .brand-mark {
+  width: 30px;
+  height: 30px;
+}
+
+body.subpage .nav-links {
+  gap: 8px;
+}
+
+body.subpage .nav-links a {
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 0.9rem;
+}
+
+body.subpage .theme-switch {
+  padding: 3px;
+  gap: 4px;
+}
+
+body.subpage .theme-pill {
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0 5px;
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -1804,6 +1842,10 @@ html[data-theme="light"] .consent-banner {
   padding: var(--page-top-padding) 0 28px;
   display: grid;
   gap: 16px;
+}
+
+body.subpage .page-main {
+  padding-top: calc(var(--page-top-padding) - 12px);
 }
 
 .page-hero {
