@@ -9,9 +9,18 @@
       <stop offset="55%" stop-color="#74a7ff"/>
       <stop offset="100%" stop-color="#b98bff"/>
     </linearGradient>
+    <radialGradient id="earth" cx="38%" cy="34%" r="72%">
+      <stop offset="0%" stop-color="#132947"/>
+      <stop offset="62%" stop-color="#0c182d"/>
+      <stop offset="100%" stop-color="#050b15"/>
+    </radialGradient>
   </defs>
   <rect width="64" height="64" rx="16" fill="url(#bg)"/>
-  <path d="M11 36C21 24 40 22 53 14" fill="none" stroke="url(#aurora)" stroke-width="8" stroke-linecap="round"/>
-  <circle cx="46" cy="16" r="3" fill="#f6fbff"/>
-  <path d="M46 9l1.4 4.5H52l-3.7 2.7 1.4 4.5-3.7-2.7-3.7 2.7 1.4-4.5-3.7-2.7h4.6z" fill="#ffd18b"/>
+  <circle cx="32" cy="35" r="20" fill="url(#earth)"/>
+  <path d="M10 34c10-8 20-11 22-11s14 3 22 11" fill="none" stroke="url(#aurora)" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="22" cy="29" r="1.4" fill="#ffd18b"/>
+  <circle cx="27" cy="32" r="1.2" fill="#ffd18b"/>
+  <circle cx="31" cy="34" r="1.2" fill="#ffd18b"/>
+  <circle cx="35" cy="36" r="1.2" fill="#ffd18b"/>
+  <circle cx="40" cy="38" r="1.2" fill="#ffd18b"/>
 </svg>
