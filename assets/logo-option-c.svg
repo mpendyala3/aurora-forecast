@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Orbital ring logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#08111f"/>
+      <stop offset="100%" stop-color="#11284a"/>
+    </linearGradient>
+    <linearGradient id="aurora" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#8ef7d6"/>
+      <stop offset="100%" stop-color="#6fa8ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#bg)"/>
+  <circle cx="256" cy="248" r="132" fill="#0b1629" stroke="rgba(255,255,255,0.08)"/>
+  <circle cx="256" cy="248" r="120" fill="none" stroke="url(#aurora)" stroke-width="18" stroke-linecap="round" stroke-dasharray="520 82" transform="rotate(-18 256 248)"/>
+  <path d="M188 258C210 234 232 220 256 220s46 14 68 38" fill="none" stroke="#6fffd2" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="338" cy="154" r="14" fill="#ffd18b"/>
+  <path d="M338 130l4 13h14l-11 8 4 13-11-8-11 8 4-13-11-8h14z" fill="#f6fbff"/>
+</svg>

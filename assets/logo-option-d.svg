@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Polar beacon logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#08111f"/>
+      <stop offset="100%" stop-color="#11284a"/>
+    </linearGradient>
+    <linearGradient id="aurora" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6fffd2"/>
+      <stop offset="55%" stop-color="#74a7ff"/>
+      <stop offset="100%" stop-color="#b98bff"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#bg)"/>
+  <path d="M108 318C164 254 314 226 404 150" fill="none" stroke="url(#aurora)" stroke-width="26" stroke-linecap="round"/>
+  <path d="M112 344C176 282 298 258 412 186" fill="none" stroke="#6fffd2" stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+  <path d="M256 130l18 54h57l-46 34 18 54-47-34-46 34 18-54-46-34h57z" fill="#ffd18b"/>
+  <circle cx="256" cy="294" r="18" fill="#eaf4ff" opacity="0.92"/>
+</svg>
