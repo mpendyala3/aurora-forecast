@@ -91,6 +91,10 @@ const navSections = navLinks
 
 const STORAGE_KEY = 'aurora-forecast-v1';
 
+function hasPreferenceConsent() {
+  return Boolean(window.__auroraConsent?.preferences);
+}
+
 const state = {
   weather: null,
   location: { ...PRESETS[0] },
@@ -1042,6 +1046,7 @@ function setThemePreference(preference) {
 }
 
 function loadState() {
+  if (!hasPreferenceConsent()) return;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
@@ -1061,6 +1066,7 @@ function loadState() {
 }
 
 function saveState() {
+  if (!hasPreferenceConsent()) return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
     threshold: state.threshold,
     notify: state.notify,

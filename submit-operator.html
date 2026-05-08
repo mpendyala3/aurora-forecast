@@ -14,16 +14,17 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Aurora Forecast Submit Operator to Aurora Hunt | Aurora Hunt" />
     <meta name="twitter:description" content="Suggest a trusted aurora tour operator to Aurora Hunt with this short form, helping us expand useful local options for skywatchers and trip planning quickly." />
+    <link rel="icon" href="favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=4" />
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-    <link rel="manifest" href="site.webmanifest" />
+    <link rel="manifest" href="manifest.json" />
+    <script src="consent-bootstrap.js"></script>
     <script>
       (() => {
         try {
-          const raw = localStorage.getItem('aurora-forecast-v1');
-          const saved = raw ? JSON.parse(raw) : null;
-          const pref = saved?.themePreference || 'system';
+          const consent = window.__auroraConsent || { preferences: false };
+          const pref = consent.preferences ? (JSON.parse(localStorage.getItem('aurora-forecast-v1') || '{}')?.themePreference || 'system') : 'system';
           const theme = pref === 'system'
             ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
             : pref;
@@ -137,9 +138,16 @@
     <footer class="footer">
       <div class="footer-bottom">
         <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
-        <a href="#top">Back to top</a>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy policy</a>
+          <a href="terms.html">Terms</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="#top">Back to top</a>
+        </div>
       </div>
     </footer>
+
+    <script src="consent.js"></script>
 
     <script>
       const els = {

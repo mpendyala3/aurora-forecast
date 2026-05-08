@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07111f" />
+    <meta name="description" content="Aurora Hunt terms of use and site rules." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://aurorahunt.live/terms.html" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=4" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <script src="consent-bootstrap.js"></script>
+    <script>
+      (() => {
+        try {
+          const consent = window.__auroraConsent || { preferences: false };
+          const pref = consent.preferences ? (JSON.parse(localStorage.getItem('aurora-forecast-v1') || '{}')?.themePreference || 'system') : 'system';
+          const theme = pref === 'system'
+            ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : pref;
+          document.documentElement.dataset.theme = theme;
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'light' ? '#eef4ff' : '#07111f');
+        } catch {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
+    <title>Aurora Hunt Terms of Use</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <div class="stars" aria-hidden="true"></div>
+    <header>
+      <nav class="topbar" aria-label="Primary">
+        <a class="brand" href="index.html" aria-label="Aurora Hunt home">
+          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" aria-hidden="true" /></span>
+          <span>Aurora Hunt</span>
+        </a>
+      </nav>
+    </header>
+
+    <main id="main-content" class="page-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Terms</span>
+      </nav>
+
+      <section class="card page-hero">
+        <p class="eyebrow">Terms</p>
+        <h1>Simple terms for a simple site.</h1>
+        <p class="lede">Use Aurora Hunt as a helpful forecast and planning tool. Don’t abuse the forms or overload the services we rely on.</p>
+      </section>
+
+      <section class="page-grid">
+        <article class="card page-card">
+          <h2>Acceptable use</h2>
+          <p>Use the site lawfully and avoid automated abuse, scraping, or attempts to disrupt the service.</p>
+        </article>
+        <article class="card page-card">
+          <h2>Third-party services</h2>
+          <p>Some data, maps, embeds, and forms rely on third-party services and their own terms.</p>
+        </article>
+      </section>
+
+      <section class="card page-card">
+        <h2>Limitations</h2>
+        <ul class="page-list">
+          <li>Forecast data is directional, not guaranteed</li>
+          <li>We may update or change features over time</li>
+          <li>Use the site at your own judgment when planning trips</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-bottom">
+        <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy policy</a>
+          <a href="terms.html">Terms</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="#top">Back to top</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="consent.js"></script>
+  </body>
+</html>
