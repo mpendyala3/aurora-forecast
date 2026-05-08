@@ -45,6 +45,13 @@ whether the northern lights are actually worth chasing tonight.
 - `privacy.html` — privacy policy
 - `cookies.html` — cookie and local storage notes
 
+## Monitoring / analytics
+
+- `healthz.html` — uptime check target
+- `monitoring.js` — privacy-first RUM/error hook (inactive until a same-origin collector is configured)
+- Google Search Console still needs the site-verification token added by the deploy owner
+- GA4 / Plausible / Sentry are supported externally; this repo only provides the client-side hook points
+
 ## Run locally
 
 Open `index.html` in a browser, or serve the folder with any static server.
