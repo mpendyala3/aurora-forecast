@@ -2,7 +2,7 @@
   color-scheme: dark;
   --site-width: 1180px;
   --site-gutter: 28px;
-  --hero-top-padding: 132px;
+  --hero-top-padding: 168px;
   --page-top-padding: 186px;
   --bg: #07111f;
   --bg-2: #091726;
@@ -1880,7 +1880,7 @@ html[data-theme="light"] .consent-banner {
   :root {
     --site-width: 1520px;
     --site-gutter: 32px;
-    --hero-top-padding: 132px;
+    --hero-top-padding: 168px;
     --page-top-padding: 200px;
   }
 
