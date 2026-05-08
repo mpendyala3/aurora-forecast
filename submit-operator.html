@@ -20,8 +20,8 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
     <link rel="manifest" href="manifest.json" />
     <link rel="preload" as="image" href="assets/logo.svg?v=4" type="image/svg+xml" />
-    <script src="consent-bootstrap.js"></script>
-    <script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="consent-bootstrap.js"></script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08">
       (() => {
         try {
           const consent = window.__auroraConsent || { preferences: false };
@@ -38,7 +38,7 @@
       })();
     </script>
     <title>Aurora Forecast Submit Operator to Aurora Hunt | Aurora Hunt</title>
-    <script type="application/ld+json">
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebPage",
@@ -47,7 +47,7 @@
         "description": "Suggest a trusted aurora tour operator to Aurora Hunt with this short form, helping us expand useful local options for skywatchers and trip planning quickly."
       }
     </script>
-    <script type="application/ld+json">
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -89,6 +89,11 @@
 
       <section class="card page-card">
         <form id="tourForm" class="tour-form" action="https://formspree.io/f/mjglerqr" method="POST" data-formspree>
+          <div class="honeypot" aria-hidden="true">
+            <label>Leave this field empty
+              <input name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
           <label>
             Operator / company name
             <input id="tourNameInput" name="operator_name" type="text" autocomplete="organization" required />
@@ -148,9 +153,9 @@
       </div>
     </footer>
 
-    <script src="consent.js"></script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="consent.js"></script>
 
-    <script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08">
       const els = {
         tourForm: document.querySelector('#tourForm'),
         tourNameInput: document.querySelector('#tourNameInput'),
@@ -179,6 +184,15 @@
           els.submitButton.disabled = true;
           els.submitButton.textContent = 'Sending…';
         }
+        const formData = new FormData(els.tourForm);
+        if (formData.get('_gotcha')) {
+          els.tourStatus.textContent = 'Submission blocked.';
+          if (els.submitButton) {
+            els.submitButton.disabled = false;
+            els.submitButton.textContent = 'Submit operator';
+          }
+          return;
+        }
         let website = els.tourWebsiteInput.value.trim();
         try {
           const parsed = new URL(website);
@@ -192,7 +206,6 @@
           }
           return;
         }
-        const formData = new FormData(els.tourForm);
         formData.set('_subject', 'Aurora Hunt operator submission');
         formData.set('website', website);
 

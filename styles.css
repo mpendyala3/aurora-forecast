@@ -173,6 +173,27 @@ button, input { font: inherit; }
   box-shadow: 0 0 0 1px rgba(111,255,210,0.12) inset, 0 0 18px rgba(111,255,210,0.08);
 }
 
+.section-head-tight {
+  padding-top: 0;
+}
+
+.tight-heading {
+  margin-bottom: 0;
+}
+
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.honeypot input {
+  width: 1px;
+  height: 1px;
+}
+
 .site-search {
   display: grid;
   gap: 10px;

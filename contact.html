@@ -20,8 +20,8 @@
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
     <link rel="manifest" href="manifest.json" />
     <link rel="preload" as="image" href="assets/logo.svg?v=4" type="image/svg+xml" />
-    <script src="consent-bootstrap.js"></script>
-    <script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="consent-bootstrap.js"></script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08">
       (() => {
         try {
           const consent = window.__auroraConsent || { preferences: false };
@@ -38,7 +38,7 @@
       })();
     </script>
     <title>Aurora Forecast Contact Aurora Hunt Support | Aurora Hunt</title>
-    <script type="application/ld+json">
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "WebPage",
@@ -47,7 +47,7 @@
         "description": "Use Aurora Hunt’s contact form for support, partnerships, bug reports, or feature ideas, and send your note quickly from any device without leaving the page."
       }
     </script>
-    <script type="application/ld+json">
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -97,6 +97,11 @@
           <h2>Contact form</h2>
           <form class="contact-form" action="https://formspree.io/f/mlgzwlro" method="POST" data-formspree>
             <input type="hidden" name="_subject" value="Aurora Hunt contact form" />
+            <div class="honeypot" aria-hidden="true">
+              <label>Leave this field empty
+                <input name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+              </label>
+            </div>
 
             <div class="contact-split">
               <label>
@@ -163,9 +168,9 @@
       </div>
     </footer>
 
-    <script src="consent.js"></script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="consent.js"></script>
 
-    <script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08">
       const form = document.querySelector('.contact-form');
       const status = document.querySelector('#contactStatus');
       const submitButton = form?.querySelector('button[type="submit"]');
@@ -189,6 +194,14 @@
         }
 
         const formData = new FormData(form);
+        if (formData.get('_gotcha')) {
+          showStatus('error', 'Submission blocked.');
+          if (submitButton) {
+            submitButton.textContent = 'Send message';
+            submitButton.disabled = false;
+          }
+          return;
+        }
         const response = await fetch(form.action, {
           method: 'POST',
           headers: { Accept: 'application/json' },
