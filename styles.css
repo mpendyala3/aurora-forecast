@@ -1,5 +1,9 @@
 :root {
   color-scheme: dark;
+  --site-width: 1180px;
+  --site-gutter: 28px;
+  --hero-top-padding: 96px;
+  --page-top-padding: 112px;
   --bg: #07111f;
   --bg-2: #091726;
   --card: rgba(12, 24, 42, 0.86);
@@ -105,18 +109,18 @@ button, input { font: inherit; }
 .hero,
 main,
 .footer {
-  width: min(1180px, calc(100vw - 28px));
+  width: min(var(--site-width), calc(100vw - var(--site-gutter)));
   margin: 0 auto;
 }
 
-.hero { padding: 96px 0 18px; }
+.hero { padding: var(--hero-top-padding) 0 18px; }
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
   padding: 12px 16px;
-  width: min(1180px, calc(100vw - 28px));
+  width: min(var(--site-width), calc(100vw - var(--site-gutter)));
   margin: 0 auto;
   position: fixed;
   top: 12px;
@@ -338,6 +342,7 @@ main,
   background: var(--card);
   box-shadow: var(--shadow);
   backdrop-filter: blur(18px);
+  min-width: 0;
 }
 
 .hero-copy, .hero-panel {
@@ -1162,6 +1167,15 @@ textarea:focus-visible {
   align-items: start;
 }
 
+.webcam-top > div,
+.compare-head > div,
+.calendar-top > div,
+.preset-section-head > div,
+.tour-submissions-head > div,
+.footer-bottom > div {
+  min-width: 0;
+}
+
 .webcam-link { white-space: nowrap; }
 
 .webcam-frame {
@@ -1443,10 +1457,50 @@ textarea:focus-visible {
   border-top: 1px solid rgba(255,255,255,0.08);
 }
 
+/* Wider desktops get a little more breathing room. */
+@media (min-width: 1440px) {
+  :root {
+    --site-width: 1320px;
+    --site-gutter: 36px;
+    --hero-top-padding: 104px;
+    --page-top-padding: 120px;
+  }
+
+  .hero-grid {
+    gap: 28px;
+  }
+
+  .hero-copy,
+  .hero-panel,
+  .card {
+    padding: 30px;
+  }
+
+  .section {
+    padding-top: 32px;
+  }
+}
+
+@media (min-width: 1800px) {
+  :root {
+    --site-width: 1440px;
+    --site-gutter: 40px;
+    --page-top-padding: 128px;
+  }
+
+  .hero-grid {
+    gap: 32px;
+  }
+
+  .page-main {
+    padding-top: 120px;
+  }
+}
+
 .page-main {
-  width: min(1180px, calc(100vw - 28px));
+  width: min(var(--site-width), calc(100vw - var(--site-gutter)));
   margin: 0 auto;
-  padding: 112px 0 28px;
+  padding: var(--page-top-padding) 0 28px;
   display: grid;
   gap: 16px;
 }
