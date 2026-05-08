@@ -19,6 +19,11 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
     <link rel="manifest" href="manifest.json" />
+    <link rel="preload" as="image" href="assets/logo.svg?v=4" type="image/svg+xml" />
+    <link rel="preconnect" href="https://services.swpc.noaa.gov" />
+    <link rel="preconnect" href="https://api.open-meteo.com" />
+    <link rel="preconnect" href="https://geocoding-api.open-meteo.com" />
+    <link rel="preconnect" href="https://formspree.io" />
     <script src="consent-bootstrap.js"></script>
     <script>
       (() => {
@@ -64,7 +69,7 @@
     <header class="hero" id="top">
       <nav class="topbar" aria-label="Primary">
         <a class="brand" href="#top" aria-label="Aurora Hunt home">
-          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" aria-hidden="true" /></span>
+          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" aria-hidden="true" width="34" height="34" /></span>
           <span>Aurora Hunt</span>
         </a>
         <div class="nav-links">

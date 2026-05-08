@@ -53,4 +53,10 @@
 
   pages.length ? document.body.appendChild(banner) : document.addEventListener('DOMContentLoaded', () => document.body.appendChild(banner));
   sync();
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    });
+  }
 })();
