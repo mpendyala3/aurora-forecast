@@ -1,4 +1,4 @@
-const CACHE_NAME = 'aurora-hunt-shell-v1';
+const CACHE_NAME = 'aurora-hunt-shell-v2';
 const PRECACHE = [
   '/',
   '/index.html',
@@ -12,8 +12,8 @@ const PRECACHE = [
   '/500.html',
   '/styles.css',
   '/script.js',
-  '/consent.js',
-  '/consent-bootstrap.js',
+  '/consent.js?v=2',
+  '/consent-bootstrap.js?v=2',
   '/manifest.json',
   '/favicon.ico',
   '/assets/logo.svg?v=4',
