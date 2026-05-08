@@ -3,7 +3,7 @@
   --site-width: 1180px;
   --site-gutter: 28px;
   --hero-top-padding: 96px;
-  --page-top-padding: 112px;
+  --page-top-padding: 148px;
   --bg: #07111f;
   --bg-2: #091726;
   --card: rgba(12, 24, 42, 0.86);
@@ -1764,7 +1764,7 @@ html[data-theme="light"] .consent-banner {
     --site-width: 1520px;
     --site-gutter: 32px;
     --hero-top-padding: 104px;
-    --page-top-padding: 120px;
+    --page-top-padding: 156px;
   }
 
   .hero-grid {
@@ -1786,7 +1786,7 @@ html[data-theme="light"] .consent-banner {
   :root {
     --site-width: 1680px;
     --site-gutter: 36px;
-    --page-top-padding: 128px;
+    --page-top-padding: 164px;
   }
 
   .hero-grid {
@@ -2007,6 +2007,6 @@ html[data-theme="light"] .consent-banner {
   .tour-submission-item { flex-direction: column; }
   .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; align-items: start; }
-  .page-main { padding-top: 116px; }
+  .page-main { padding-top: 138px; }
   .page-hero, .page-card { padding: 16px; border-radius: 18px; }
 }
