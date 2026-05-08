@@ -1,6 +1,15 @@
 (() => {
   const KEY = 'aurora-consent-v1';
   const state = window.__auroraConsent || { preferences: false, analytics: false };
+  const rememberSession = () => {
+    try { sessionStorage.setItem('aurora-consent-v1-session', '1'); } catch {}
+  };
+  const rememberPersisted = (value) => {
+    try { localStorage.setItem(KEY, JSON.stringify(value)); } catch {}
+  };
+  const clearThemeState = () => {
+    try { localStorage.removeItem('aurora-forecast-v1'); } catch {}
+  };
   const pages = document.body ? Array.from(document.body.children) : [];
   const existing = document.querySelector('#aurora-consent-banner');
   if (existing) return;
@@ -32,23 +41,25 @@
   banner.querySelector('[data-consent-action="essential"]')?.addEventListener('click', () => {
     state.preferences = false;
     state.analytics = false;
-    localStorage.setItem(KEY, JSON.stringify(state));
-    localStorage.removeItem('aurora-forecast-v1');
+    rememberPersisted(state);
+    clearThemeState();
+    rememberSession();
     window.__auroraConsent = { ...state };
     window.__auroraConsentKnown = true;
     banner.hidden = true;
-    window.location.reload();
+    banner.remove();
   });
 
   banner.querySelector('[data-consent-action="save"]')?.addEventListener('click', () => {
     state.preferences = Boolean(banner.querySelector('[data-consent="preferences"]')?.checked);
     state.analytics = Boolean(banner.querySelector('[data-consent="analytics"]')?.checked);
-    localStorage.setItem(KEY, JSON.stringify(state));
+    rememberPersisted(state);
+    rememberSession();
     window.__auroraConsent = { ...state };
     window.__auroraConsentKnown = true;
-    if (!state.preferences) localStorage.removeItem('aurora-forecast-v1');
+    if (!state.preferences) clearThemeState();
     banner.hidden = true;
-    window.location.reload();
+    banner.remove();
   });
 
   pages.length ? document.body.appendChild(banner) : document.addEventListener('DOMContentLoaded', () => document.body.appendChild(banner));
