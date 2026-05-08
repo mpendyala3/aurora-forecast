@@ -1478,6 +1478,41 @@ if (els.tourForm) {
   });
 }
 
+function setupExpandableLearnCards() {
+  const cards = [...document.querySelectorAll('[data-expandable-card]')];
+  if (!cards.length) return;
+
+  const collapseCard = (card) => {
+    card.classList.remove('expanded');
+    const toggle = card.querySelector('.info-card-toggle');
+    const details = card.querySelector('.info-card-details');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    if (details) details.hidden = true;
+  };
+
+  const expandCard = (card) => {
+    cards.forEach((other) => { if (other !== card) collapseCard(other); });
+    card.classList.add('expanded');
+    const toggle = card.querySelector('.info-card-toggle');
+    const details = card.querySelector('.info-card-details');
+    if (toggle) toggle.setAttribute('aria-expanded', 'true');
+    if (details) details.hidden = false;
+  };
+
+  cards.forEach((card) => {
+    const toggle = card.querySelector('.info-card-toggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', () => {
+      const open = card.classList.contains('expanded');
+      if (open) collapseCard(card);
+      else expandCard(card);
+    });
+    toggle.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') collapseCard(card);
+    });
+  });
+}
+
 els.notifyToggle.addEventListener('change', async () => {
   state.notify = els.notifyToggle.checked;
   if (state.notify) state.notify = await requestNotificationPermission();
@@ -1494,6 +1529,7 @@ renderPresets();
 loadState();
 syncAlertUI();
 renderTourSubmissions();
+setupExpandableLearnCards();
 
 if (state.location && state.location.name) {
   setLocation(state.location, false);
