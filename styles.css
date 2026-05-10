@@ -1516,6 +1516,12 @@ textarea:focus-visible {
   box-shadow: 0 0 0 1px rgba(111,255,210,0.14) inset, 0 0 18px rgba(111,255,210,0.10);
 }
 
+.cam-item.active {
+  border-color: rgba(111,255,210,0.42);
+  background: rgba(111,255,210,0.08);
+  box-shadow: 0 0 0 1px rgba(111,255,210,0.18) inset, 0 0 22px rgba(111,255,210,0.12);
+}
+
 .cam-item strong { display: block; }
 .cam-item span { color: var(--muted); font-size: 0.94rem; }
 

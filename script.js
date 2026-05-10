@@ -76,6 +76,10 @@ const els = {
   saveToggle: document.querySelector('#saveToggle'),
   alertForm: document.querySelector('#alertForm'),
   watchlist: document.querySelector('#watchlist'),
+  featuredCamTitle: document.querySelector('#featuredCamTitle'),
+  featuredCamMeta: document.querySelector('#featuredCamMeta'),
+  featuredCamLink: document.querySelector('#featuredCamLink'),
+  featuredCamFrame: document.querySelector('#featuredCamFrame'),
 };
 
 const root = document.documentElement;
@@ -85,9 +89,17 @@ const navLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
 const systemThemeMedia = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 const viewportMedia = window.matchMedia ? window.matchMedia('(max-width: 700px)') : null;
 const mapFocusButtons = [...document.querySelectorAll('[data-map-focus]')];
+const webcamItems = [...document.querySelectorAll('.cam-item[data-webcam-id]')];
 const navSections = navLinks
   .map((link) => document.querySelector(link.getAttribute('href')))
   .filter(Boolean);
+
+const defaultFeaturedCam = {
+  title: 'Featured live cam',
+  meta: 'Kilpisjärvi, Finland · north view',
+  id: 'ccTVAhJU5lg',
+  watch: 'https://www.youtube.com/watch?v=ccTVAhJU5lg',
+};
 
 const STORAGE_KEY = 'aurora-forecast-v1';
 
@@ -114,6 +126,7 @@ let searchDebounceTimer = null;
 let siteSearchDebounceTimer = null;
 let topBarFrame = null;
 let liveBootstrapped = false;
+let activeWebcamId = defaultFeaturedCam.id;
 
 function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 function round(v, digits = 0) { return Number(v.toFixed(digits)); }
@@ -225,6 +238,31 @@ function syncDefaultThemeButtonIcon() {
   icon.classList.toggle('theme-icon-mobile', Boolean(viewportMedia?.matches));
   icon.classList.toggle('theme-icon-desktop', !viewportMedia?.matches);
   defaultButton.setAttribute('aria-label', viewportMedia?.matches ? 'Default theme mobile' : 'Default theme desktop');
+}
+
+function buildWebcamEmbedUrl(id, autoplay = true) {
+  const url = new URL(`https://www.youtube.com/embed/${id}`);
+  url.searchParams.set('autoplay', autoplay ? '1' : '0');
+  url.searchParams.set('mute', '1');
+  url.searchParams.set('playsinline', '1');
+  url.searchParams.set('rel', '0');
+  url.searchParams.set('modestbranding', '1');
+  return url.toString();
+}
+
+function setFeaturedWebcam(cam, autoplay = true) {
+  if (!cam || !els.featuredCamFrame) return;
+  activeWebcamId = cam.id;
+  if (els.featuredCamTitle) els.featuredCamTitle.textContent = cam.title;
+  if (els.featuredCamMeta) els.featuredCamMeta.textContent = cam.meta;
+  if (els.featuredCamLink) els.featuredCamLink.href = cam.watch;
+  els.featuredCamFrame.src = buildWebcamEmbedUrl(cam.id, autoplay);
+
+  webcamItems.forEach((item) => {
+    const active = item.dataset.webcamId === cam.id;
+    item.classList.toggle('active', active);
+    item.setAttribute('aria-current', active ? 'true' : 'false');
+  });
 }
 
 function applyTheme(preference = state.themePreference) {
@@ -1262,6 +1300,18 @@ mapFocusButtons.forEach((button) => {
   });
 });
 
+webcamItems.forEach((item) => {
+  item.addEventListener('click', (event) => {
+    event.preventDefault();
+    setFeaturedWebcam({
+      id: item.dataset.webcamId,
+      title: item.dataset.webcamTitle || item.querySelector('strong')?.textContent || 'Live cam',
+      meta: item.dataset.webcamMeta || item.querySelector('span')?.textContent || '',
+      watch: item.dataset.webcamWatch || item.href,
+    });
+  });
+});
+
 if (navSections.length && 'IntersectionObserver' in window) {
   const navObserver = new IntersectionObserver((entries) => {
     const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
@@ -1533,6 +1583,7 @@ loadState();
 syncAlertUI();
 renderTourSubmissions();
 setupExpandableLearnCards();
+setFeaturedWebcam(defaultFeaturedCam, false);
 
 if (state.location && state.location.name) {
   setLocation(state.location, false);

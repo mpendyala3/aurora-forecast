@@ -385,14 +385,15 @@
           <article class="card webcam-card featured">
             <div class="webcam-top">
               <div>
-                <h3>Featured live cam</h3>
-                <p class="muted">Kilpisjärvi, Finland · north view</p>
+                <h3 id="featuredCamTitle">Featured live cam</h3>
+                <p id="featuredCamMeta" class="muted">Kilpisjärvi, Finland · north view</p>
               </div>
-              <a class="button secondary webcam-link" href="https://www.youtube.com/watch?v=ccTVAhJU5lg" target="_blank" rel="noreferrer noopener">Open live</a>
+              <a id="featuredCamLink" class="button secondary webcam-link" href="https://www.youtube.com/watch?v=ccTVAhJU5lg" target="_blank" rel="noreferrer noopener">Open live</a>
             </div>
 
             <div class="webcam-frame">
               <iframe
+                id="featuredCamFrame"
                 src="https://www.youtube.com/embed/ccTVAhJU5lg?autoplay=0&mute=1&playsinline=1&rel=0&modestbranding=1"
                 title="Aurora webcam live stream from Kilpisjärvi, Finland"
                 loading="lazy"
@@ -409,15 +410,15 @@
           <article class="card webcam-card">
             <h3>More live cameras</h3>
             <div class="cam-list">
-              <a class="cam-item" href="https://www.youtube.com/watch?v=8vZZMvqBNHQ" target="_blank" rel="noreferrer noopener">
+              <a class="cam-item" href="https://www.youtube.com/watch?v=8vZZMvqBNHQ" data-webcam-title="Northumberland Aurora Cam" data-webcam-meta="Cresswell, UK · live stream" data-webcam-id="8vZZMvqBNHQ" data-webcam-watch="https://www.youtube.com/watch?v=8vZZMvqBNHQ">
                 <strong>Northumberland Aurora Cam</strong>
                 <span>Cresswell, UK · live stream</span>
               </a>
-              <a class="cam-item" href="https://www.youtube.com/watch?v=GzdFAwFtryQ" target="_blank" rel="noreferrer noopener">
+              <a class="cam-item" href="https://www.youtube.com/watch?v=GzdFAwFtryQ" data-webcam-title="Iceland aurora live" data-webcam-meta="Severe storm coverage · northern lights" data-webcam-id="GzdFAwFtryQ" data-webcam-watch="https://www.youtube.com/watch?v=GzdFAwFtryQ">
                 <strong>Iceland aurora live</strong>
                 <span>Severe storm coverage · northern lights</span>
               </a>
-              <a class="cam-item" href="https://www.youtube.com/watch?v=O52zDyxg5QI" target="_blank" rel="noreferrer noopener">
+              <a class="cam-item" href="https://www.youtube.com/watch?v=O52zDyxg5QI" data-webcam-title="Fairbanks Aurora Camera" data-webcam-meta="EXPLORE.org · Alaska" data-webcam-id="O52zDyxg5QI" data-webcam-watch="https://www.youtube.com/watch?v=O52zDyxg5QI">
                 <strong>Fairbanks Aurora Camera</strong>
                 <span>EXPLORE.org · Alaska</span>
               </a>
