@@ -4,31 +4,89 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#07111f" />
-    <meta name="description" content="Aurora Hunt cookie policy." />
-    <title>Cookies · Aurora Hunt</title>
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" href="/favicon.png" type="image/png" sizes="192x192" />
-    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="application-name" content="Aurora Hunt" />
-    <meta name="msapplication-TileColor" content="#07111f" />
-    <meta name="msapplication-TileImage" content="/icon-192.png" />
+    <meta name="description" content="Aurora Hunt uses only light browser storage for theme, location, and watch settings, so your preferences stick without a heavy cookie wall or clutter." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://aurorahunt.live/cookies.html" />
+    <meta property="og:title" content="Aurora Forecast Cookies and Browser Storage | Aurora Hunt" />
+    <meta property="og:description" content="Aurora Hunt uses only light browser storage for theme, location, and watch settings, so your preferences stick without a heavy cookie wall or clutter." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aurorahunt.live/cookies.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Aurora Forecast Cookies and Browser Storage | Aurora Hunt" />
+    <meta name="twitter:description" content="Aurora Hunt uses only light browser storage for theme, location, and watch settings, so your preferences stick without a heavy cookie wall or clutter." />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=4" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="aurora-analytics-provider" content="privacy-first" />
+    <meta name="aurora-telemetry-endpoint" content="/rum" />
+    <link rel="preload" as="image" href="assets/logo.svg?v=4" type="image/svg+xml" />
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="consent-bootstrap.js?v=2"></script>
+    <script src="monitoring.js"></script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08">
+      (() => {
+        try {
+          const consent = window.__auroraConsent || { preferences: false };
+          const pref = consent.preferences ? (JSON.parse(localStorage.getItem('aurora-forecast-v1') || '{}')?.themePreference || 'system') : 'system';
+          const theme = pref === 'system'
+            ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : pref;
+          document.documentElement.dataset.theme = theme;
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'light' ? '#eef4ff' : '#07111f');
+        } catch {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
+    <title>Aurora Forecast Cookies and Browser Storage | Aurora Hunt</title>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Aurora Forecast Cookies and Browser Storage | Aurora Hunt",
+        "url": "https://aurorahunt.live/cookies.html",
+        "description": "Aurora Hunt uses only light browser storage for theme, location, and watch settings, so your preferences stick without a heavy cookie wall or clutter."
+      }
+    </script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://aurorahunt.live/"},
+          {"@type": "ListItem", "position": 2, "name": "Cookies", "item": "https://aurorahunt.live/cookies.html"}
+        ]
+      }
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body id="top" class="subpage">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="stars" aria-hidden="true"></div>
-    <header class="topbar">
-      <a class="brand" href="index.html" aria-label="Aurora Hunt home">
-        <span class="brand-mark">✦</span>
-        <span>Aurora Hunt</span>
-      </a>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-      </div>
+    <header>
+      <nav class="topbar" aria-label="Primary">
+        <a class="brand" href="index.html" aria-label="Aurora Hunt home">
+          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" aria-hidden="true" width="34" height="34" /></span>
+          <span>Aurora Hunt</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+        </div>
+      </nav>
     </header>
 
-    <main class="page-main">
+    <main id="main-content" class="page-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Cookies</span>
+      </nav>
+
+      <nav class="page-toc" aria-label="On this page">
+        <a href="#what-we-store">What we store</a>
+        <a href="#why-its-stored">Why it’s stored</a>
+      </nav>
+
       <section class="card page-hero">
         <p class="eyebrow">Cookies</p>
         <h1>Minimal storage, not a cookie maze.</h1>
@@ -38,15 +96,15 @@
       </section>
 
       <section class="page-grid">
-        <article class="card page-card">
+        <article class="card page-card" id="what-we-store">
           <h2>What we store</h2>
           <ul class="page-list">
             <li>Theme preference</li>
             <li>Saved location and watch settings</li>
-            <li>Tour submission drafts</li>
+            <li>Saved watchlist entries</li>
           </ul>
         </article>
-        <article class="card page-card">
+        <article class="card page-card" id="why-its-stored">
           <h2>Why it’s stored</h2>
           <ul class="page-list">
             <li>So the site remembers your choices</li>
@@ -57,6 +115,10 @@
       </section>
 
       <div class="page-note">
+        You can choose essential-only mode or allow preferences in the privacy banner, and we only save optional settings when you opt in.
+      </div>
+
+      <div class="page-note">
         If we add analytics or embedded third-party services later, we’ll document the change here.
       </div>
     </main>
@@ -64,8 +126,14 @@
     <footer class="footer">
       <div class="footer-bottom">
         <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
-        <a href="index.html">Back home</a>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy policy</a>
+          <a href="terms.html">Terms</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="#top">Back to top</a>
+        </div>
       </div>
     </footer>
+
   </body>
 </html>

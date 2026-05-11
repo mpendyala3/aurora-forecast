@@ -4,32 +4,91 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#07111f" />
-    <meta name="description" content="About Aurora Hunt, the clean aurora dashboard for live space weather and location visibility." />
-    <title>About Us · Aurora Hunt</title>
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" href="/favicon.png" type="image/png" sizes="192x192" />
-    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta name="application-name" content="Aurora Hunt" />
-    <meta name="msapplication-TileColor" content="#07111f" />
-    <meta name="msapplication-TileImage" content="/icon-192.png" />
+    <meta name="description" content="Aurora Hunt explains the site’s purpose, how it works, and why it keeps aurora planning simple with live space-weather, maps, and practical tools for chasers." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://aurorahunt.live/about.html" />
+    <meta property="og:title" content="Aurora Forecast About Aurora Hunt Site Guide | Aurora Hunt" />
+    <meta property="og:description" content="Aurora Hunt explains the site’s purpose, how it works, and why it keeps aurora planning simple with live space-weather, maps, and practical tools for chasers." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aurorahunt.live/about.html" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Aurora Forecast About Aurora Hunt Site Guide | Aurora Hunt" />
+    <meta name="twitter:description" content="Aurora Hunt explains the site’s purpose, how it works, and why it keeps aurora planning simple with live space-weather, maps, and practical tools for chasers." />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=4" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="aurora-analytics-provider" content="privacy-first" />
+    <meta name="aurora-telemetry-endpoint" content="/rum" />
+    <link rel="preload" as="image" href="assets/logo.svg?v=4" type="image/svg+xml" />
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="consent-bootstrap.js?v=2"></script>
+    <script src="monitoring.js"></script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08">
+      (() => {
+        try {
+          const consent = window.__auroraConsent || { preferences: false };
+          const pref = consent.preferences ? (JSON.parse(localStorage.getItem('aurora-forecast-v1') || '{}')?.themePreference || 'system') : 'system';
+          const theme = pref === 'system'
+            ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : pref;
+          document.documentElement.dataset.theme = theme;
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'light' ? '#eef4ff' : '#07111f');
+        } catch {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
+    <title>Aurora Forecast About Aurora Hunt Site Guide | Aurora Hunt</title>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Aurora Forecast About Aurora Hunt Site Guide | Aurora Hunt",
+        "url": "https://aurorahunt.live/about.html",
+        "description": "Aurora Hunt explains the site’s purpose, how it works, and why it keeps aurora planning simple with live space-weather, maps, and practical tools for chasers."
+      }
+    </script>
+    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://aurorahunt.live/"},
+          {"@type": "ListItem", "position": 2, "name": "About us", "item": "https://aurorahunt.live/about.html"}
+        ]
+      }
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="subpage">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="stars" aria-hidden="true"></div>
-    <header class="topbar">
-      <a class="brand" href="index.html" aria-label="Aurora Hunt home">
-        <span class="brand-mark">✦</span>
-        <span>Aurora Hunt</span>
-      </a>
-      <div class="nav-links">
-        <a href="index.html">Home</a>
-      </div>
+    <header>
+      <nav class="topbar" aria-label="Primary">
+        <a class="brand" href="index.html" aria-label="Aurora Hunt home">
+          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" aria-hidden="true" width="34" height="34" /></span>
+          <span>Aurora Hunt</span>
+        </a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+        </div>
+      </nav>
     </header>
 
-    <main class="page-main">
-      <section class="card page-hero">
+    <main id="main-content" class="page-main">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">About us</span>
+      </nav>
+
+      <nav class="page-toc" aria-label="On this page">
+        <a href="#what-we-do">What we do</a>
+        <a href="#why-it-exists">Why it exists</a>
+        <a href="#principles">Principles</a>
+      </nav>
+
+      <section class="card page-hero" id="about-hero">
         <p class="eyebrow">About us</p>
         <h1>Built for people chasing the northern lights.</h1>
         <p class="lede">
@@ -39,13 +98,13 @@
       </section>
 
       <section class="page-grid">
-        <article class="card page-card">
+        <article class="card page-card" id="what-we-do">
           <h2>What we do</h2>
           <p>
             We turn aurora data into something easier to understand, so you can decide quickly whether tonight is worth the drive.
           </p>
         </article>
-        <article class="card page-card">
+        <article class="card page-card" id="why-it-exists">
           <h2>Why it exists</h2>
           <p>
             Most aurora tools are cluttered or split across too many screens. Aurora Hunt keeps the useful parts together and readable.
@@ -53,7 +112,7 @@
         </article>
       </section>
 
-      <section class="card page-card">
+      <section class="card page-card" id="principles">
         <h2>Principles</h2>
         <ul class="page-list">
           <li>Fast to scan on mobile</li>
@@ -67,8 +126,14 @@
     <footer class="footer">
       <div class="footer-bottom">
         <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
-        <a href="index.html">Back home</a>
+        <div class="footer-links">
+          <a href="privacy.html">Privacy policy</a>
+          <a href="terms.html">Terms</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="#top">Back to top</a>
+        </div>
       </div>
     </footer>
+
   </body>
 </html>
