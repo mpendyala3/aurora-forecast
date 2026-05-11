@@ -85,12 +85,6 @@ const els = {
 const root = document.documentElement;
 const themeMeta = document.querySelector('meta[name="theme-color"]');
 const themeButtons = [...document.querySelectorAll('[data-theme-option]')];
-const languageSwitch = document.querySelector('.language-switch');
-const languageButton = document.querySelector('#languageButton');
-const languageFlag = document.querySelector('#languageFlag');
-const languageLabel = document.querySelector('#languageLabel');
-const languageMenu = document.querySelector('#languageMenu');
-const languageOptions = [...document.querySelectorAll('[data-language-option]')];
 const navLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
 const systemThemeMedia = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 const viewportMedia = window.matchMedia ? window.matchMedia('(max-width: 700px)') : null;
@@ -126,7 +120,6 @@ const state = {
   calendarSelectedDate: new Date(),
   mapFocus: 'global',
   themePreference: 'system',
-  languagePreference: getBrowserDefaultLanguage(),
 };
 
 let searchDebounceTimer = null;
@@ -139,10 +132,10 @@ function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 function round(v, digits = 0) { return Number(v.toFixed(digits)); }
 function pad(n) { return String(n).padStart(2, '0'); }
 function toLocalTime(date) {
-  return date.toLocaleTimeString(state.languagePreference || undefined, { hour: 'numeric', minute: '2-digit' });
+  return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 }
 function toDateStamp(date) {
-  return date.toLocaleString(state.languagePreference || undefined, { weekday: 'short', hour: 'numeric', minute: '2-digit' });
+  return date.toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' });
 }
 function dayOfYear(date) {
   const start = new Date(date.getFullYear(), 0, 0);
@@ -155,243 +148,6 @@ function normalize(value, max) {
   if (out < 0) out += max;
   return out;
 }
-
-function getBrowserDefaultLanguage() {
-  const locale = String(navigator.language || 'en-US').toLowerCase();
-  if (locale.startsWith('en-gb')) return 'en-GB';
-  if (locale.startsWith('es')) return 'es-ES';
-  if (locale.startsWith('fr')) return 'fr-FR';
-  if (locale.startsWith('de')) return 'de-DE';
-  return 'en-US';
-}
-
-const LANGUAGE_OPTIONS = [
-  { code: 'en-US', flag: '🇺🇸', label: 'English (US)' },
-  { code: 'en-GB', flag: '🇬🇧', label: 'English (UK)' },
-  { code: 'es-ES', flag: '🇪🇸', label: 'Español' },
-  { code: 'fr-FR', flag: '🇫🇷', label: 'Français' },
-  { code: 'de-DE', flag: '🇩🇪', label: 'Deutsch' },
-];
-
-const LANGUAGE_META = Object.fromEntries(LANGUAGE_OPTIONS.map((item) => [item.code, item]));
-const LANGUAGE_TRANSLATIONS = {
-  'es-ES': {
-    nav: ['Pronóstico', 'Calendario', 'Mapa', 'Tours', 'Alertas', 'Comparar', 'Aprende'],
-    heroEyebrow: 'Condiciones de aurora en vivo, lugar por lugar',
-    heroTitle: 'Ve las auroras boreales antes de que el cielo decida.',
-    heroLede: 'Un sitio de auroras limpio y centrado en móvil con panel meteorológico espacial en vivo, mapa de visibilidad local, planificador de noches, pronósticos por ubicación y alertas.',
-    heroPrimary: 'Ver esta noche',
-    heroSecondary: 'Configurar una alerta',
-    forecastEyebrow: 'Pronóstico',
-    forecastTitle: 'Mejores horas para observar esta noche',
-    windowTitle: 'Mejor ventana',
-    windowText: 'Calculando…',
-    timelineTitle: 'Pronóstico horario de aurora',
-    timelineText: 'Probabilidad por hora basada en Kp, oscuridad y nubosidad estimada.',
-    calendarEyebrow: 'Calendario',
-    calendarTitle: 'Calendario mensual de pronóstico',
-    calendarSelectedLabel: 'Selecciona un día',
-    calendarSelectedSummary: 'Toca un día para ver su puntuación, fase lunar y ventana nocturna.',
-    calendarBestNightsTitle: 'Mejores noches de este mes',
-    plannerEyebrow: 'Planificador de ubicación',
-    plannerTitle: '¿La veré desde aquí?',
-    presetStrong: 'Elige una ciudad',
-    presetMuted: 'La ciudad seleccionada está resaltada',
-    searchLabel: 'Buscar ubicación',
-    searchPlaceholder: 'Buscar por ciudad o país',
-    searchButton: 'Buscar',
-    latLabel: 'Latitud',
-    lonLabel: 'Longitud',
-    cloudLabel: 'Nubosidad estimada (%)',
-    updateForecast: 'Actualizar pronóstico',
-    useCurrent: 'Usar ciudad actual',
-    resultEmpty: 'Introduce una ubicación para ver el pronóstico.',
-    mapEyebrow: 'Mapa',
-    mapTitle: 'Mapa de visibilidad de aurora',
-    auroraOval: 'Óvalo de aurora',
-    auroraHelp: 'Observa cómo la banda se desplaza al sur cuando aumenta la actividad geomagnética.',
-    bestPlaces: 'Mejores lugares ahora',
-    webcamEyebrow: 'Cámara en vivo',
-    webcamTitle: 'Transmisión en directo de aurora',
-    featuredCam: 'Cámara destacada en vivo',
-    openLive: 'Abrir en vivo',
-    toursEyebrow: 'Tours',
-    toursTitle: 'Operadores de tours de aurora recomendados',
-    alertsEyebrow: 'Alertas',
-    alertsTitle: 'Guarda una alerta y recibe notificaciones',
-    emailLabel: 'Correo para configurar alertas',
-    thresholdLabel: 'Umbral de alerta',
-    browserNotifications: 'Notificaciones del navegador',
-    saveLocation: 'Guardar esta ubicación',
-    saveWatch: 'Guardar vigilancia',
-    learnEyebrow: 'Aprende',
-    learnTitle: 'Qué significan los números',
-    kpTitle: 'Índice Kp',
-    bzTitle: 'Bz',
-    cloudTitle: 'Nubosidad',
-    darkTitle: 'Ventana de cielo oscuro',
-    compareEyebrow: 'Comparar',
-    compareTitle: 'Por qué Aurora Hunt destaca',
-    compareRecommended: 'Recomendado',
-    compareCluttered: 'A menudo recargado',
-    footerAbout: 'Sobre nosotros',
-    footerAboutText: 'Descubre para qué sirve Aurora Hunt y cómo ayuda a quienes persiguen auroras.',
-    footerOperator: 'Enviar nuevo operador',
-    footerOperatorText: 'Añade una empresa turística o sugerencia de socio en una página aparte.',
-    footerContact: 'Contáctanos',
-    footerContactText: 'Encuentra la mejor forma de escribir al equipo y enviar notas de soporte o alianzas.',
-    footerPrivacy: 'Política de privacidad',
-    footerPrivacyText: 'Mira cómo gestionamos el almacenamiento local, los formularios y los datos personales.',
-    footerCookies: 'Cookies',
-    footerCookiesText: 'Entiende la pequeña cantidad de almacenamiento del navegador que usa el sitio.',
-    footerBottom: 'Hecho para quienes quieren una experiencia más limpia que una app recargada.',
-    backToTop: 'Volver arriba',
-  },
-  'fr-FR': {
-    nav: ['Prévisions', 'Calendrier', 'Carte', 'Tours', 'Alertes', 'Comparer', 'Apprendre'],
-    heroEyebrow: 'Conditions d’aurore en direct, lieu par lieu',
-    heroTitle: 'Voir les aurores boréales avant que le ciel ne décide.',
-    heroLede: 'Un site aurores propre et mobile avec tableau de bord spatial en direct, carte de visibilité locale, planificateur de nuit, prévisions par lieu et alertes.',
-    heroPrimary: 'Voir ce soir',
-    heroSecondary: 'Créer une alerte',
-    forecastEyebrow: 'Prévisions',
-    forecastTitle: 'Meilleures heures d’observation ce soir',
-    windowTitle: 'Meilleure fenêtre',
-    windowText: 'Calcul…',
-    timelineTitle: 'Prévisions horaires d’aurore',
-    timelineText: 'Probabilité par heure selon Kp, obscurité et couverture nuageuse estimée.',
-    calendarEyebrow: 'Calendrier',
-    calendarTitle: 'Calendrier mensuel des prévisions',
-    calendarSelectedLabel: 'Choisissez un jour',
-    calendarSelectedSummary: 'Touchez un jour pour voir son score, la phase lunaire et la fenêtre nocturne.',
-    calendarBestNightsTitle: 'Meilleures nuits du mois',
-    plannerEyebrow: 'Planificateur de lieu',
-    plannerTitle: 'Le verrai-je d’ici ?',
-    presetStrong: 'Choisissez une ville',
-    presetMuted: 'La ville sélectionnée est surlignée',
-    searchLabel: 'Rechercher un lieu',
-    searchPlaceholder: 'Rechercher par ville ou pays',
-    searchButton: 'Rechercher',
-    latLabel: 'Latitude',
-    lonLabel: 'Longitude',
-    cloudLabel: 'Couverture nuageuse estimée (%)',
-    updateForecast: 'Mettre à jour les prévisions',
-    useCurrent: 'Utiliser la ville actuelle',
-    resultEmpty: 'Saisissez un lieu pour voir les prévisions.',
-    mapEyebrow: 'Carte',
-    mapTitle: 'Carte de visibilité des aurores',
-    auroraOval: 'Ovale auroral',
-    auroraHelp: 'Regardez la bande descendre vers le sud quand l’activité géomagnétique augmente.',
-    bestPlaces: 'Meilleurs endroits maintenant',
-    webcamEyebrow: 'Caméra en direct',
-    webcamTitle: 'Diffusion en direct des aurores',
-    featuredCam: 'Caméra live mise en avant',
-    openLive: 'Ouvrir le direct',
-    toursEyebrow: 'Tours',
-    toursTitle: 'Opérateurs de tours d’aurore recommandés',
-    alertsEyebrow: 'Alertes',
-    alertsTitle: 'Enregistrer une alerte et être notifié',
-    emailLabel: 'E-mail pour l’alerte',
-    thresholdLabel: 'Seuil d’alerte',
-    browserNotifications: 'Notifications du navigateur',
-    saveLocation: 'Enregistrer cet emplacement',
-    saveWatch: 'Enregistrer la surveillance',
-    learnEyebrow: 'Apprendre',
-    learnTitle: 'Ce que signifient les chiffres',
-    kpTitle: 'Indice Kp',
-    bzTitle: 'Bz',
-    cloudTitle: 'Couverture nuageuse',
-    darkTitle: 'Fenêtre de ciel noir',
-    compareEyebrow: 'Comparer',
-    compareTitle: 'Pourquoi Aurora Hunt se démarque',
-    compareRecommended: 'Recommandé',
-    compareCluttered: 'Souvent encombré',
-    footerAbout: 'À propos',
-    footerAboutText: 'Découvrez l’utilité d’Aurora Hunt et comment il aide les chasseurs d’aurores.',
-    footerOperator: 'Ajouter un nouvel opérateur',
-    footerOperatorText: 'Ajoutez une entreprise de tour ou une suggestion de partenaire sur une page séparée.',
-    footerContact: 'Contactez-nous',
-    footerContactText: 'Trouvez le meilleur moyen d’écrire à l’équipe et d’envoyer des notes de support ou de partenariat.',
-    footerPrivacy: 'Politique de confidentialité',
-    footerPrivacyText: 'Voyez comment nous gérons le stockage local, les formulaires et les données personnelles.',
-    footerCookies: 'Cookies',
-    footerCookiesText: 'Comprenez la petite quantité de stockage navigateur utilisée par le site.',
-    footerBottom: 'Conçu pour les chasseurs d’aurores qui veulent quelque chose de plus propre qu’une appli chargée.',
-    backToTop: 'Retour en haut',
-  },
-  'de-DE': {
-    nav: ['Vorhersage', 'Kalender', 'Karte', 'Touren', 'Alarme', 'Vergleich', 'Lernen'],
-    heroEyebrow: 'Live-Aurorabedingungen, Ort für Ort',
-    heroTitle: 'Sieh die Nordlichter, bevor der Himmel entscheidet.',
-    heroLede: 'Eine klare, mobile Aurora-Seite mit Live-Weltraumwetter, lokaler Sichtbarkeitskarte, Nachtplaner, Standortvorhersagen und Alarmen.',
-    heroPrimary: 'Heute Nacht prüfen',
-    heroSecondary: 'Alarm einrichten',
-    forecastEyebrow: 'Vorhersage',
-    forecastTitle: 'Beste Sichtzeiten heute Nacht',
-    windowTitle: 'Bestes Zeitfenster',
-    windowText: 'Berechne…',
-    timelineTitle: 'Stündliche Aurora-Vorhersage',
-    timelineText: 'Chance pro Stunde basierend auf Kp, Dunkelheit und geschätzter Bewölkung.',
-    calendarEyebrow: 'Kalender',
-    calendarTitle: 'Monatlicher Vorhersagekalender',
-    calendarSelectedLabel: 'Tag auswählen',
-    calendarSelectedSummary: 'Tippe auf einen Tag, um Bewertung, Mondphase und Nachtfenster zu sehen.',
-    calendarBestNightsTitle: 'Beste Nächte dieses Monats',
-    plannerEyebrow: 'Standortplaner',
-    plannerTitle: 'Sehe ich es von hier aus?',
-    presetStrong: 'Wähle eine Stadt',
-    presetMuted: 'Die ausgewählte Stadt ist hervorgehoben',
-    searchLabel: 'Ort suchen',
-    searchPlaceholder: 'Nach Stadt oder Land suchen',
-    searchButton: 'Suchen',
-    latLabel: 'Breitengrad',
-    lonLabel: 'Längengrad',
-    cloudLabel: 'Geschätzte Bewölkung (%)',
-    updateForecast: 'Vorhersage aktualisieren',
-    useCurrent: 'Aktuelle Stadt verwenden',
-    resultEmpty: 'Gib einen Ort ein, um die Vorhersage zu sehen.',
-    mapEyebrow: 'Karte',
-    mapTitle: 'Aurora-Sichtbarkeitskarte',
-    auroraOval: 'Aurora-Oval',
-    auroraHelp: 'Sieh, wie sich das Band nach Süden verschiebt, wenn die geomagnetische Aktivität steigt.',
-    bestPlaces: 'Beste Orte jetzt',
-    webcamEyebrow: 'Live-Kamera',
-    webcamTitle: 'Live-Aurora-Übertragung',
-    featuredCam: 'Empfohlene Live-Kamera',
-    openLive: 'Live öffnen',
-    toursEyebrow: 'Touren',
-    toursTitle: 'Empfohlene Aurora-Touranbieter',
-    alertsEyebrow: 'Alarme',
-    alertsTitle: 'Alarm speichern und benachrichtigt werden',
-    emailLabel: 'E-Mail für Alarm',
-    thresholdLabel: 'Alarm-Schwelle',
-    browserNotifications: 'Browser-Benachrichtigungen',
-    saveLocation: 'Diesen Ort speichern',
-    saveWatch: 'Beobachtung speichern',
-    learnEyebrow: 'Lernen',
-    learnTitle: 'Was die Zahlen bedeuten',
-    kpTitle: 'Kp-Index',
-    bzTitle: 'Bz',
-    cloudTitle: 'Bewölkung',
-    darkTitle: 'Dunkelheitsfenster',
-    compareEyebrow: 'Vergleich',
-    compareTitle: 'Warum Aurora Hunt herausragt',
-    compareRecommended: 'Empfohlen',
-    compareCluttered: 'Oft unübersichtlich',
-    footerAbout: 'Über uns',
-    footerAboutText: 'Erfahre, wofür Aurora Hunt da ist und wie es Polarlichtjägern hilft.',
-    footerOperator: 'Neuen Anbieter einreichen',
-    footerOperatorText: 'Füge einen Reiseanbieter oder einen Partnervorschlag auf einer separaten Seite hinzu.',
-    footerContact: 'Kontakt',
-    footerContactText: 'Finde den besten Weg, das Team zu erreichen und Support- oder Partnerhinweise zu senden.',
-    footerPrivacy: 'Datenschutz',
-    footerPrivacyText: 'Sieh, wie wir lokalen Speicher, Formulare und personenbezogene Daten handhaben.',
-    footerCookies: 'Cookies',
-    footerCookiesText: 'Verstehe die kleine Menge an Browser-Speicher, die die Seite nutzt.',
-    footerBottom: 'Für Polarlichtjäger gemacht, die etwas sauberer wollen als eine überladene App.',
-    backToTop: 'Nach oben',
-  },
-};
 
 function normalizeSearchText(value) {
   return String(value ?? '')
@@ -484,185 +240,6 @@ function syncDefaultThemeButtonIcon() {
   defaultButton.setAttribute('aria-label', viewportMedia?.matches ? 'Default theme mobile' : 'Default theme desktop');
 }
 
-const LOCALIZED_FIELDS = [
-  ['title', 'title'],
-  ['.nav-links a[href="#forecast"]', 'text'],
-  ['.nav-links a[href="#calendar"]', 'text'],
-  ['.nav-links a[href="#map"]', 'text'],
-  ['.nav-links a[href="#tours"]', 'text'],
-  ['.nav-links a[href="#alerts"]', 'text'],
-  ['.nav-links a[href="#compare"]', 'text'],
-  ['.nav-links a[href="#learn"]', 'text'],
-  ['.hero-copy .eyebrow', 'text'],
-  ['.hero-copy h1', 'text'],
-  ['.hero-copy .lede', 'text'],
-  ['.hero-actions a.primary', 'text'],
-  ['.hero-actions a.secondary', 'text'],
-  ['.panel-title', 'text'],
-  ['#forecast .section-head .eyebrow', 'text'],
-  ['#forecast .section-head h2', 'text'],
-  ['#windowTitle', 'text'],
-  ['#windowText', 'text'],
-  ['.timeline-card .card-head h3', 'text'],
-  ['.timeline-card .card-head p', 'text'],
-  ['#calendar .section-head .eyebrow', 'text'],
-  ['#calendar .section-head h2', 'text'],
-  ['#calendarSelectedLabel', 'text'],
-  ['#calendarSelectedSummary', 'text'],
-  ['.calendar-best h4', 'text'],
-  ['#planner .section-head .eyebrow', 'text'],
-  ['#planner .section-head h2', 'text'],
-  ['.preset-section-head strong', 'text'],
-  ['.preset-section-head .muted', 'text'],
-  ['#searchInput', 'placeholder'],
-  ['#searchButton', 'text'],
-  ['#useCurrent', 'text'],
-  ['#resultSummary', 'text'],
-  ['#map .section-head .eyebrow', 'text'],
-  ['#map .section-head h2', 'text'],
-  ['.map-top h3', 'text'],
-  ['.map-top .muted', 'text'],
-  ['.city-list-card h3', 'text'],
-  ['#webcam .section-head .eyebrow', 'text'],
-  ['#webcam .section-head h2', 'text'],
-  ['.webcam-card.featured h3', 'text'],
-  ['.webcam-link', 'text'],
-  ['#tours .section-head .eyebrow', 'text'],
-  ['#tours .section-head h2', 'text'],
-  ['#alerts .section-head .eyebrow', 'text'],
-  ['#alerts .section-head h2', 'text'],
-  ['#alertForm .button.primary', 'text'],
-  ['#learn .section-head .eyebrow', 'text'],
-  ['#learn .section-head h2', 'text'],
-  ['#learn .info-card:nth-of-type(1) h3', 'text'],
-  ['#learn .info-card:nth-of-type(2) h3', 'text'],
-  ['#learn .info-card:nth-of-type(3) h3', 'text'],
-  ['#learn .info-card:nth-of-type(4) h3', 'text'],
-  ['#compare .section-head .eyebrow', 'text'],
-  ['#compare .section-head h2', 'text'],
-  ['#compare .compare-card.winner h3', 'text'],
-  ['#compare .compare-card:not(.winner) h3', 'text'],
-  ['.compare-badge', 'text'],
-  ['.muted-badge', 'text'],
-  ['.footer-card:nth-of-type(1) h3', 'text'],
-  ['.footer-card:nth-of-type(1) p', 'text'],
-  ['.footer-card:nth-of-type(2) h3', 'text'],
-  ['.footer-card:nth-of-type(2) p', 'text'],
-  ['.footer-card:nth-of-type(3) h3', 'text'],
-  ['.footer-card:nth-of-type(3) p', 'text'],
-  ['.footer-card:nth-of-type(4) h3', 'text'],
-  ['.footer-card:nth-of-type(4) p', 'text'],
-  ['.footer-card:nth-of-type(5) h3', 'text'],
-  ['.footer-card:nth-of-type(5) p', 'text'],
-  ['.footer-bottom p', 'text'],
-  ['.footer-bottom a', 'text'],
-];
-
-const localizedDefaults = new Map();
-
-function captureLocalizedDefaults() {
-  if (localizedDefaults.size) return;
-  LOCALIZED_FIELDS.forEach(([selector, attr]) => {
-    const el = selector === 'title' ? document.title : document.querySelector(selector);
-    if (!el) return;
-    const key = `${selector}::${attr}`;
-    localizedDefaults.set(key, attr === 'title' ? document.title : attr === 'text' ? el.textContent : el.getAttribute(attr));
-  });
-}
-
-function setLocalized(selector, attr, value) {
-  if (selector === 'title') {
-    document.title = value;
-    return;
-  }
-  const el = document.querySelector(selector);
-  if (!el) return;
-  if (attr === 'text') el.textContent = value;
-  else el.setAttribute(attr, value);
-}
-
-function restoreLocalizedDefaults() {
-  localizedDefaults.forEach((value, key) => {
-    const [selector, attr] = key.split('::');
-    setLocalized(selector, attr, value ?? '');
-  });
-}
-
-function applyLocalizedCopy(locale = state.languagePreference) {
-  captureLocalizedDefaults();
-  restoreLocalizedDefaults();
-  const t = LANGUAGE_TRANSLATIONS[locale];
-  if (!t) return;
-  const nav = t.nav || [];
-  if (nav[0]) setLocalized('.nav-links a[href="#forecast"]', 'text', nav[0]);
-  if (nav[1]) setLocalized('.nav-links a[href="#calendar"]', 'text', nav[1]);
-  if (nav[2]) setLocalized('.nav-links a[href="#map"]', 'text', nav[2]);
-  if (nav[3]) setLocalized('.nav-links a[href="#tours"]', 'text', nav[3]);
-  if (nav[4]) setLocalized('.nav-links a[href="#alerts"]', 'text', nav[4]);
-  if (nav[5]) setLocalized('.nav-links a[href="#compare"]', 'text', nav[5]);
-  if (nav[6]) setLocalized('.nav-links a[href="#learn"]', 'text', nav[6]);
-  if (t.heroEyebrow) setLocalized('.hero-copy .eyebrow', 'text', t.heroEyebrow);
-  if (t.heroTitle) setLocalized('.hero-copy h1', 'text', t.heroTitle);
-  if (t.heroLede) setLocalized('.hero-copy .lede', 'text', t.heroLede);
-  if (t.heroPrimary) setLocalized('.hero-actions a.primary', 'text', t.heroPrimary);
-  if (t.heroSecondary) setLocalized('.hero-actions a.secondary', 'text', t.heroSecondary);
-  if (t.forecastEyebrow) setLocalized('#forecast .section-head .eyebrow', 'text', t.forecastEyebrow);
-  if (t.forecastTitle) setLocalized('#forecast .section-head h2', 'text', t.forecastTitle);
-  if (t.windowTitle) setLocalized('#windowTitle', 'text', t.windowTitle);
-  if (t.windowText) setLocalized('#windowText', 'text', t.windowText);
-  if (t.timelineTitle) setLocalized('.timeline-card .card-head h3', 'text', t.timelineTitle);
-  if (t.timelineText) setLocalized('.timeline-card .card-head p', 'text', t.timelineText);
-  if (t.calendarEyebrow) setLocalized('#calendar .section-head .eyebrow', 'text', t.calendarEyebrow);
-  if (t.calendarTitle) setLocalized('#calendar .section-head h2', 'text', t.calendarTitle);
-  if (t.calendarSelectedLabel) setLocalized('#calendarSelectedLabel', 'text', t.calendarSelectedLabel);
-  if (t.calendarSelectedSummary) setLocalized('#calendarSelectedSummary', 'text', t.calendarSelectedSummary);
-  if (t.calendarBestNightsTitle) setLocalized('.calendar-best h4', 'text', t.calendarBestNightsTitle);
-  if (t.plannerEyebrow) setLocalized('#planner .section-head .eyebrow', 'text', t.plannerEyebrow);
-  if (t.plannerTitle) setLocalized('#planner .section-head h2', 'text', t.plannerTitle);
-  if (t.presetStrong) setLocalized('.preset-section-head strong', 'text', t.presetStrong);
-  if (t.presetMuted) setLocalized('.preset-section-head .muted', 'text', t.presetMuted);
-  if (t.searchPlaceholder) setLocalized('#searchInput', 'placeholder', t.searchPlaceholder);
-  if (t.searchButton) setLocalized('#searchButton', 'text', t.searchButton);
-  if (t.useCurrent) setLocalized('#useCurrent', 'text', t.useCurrent);
-  if (t.resultEmpty) setLocalized('#resultSummary', 'text', t.resultEmpty);
-  if (t.mapEyebrow) setLocalized('#map .section-head .eyebrow', 'text', t.mapEyebrow);
-  if (t.mapTitle) setLocalized('#map .section-head h2', 'text', t.mapTitle);
-  if (t.auroraOval) setLocalized('.map-top h3', 'text', t.auroraOval);
-  if (t.auroraHelp) setLocalized('.map-top .muted', 'text', t.auroraHelp);
-  if (t.bestPlaces) setLocalized('.city-list-card h3', 'text', t.bestPlaces);
-  if (t.webcamEyebrow) setLocalized('#webcam .section-head .eyebrow', 'text', t.webcamEyebrow);
-  if (t.webcamTitle) setLocalized('#webcam .section-head h2', 'text', t.webcamTitle);
-  if (t.featuredCam) setLocalized('.webcam-card.featured h3', 'text', t.featuredCam);
-  if (t.openLive) setLocalized('.webcam-link', 'text', t.openLive);
-  if (t.toursEyebrow) setLocalized('#tours .section-head .eyebrow', 'text', t.toursEyebrow);
-  if (t.toursTitle) setLocalized('#tours .section-head h2', 'text', t.toursTitle);
-  if (t.alertsEyebrow) setLocalized('#alerts .section-head .eyebrow', 'text', t.alertsEyebrow);
-  if (t.alertsTitle) setLocalized('#alerts .section-head h2', 'text', t.alertsTitle);
-  if (t.saveWatch) setLocalized('#alertForm .button.primary', 'text', t.saveWatch);
-  if (t.learnEyebrow) setLocalized('#learn .section-head .eyebrow', 'text', t.learnEyebrow);
-  if (t.learnTitle) setLocalized('#learn .section-head h2', 'text', t.learnTitle);
-  if (t.kpTitle) setLocalized('#learn .info-card:nth-of-type(1) h3', 'text', t.kpTitle);
-  if (t.bzTitle) setLocalized('#learn .info-card:nth-of-type(2) h3', 'text', t.bzTitle);
-  if (t.cloudTitle) setLocalized('#learn .info-card:nth-of-type(3) h3', 'text', t.cloudTitle);
-  if (t.darkTitle) setLocalized('#learn .info-card:nth-of-type(4) h3', 'text', t.darkTitle);
-  if (t.compareEyebrow) setLocalized('#compare .section-head .eyebrow', 'text', t.compareEyebrow);
-  if (t.compareTitle) setLocalized('#compare .section-head h2', 'text', t.compareTitle);
-  if (t.compareRecommended) setLocalized('.compare-badge', 'text', t.compareRecommended);
-  if (t.compareCluttered) setLocalized('.muted-badge', 'text', t.compareCluttered);
-  if (t.footerAbout) setLocalized('.footer-card:nth-of-type(1) h3', 'text', t.footerAbout);
-  if (t.footerAboutText) setLocalized('.footer-card:nth-of-type(1) p', 'text', t.footerAboutText);
-  if (t.footerOperator) setLocalized('.footer-card:nth-of-type(2) h3', 'text', t.footerOperator);
-  if (t.footerOperatorText) setLocalized('.footer-card:nth-of-type(2) p', 'text', t.footerOperatorText);
-  if (t.footerContact) setLocalized('.footer-card:nth-of-type(3) h3', 'text', t.footerContact);
-  if (t.footerContactText) setLocalized('.footer-card:nth-of-type(3) p', 'text', t.footerContactText);
-  if (t.footerPrivacy) setLocalized('.footer-card:nth-of-type(4) h3', 'text', t.footerPrivacy);
-  if (t.footerPrivacyText) setLocalized('.footer-card:nth-of-type(4) p', 'text', t.footerPrivacyText);
-  if (t.footerCookies) setLocalized('.footer-card:nth-of-type(5) h3', 'text', t.footerCookies);
-  if (t.footerCookiesText) setLocalized('.footer-card:nth-of-type(5) p', 'text', t.footerCookiesText);
-  if (t.footerBottom) setLocalized('.footer-bottom p', 'text', t.footerBottom);
-  if (t.backToTop) setLocalized('.footer-bottom a', 'text', t.backToTop);
-}
-
 function buildWebcamEmbedUrl(id, autoplay = true) {
   const url = new URL(`https://www.youtube.com/embed/${id}`);
   url.searchParams.set('autoplay', autoplay ? '1' : '0');
@@ -723,11 +300,11 @@ function startOfMonth(date, offset = 0) {
 }
 
 function formatMonthYear(date) {
-  return date.toLocaleString(state.languagePreference || undefined, { month: 'long', year: 'numeric' });
+  return date.toLocaleString([], { month: 'long', year: 'numeric' });
 }
 
 function formatCalendarDate(date) {
-  return date.toLocaleString(state.languagePreference || undefined, { weekday: 'long', month: 'short', day: 'numeric' });
+  return date.toLocaleString([], { weekday: 'long', month: 'short', day: 'numeric' });
 }
 
 function moonAge(date) {
@@ -1500,29 +1077,9 @@ async function refreshLive() {
   }
 }
 
-function syncLanguageButtons() {
-  const current = LANGUAGE_META[state.languagePreference] || LANGUAGE_META['en-US'];
-  if (languageFlag) languageFlag.textContent = current.flag;
-  if (languageLabel) languageLabel.textContent = current.label;
-  if (languageButton) languageButton.setAttribute('aria-label', `Language: ${current.label}`);
-  if (languageMenu) languageMenu.querySelectorAll('[data-language-option]').forEach((button) => {
-    const active = button.dataset.languageOption === state.languagePreference;
-    button.classList.toggle('active', active);
-    button.setAttribute('aria-checked', String(active));
-  });
-}
-
 function setThemePreference(preference) {
   state.themePreference = preference;
   applyTheme(preference);
-  saveState();
-}
-
-function setLanguagePreference(locale) {
-  state.languagePreference = LANGUAGE_META[locale] ? locale : 'en-US';
-  root.lang = state.languagePreference;
-  applyLocalizedCopy(state.languagePreference);
-  syncLanguageButtons();
   saveState();
 }
 
@@ -1541,7 +1098,6 @@ function loadState() {
     if (saved.location) state.location = { ...state.location, ...saved.location };
     if (typeof saved.mapFocus === 'string') state.mapFocus = saved.mapFocus;
     if (typeof saved.themePreference === 'string') state.themePreference = saved.themePreference;
-    if (typeof saved.languagePreference === 'string') state.languagePreference = LANGUAGE_META[saved.languagePreference] ? saved.languagePreference : state.languagePreference;
   } catch {
     // ignore corrupt storage
   }
@@ -1559,7 +1115,6 @@ function saveState() {
     mapFocus: state.mapFocus,
     lastNotifiedKey: state.lastNotifiedKey,
     themePreference: state.themePreference,
-    languagePreference: state.languagePreference,
   }));
 }
 
@@ -1726,21 +1281,6 @@ function syncAlertUI() {
 
 themeButtons.forEach((button) => {
   button.addEventListener('click', () => setThemePreference(button.dataset.themeOption || 'system'));
-});
-
-languageOptions.forEach((button) => {
-  button.addEventListener('click', () => {
-    setLanguagePreference(button.dataset.languageOption || 'en-US');
-    if (languageSwitch) languageSwitch.open = false;
-  });
-});
-
-document.addEventListener('click', (event) => {
-  if (languageSwitch?.open && !languageSwitch.contains(event.target)) languageSwitch.open = false;
-});
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && languageSwitch?.open) languageSwitch.open = false;
 });
 
 if (systemThemeMedia?.addEventListener) {
@@ -2040,7 +1580,6 @@ els.saveToggle.addEventListener('change', () => {
 
 renderPresets();
 loadState();
-setLanguagePreference(state.languagePreference);
 syncAlertUI();
 renderTourSubmissions();
 setupExpandableLearnCards();
@@ -2055,7 +1594,6 @@ if (state.location && state.location.name) {
 renderWatchlist();
 state.weather = buildFallbackWeather();
 applyTheme(state.themePreference);
-applyLocalizedCopy(state.languagePreference);
 updateWeather();
 renderCalendar();
 refresh();
