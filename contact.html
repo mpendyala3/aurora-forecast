@@ -4,89 +4,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#07111f" />
-    <meta name="description" content="Use Aurora Hunt’s contact form for support, partnerships, bug reports, or feature ideas, and send your note quickly from any device without leaving the page." />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://aurorahunt.live/contact.html" />
-    <meta property="og:title" content="Aurora Forecast Contact Aurora Hunt Support | Aurora Hunt" />
-    <meta property="og:description" content="Use Aurora Hunt’s contact form for support, partnerships, bug reports, or feature ideas, and send your note quickly from any device without leaving the page." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://aurorahunt.live/contact.html" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Aurora Forecast Contact Aurora Hunt Support | Aurora Hunt" />
-    <meta name="twitter:description" content="Use Aurora Hunt’s contact form for support, partnerships, bug reports, or feature ideas, and send your note quickly from any device without leaving the page." />
-    <link rel="icon" href="favicon.ico" sizes="any" />
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=4" />
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
-    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-    <link rel="manifest" href="manifest.json" />
-    <meta name="aurora-analytics-provider" content="privacy-first" />
-    <meta name="aurora-telemetry-endpoint" content="/rum" />
-    <link rel="preload" as="image" href="assets/logo.svg?v=4" type="image/svg+xml" />
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="consent-bootstrap.js?v=2"></script>
-    <script src="monitoring.js"></script>
-    <script nonce="aurora-hunt-static-nonce-2026-05-08">
-      (() => {
-        try {
-          const consent = window.__auroraConsent || { preferences: false };
-          const pref = consent.preferences ? (JSON.parse(localStorage.getItem('aurora-forecast-v1') || '{}')?.themePreference || 'system') : 'system';
-          const theme = pref === 'system'
-            ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-            : pref;
-          document.documentElement.dataset.theme = theme;
-          const meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', theme === 'light' ? '#eef4ff' : '#07111f');
-        } catch {
-          document.documentElement.dataset.theme = 'dark';
-        }
-      })();
-    </script>
-    <title>Aurora Forecast Contact Aurora Hunt Support | Aurora Hunt</title>
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Aurora Forecast Contact Aurora Hunt Support | Aurora Hunt",
-        "url": "https://aurorahunt.live/contact.html",
-        "description": "Use Aurora Hunt’s contact form for support, partnerships, bug reports, or feature ideas, and send your note quickly from any device without leaving the page."
-      }
-    </script>
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://aurorahunt.live/"},
-          {"@type": "ListItem", "position": 2, "name": "Contact us", "item": "https://aurorahunt.live/contact.html"}
-        ]
-      }
-    </script>
+    <meta name="description" content="Contact Aurora Hunt for support, partnerships, and feature requests." />
+    <title>Contact Us · Aurora Hunt</title>
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="192x192" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="application-name" content="Aurora Hunt" />
+    <meta name="msapplication-TileColor" content="#07111f" />
+    <meta name="msapplication-TileImage" content="/icon-192.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body id="top" class="subpage">
-    <a class="skip-link" href="#main-content">Skip to main content</a>
+  <body>
     <div class="stars" aria-hidden="true"></div>
-    <header>
-      <nav class="topbar" aria-label="Primary">
-        <a class="brand" href="index.html" aria-label="Aurora Hunt home">
-          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" aria-hidden="true" width="34" height="34" /></span>
-          <span>Aurora Hunt</span>
-        </a>
-        <div class="nav-links">
-          <a href="index.html">Home</a>
-        </div>
-      </nav>
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="Aurora Hunt home">
+        <span class="brand-mark">✦</span>
+        <span>Aurora Hunt</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+      </div>
     </header>
 
-    <main id="main-content" class="page-main">
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Contact us</span>
-      </nav>
-
-      <nav class="page-toc" aria-label="On this page">
-        <a href="#contact-form">Contact form</a>
-        <a href="#what-to-send">What to send</a>
-      </nav>
-
+    <main class="page-main">
       <section class="card page-hero">
         <p class="eyebrow">Contact us</p>
         <h1>Talk to Aurora Hunt.</h1>
@@ -96,25 +38,20 @@
       </section>
 
       <section class="page-grid">
-        <article class="card page-card" id="contact-form">
+        <article class="card page-card">
           <h2>Contact form</h2>
           <form class="contact-form" action="https://formspree.io/f/mlgzwlro" method="POST" data-formspree>
             <input type="hidden" name="_subject" value="Aurora Hunt contact form" />
-            <div class="honeypot" aria-hidden="true">
-              <label>Leave this field empty
-                <input name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
-              </label>
-            </div>
 
             <div class="contact-split">
               <label>
                 Your name
-                <input name="name" type="text" placeholder="Your name" autocomplete="name" required />
+                <input name="name" type="text" placeholder="Your name" required />
               </label>
 
               <label>
                 Your email
-                <input name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+                <input name="email" type="email" placeholder="you@example.com" autocomplete="off" required />
               </label>
             </div>
 
@@ -135,17 +72,15 @@
               <textarea name="message" rows="6" placeholder="Tell us what you need or what you’d like to build." required></textarea>
             </label>
 
-          <div class="planner-actions">
-            <button type="submit" class="button primary">Send message</button>
-          </div>
+            <div class="planner-actions">
+              <button type="submit" class="button primary">Send message</button>
+            </div>
 
-          <noscript><p class="page-note">JavaScript is optional here — the form still submits normally without it.</p></noscript>
+            <div id="contactStatus" class="contact-status" aria-live="polite" hidden></div>
+          </form>
+        </article>
 
-          <div id="contactStatus" class="contact-status" aria-live="polite" hidden></div>
-        </form>
-      </article>
-
-        <article class="card page-card" id="what-to-send">
+        <article class="card page-card">
           <h2>What to send</h2>
           <p>
             Partnerships, operator suggestions, bug reports, or ideas for making Aurora Hunt more useful.
@@ -162,19 +97,13 @@
     <footer class="footer">
       <div class="footer-bottom">
         <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
-        <div class="footer-links">
-          <a href="privacy.html">Privacy policy</a>
-          <a href="terms.html">Terms</a>
-          <a href="cookies.html">Cookies</a>
-          <a href="#top">Back to top</a>
-        </div>
+        <a href="index.html">Back home</a>
       </div>
     </footer>
 
-    <script nonce="aurora-hunt-static-nonce-2026-05-08">
+    <script>
       const form = document.querySelector('.contact-form');
       const status = document.querySelector('#contactStatus');
-      const submitButton = form?.querySelector('button[type="submit"]');
 
       function showStatus(kind, message) {
         if (!status) return;
@@ -189,20 +118,7 @@
       form?.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        if (submitButton) {
-          submitButton.disabled = true;
-          submitButton.textContent = 'Sending…';
-        }
-
         const formData = new FormData(form);
-        if (formData.get('_gotcha')) {
-          showStatus('error', 'Submission blocked.');
-          if (submitButton) {
-            submitButton.textContent = 'Send message';
-            submitButton.disabled = false;
-          }
-          return;
-        }
         const response = await fetch(form.action, {
           method: 'POST',
           headers: { Accept: 'application/json' },
@@ -212,16 +128,10 @@
         if (response?.ok) {
           form.reset();
           showStatus('success', 'Message sent — we’ll get back to you soon.');
-          if (submitButton) submitButton.textContent = 'Send message';
-          if (submitButton) submitButton.disabled = false;
           return;
         }
 
-        form.submit();
-        if (submitButton) {
-          submitButton.textContent = 'Send message';
-          submitButton.disabled = false;
-        }
+        showStatus('error', 'Something hiccupped. Please try again in a moment.');
       });
     </script>
   </body>
