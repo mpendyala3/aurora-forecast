@@ -2,255 +2,263 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#07111f" />
-    <meta name="description" content="Aurora Hunt gives you a fast aurora forecast with live NOAA data, webcams, a visibility map, and planning tools so you can decide fast before heading out." />
-    <meta name="robots" content="index, follow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://formspree.io; connect-src 'self' https://services.swpc.noaa.gov https://api.open-meteo.com https://geocoding-api.open-meteo.com https://formspree.io; img-src 'self' data:; font-src 'self'; frame-src https://www.youtube-nocookie.com; script-src 'self'; style-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>Aurora Forecast Tonight: Live Northern Lights Tracker | Aurora Hunt</title>
+    <meta name="description" content="Live aurora forecast for tonight: real-time Kp, solar wind and Bz, cloud cover, an hour-by-hour northern lights chance for any location, and a live oval map." />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+    <meta name="theme-color" content="#04060c" />
+    <meta name="color-scheme" content="dark light" />
     <link rel="canonical" href="https://aurorahunt.live/" />
-    <meta property="og:title" content="Aurora Forecast & Northern Lights Planning | Aurora Hunt" />
-    <meta property="og:description" content="Aurora Hunt gives you a fast aurora forecast with live NOAA data, webcams, a visibility map, and planning tools so you can decide fast before heading out." />
+    <meta property="og:site_name" content="Aurora Hunt" />
+    <meta property="og:title" content="Aurora Forecast Tonight: Live Northern Lights Tracker &amp; Kp Index" />
+    <meta property="og:description" content="Will you see the northern lights tonight? Live Kp, solar wind, cloud cover and an hour-by-hour aurora chance for any location on Earth." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://aurorahunt.live/" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:image" content="https://aurorahunt.live/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Aurora Hunt — live aurora forecast and northern lights tracker" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Aurora Forecast & Northern Lights Planning | Aurora Hunt" />
-    <meta name="twitter:description" content="Aurora Hunt gives you a fast aurora forecast with live NOAA data, webcams, a visibility map, and planning tools so you can decide fast before heading out." />
+    <meta name="twitter:title" content="Aurora Forecast Tonight: Live Northern Lights Tracker &amp; Kp Index" />
+    <meta name="twitter:description" content="Will you see the northern lights tonight? Live Kp, solar wind, cloud cover and an hour-by-hour aurora chance for any location." />
+    <meta name="twitter:image" content="https://aurorahunt.live/assets/og-image.png" />
     <link rel="icon" href="favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=4" />
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
     <link rel="manifest" href="manifest.json" />
     <meta name="aurora-analytics-provider" content="privacy-first" />
     <meta name="aurora-telemetry-endpoint" content="/rum" />
-    <link rel="preload" as="image" href="assets/logo.svg?v=4" type="image/svg+xml" />
-    <link rel="preconnect" href="https://services.swpc.noaa.gov" />
-    <link rel="preconnect" href="https://api.open-meteo.com" />
-    <link rel="preconnect" href="https://geocoding-api.open-meteo.com" />
-    <link rel="preconnect" href="https://formspree.io" />
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="consent-bootstrap.js?v=2"></script>
-    <script src="monitoring.js"></script>
-    <script nonce="aurora-hunt-static-nonce-2026-05-08">
-      (() => {
-        try {
-          const consent = window.__auroraConsent || { preferences: false };
-          const pref = consent.preferences ? (JSON.parse(localStorage.getItem('aurora-forecast-v1') || '{}')?.themePreference || 'system') : 'system';
-          const theme = pref === 'system'
-            ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-            : pref;
-          document.documentElement.dataset.theme = theme;
-          const meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', theme === 'light' ? '#eef4ff' : '#07111f');
-        } catch {
-          document.documentElement.dataset.theme = 'dark';
-        }
-      })();
-    </script>
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
+    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/instrument-serif-400.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/geist-var.woff2" crossorigin />
+    <link rel="preconnect" href="https://services.swpc.noaa.gov" crossorigin />
+    <link rel="preconnect" href="https://api.open-meteo.com" crossorigin />
+    <link rel="stylesheet" href="styles.css?v=20261116" />
+    <script src="boot.js?v=20261116"></script>
+    <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Aurora Hunt",
-        "url": "https://aurorahunt.live/",
-        "description": "Browser-based aurora forecast site with live NOAA space-weather data, webcams, location planning, and alert tools."
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://aurorahunt.live/#org",
+            "name": "Aurora Hunt",
+            "url": "https://aurorahunt.live/",
+            "logo": "https://aurorahunt.live/assets/icon-512.png"
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://aurorahunt.live/#site",
+            "name": "Aurora Hunt",
+            "alternateName": "Aurora Hunt — Aurora Forecast",
+            "url": "https://aurorahunt.live/",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://aurorahunt.live/#org" }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://aurorahunt.live/#app",
+            "name": "Aurora Hunt",
+            "url": "https://aurorahunt.live/",
+            "applicationCategory": "WeatherApplication",
+            "operatingSystem": "Any (web browser)",
+            "browserRequirements": "Requires JavaScript",
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "description": "Free live aurora forecast and northern lights tracker. Combines NOAA SWPC Kp index, solar wind, Bz and the OVATION aurora oval with Open-Meteo cloud cover into an hour-by-hour visibility chance for any location.",
+            "featureList": [
+              "Live planetary Kp index, solar wind speed and Bz",
+              "Hour-by-hour aurora visibility chance for any location",
+              "Interactive aurora oval globe from NOAA OVATION",
+              "27-day aurora outlook calendar with moon phase",
+              "Live aurora webcams",
+              "Browser aurora alerts"
+            ],
+            "publisher": { "@id": "https://aurorahunt.live/#org" }
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://aurorahunt.live/#faq",
+            "mainEntity": [
+              { "@type": "Question", "name": "Will I see the northern lights tonight?", "acceptedAnswer": { "@type": "Answer", "text": "You need three things at once: enough geomagnetic activity for your latitude, a dark sky, and clear weather. Aurora Hunt scores all three hour by hour for your location using live NOAA and Open-Meteo data, and shows the best viewing window for tonight." } },
+              { "@type": "Question", "name": "What Kp index do I need to see the aurora?", "acceptedAnswer": { "@type": "Answer", "text": "It depends on your geomagnetic latitude. Kp 0–2 is enough under the auroral oval (Tromsø, Abisko, Iceland, Fairbanks, Yellowknife). Kp 3–4 reaches central Scandinavia, Scotland's far north and southern Canada. Kp 5 (a G1 storm) reaches Stockholm, Oslo, Edinburgh and the northern United States. Kp 7 and above can bring aurora to northern England, Germany, Poland and the central United States." } },
+              { "@type": "Question", "name": "What is the best time of night to see the northern lights?", "acceptedAnswer": { "@type": "Answer", "text": "Usually between about 22:00 and 02:00 local time, around magnetic midnight, when your location rotates under the most active part of the auroral oval. Aurora can appear at any time when the sky is dark, so check the hourly forecast." } },
+              { "@type": "Question", "name": "What does Bz mean in an aurora forecast?", "acceptedAnswer": { "@type": "Answer", "text": "Bz is the north–south direction of the magnetic field carried by the solar wind. When Bz is negative (southward) it connects with Earth's magnetic field and lets energy in, which powers the aurora. A sustained Bz of −5 nT or lower with fast solar wind is a strong sign." } },
+              { "@type": "Question", "name": "What are the best months to see the aurora?", "acceptedAnswer": { "@type": "Answer", "text": "In the Arctic the season runs from late August to early April, when nights are dark. Geomagnetic activity is statistically highest around the equinoxes in March and September–October. Above the Arctic Circle the midnight sun hides the aurora from roughly May to July." } },
+              { "@type": "Question", "name": "Does a full moon ruin the northern lights?", "acceptedAnswer": { "@type": "Answer", "text": "No. A bright moon washes out faint aurora and reduces contrast, but moderate and strong displays are easily visible. Cloud cover and city lights matter far more than the moon." } },
+              { "@type": "Question", "name": "How accurate are aurora forecasts?", "acceptedAnswer": { "@type": "Answer", "text": "Short-range forecasts are the most reliable: satellites about 1.5 million km upstream of Earth measure the solar wind 15–60 minutes before it arrives. NOAA's 3-day Kp forecast is a useful guide, and the 27-day outlook is based on the Sun's rotation and should be treated as a tendency, not a promise." } },
+              { "@type": "Question", "name": "Where does Aurora Hunt get its data, and is it free?", "acceptedAnswer": { "@type": "Answer", "text": "Aurora Hunt is free and needs no account. Space weather comes from the NOAA Space Weather Prediction Center (Kp index, Kp forecast, solar wind, Bz and the OVATION aurora model). Cloud cover and location search come from Open-Meteo. Everything is calculated in your browser." } }
+            ]
+          }
+        ]
       }
     </script>
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Aurora Forecast & Northern Lights Planning | Aurora Hunt",
-        "url": "https://aurorahunt.live/",
-        "description": "Aurora Hunt gives you a fast aurora forecast with live NOAA data, webcams, a visibility map, and planning tools so you can decide fast before heading out."
-      }
-    </script>
-    <title>Aurora Forecast & Northern Lights Planning | Aurora Hunt</title>
-    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div class="stars" aria-hidden="true"></div>
+    <canvas id="sky" class="sky" aria-hidden="true"></canvas>
 
-    <header class="hero" id="top">
+    <header class="masthead" id="top">
       <nav class="topbar" aria-label="Primary">
         <a class="brand" href="#top" aria-label="Aurora Hunt home">
-          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" aria-hidden="true" width="34" height="34" /></span>
-          <span>Aurora Hunt</span>
+          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" width="30" height="30" /></span>
+          <span class="brand-name">Aurora <em>Hunt</em></span>
         </a>
         <div class="nav-links">
           <a href="#forecast">Forecast</a>
           <a href="#calendar">Calendar</a>
           <a href="#planner">Planner</a>
           <a href="#map">Map</a>
-          <a href="#webcam">Live Aurora</a>
+          <a href="#webcam">Live</a>
           <a href="#tours">Tours</a>
           <a href="#alerts">Alerts</a>
           <a href="#learn">Learn</a>
-          <a href="#compare">Compare</a>
+          <a href="#faq">FAQ</a>
         </div>
-        <div class="theme-switch" role="group" aria-label="Theme selection">
-          <button type="button" class="theme-pill" data-theme-option="dark" aria-label="Dark theme"><span class="theme-icon theme-icon-moon" aria-hidden="true"></span></button>
-          <button type="button" class="theme-pill" data-theme-option="light" aria-label="Light theme"><span class="theme-icon theme-icon-sun" aria-hidden="true"></span></button>
-          <button type="button" class="theme-pill" data-theme-option="system" aria-label="Default theme"><span class="theme-icon theme-icon-device theme-icon-desktop" aria-hidden="true"></span></button>
+        <div class="theme-switch" role="group" aria-label="Theme">
+          <button type="button" class="theme-pill" data-theme-option="dark" aria-label="Dark theme" title="Dark"><span class="theme-icon theme-icon-moon" aria-hidden="true"></span></button>
+          <button type="button" class="theme-pill" data-theme-option="light" aria-label="Light theme" title="Light"><span class="theme-icon theme-icon-sun" aria-hidden="true"></span></button>
+          <button type="button" class="theme-pill" data-theme-option="system" aria-label="Match device theme" title="Auto"><span class="theme-icon theme-icon-auto" aria-hidden="true"></span></button>
         </div>
       </nav>
 
-      <section class="hero-grid">
+      <div class="hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Live aurora conditions, location by location</p>
-          <h1>See the northern lights before the sky decides.</h1>
+          <p class="eyebrow">Live aurora forecast · northern lights tracker</p>
+          <h1>See the <em>northern lights</em> before the sky decides.</h1>
           <p class="lede">
-            A clean, mobile-first aurora website with a live space-weather dashboard,
-            local visibility map, night-window planner, location forecasts, and alert tools.
+            Tonight’s aurora forecast for any place on Earth — live Kp index, solar wind and Bz from NOAA,
+            real cloud cover, and an honest hour-by-hour chance of actually seeing it.
           </p>
-
-        <div class="hero-actions">
-          <a class="button primary" href="#forecast">Check tonight</a>
-          <a class="button secondary" href="#alerts">Set a watch</a>
+          <div class="hero-actions">
+            <a class="button primary" href="#forecast">Check tonight</a>
+            <a class="button secondary" href="#planner">Choose your location</a>
+          </div>
+          <dl class="meta-row">
+            <div class="meta-pill"><dt>Location</dt><dd id="activeLocation">Stockholm</dd></div>
+            <div class="meta-pill"><dt>Kp observed</dt><dd id="updatedAt">—</dd></div>
+            <div class="meta-pill"><dt>Source</dt><dd id="dataSource">—</dd></div>
+          </dl>
         </div>
 
-          <div class="meta-row">
-            <span class="meta-pill">Updated <strong id="updatedAt">—</strong></span>
-            <span class="meta-pill">Source <strong id="dataSource">—</strong></span>
-            <span class="meta-pill">Location <strong id="activeLocation">Stockholm</strong></span>
-          </div>
-        </div>
-
-        <aside class="hero-panel" aria-label="Current space weather">
-          <div class="panel-title">
-            <span class="live-dot"></span>
-            Current conditions
-          </div>
-
-          <div class="stat-grid">
-            <article class="stat-card accent">
-              <span>Kp</span>
-              <strong id="kpValue">—</strong>
-              <small id="kpLabel">—</small>
-            </article>
-            <article class="stat-card">
-              <span>Solar wind</span>
-              <strong id="windValue">—</strong>
-              <small>km/s</small>
-            </article>
-            <article class="stat-card">
-              <span>Bz</span>
-              <strong id="bzValue">—</strong>
-              <small>nT</small>
-            </article>
-            <article class="stat-card">
-              <span>Cloud cover</span>
-              <strong id="cloudValue">—</strong>
-              <small>estimate</small>
-            </article>
-          </div>
-
-          <div class="chance-box">
-            <div>
-              <p>Tonight’s chance</p>
-              <strong id="chanceValue">—</strong>
-            </div>
-            <div class="chance-bar">
-              <span id="chanceFill"></span>
+        <aside class="instrument" aria-label="Tonight’s aurora conditions">
+          <p class="panel-title"><span class="live-dot" aria-hidden="true"></span>Tonight, live</p>
+          <div class="dial">
+            <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+              <defs>
+                <linearGradient id="dialGrad" x1="0" y1="1" x2="1" y2="0">
+                  <stop offset="0" stop-color="#3dffa2" /><stop offset=".55" stop-color="#39d0ff" /><stop offset="1" stop-color="#a77bff" />
+                </linearGradient>
+              </defs>
+              <circle class="dial-track" cx="60" cy="60" r="54" pathLength="100" />
+              <circle class="dial-value" id="chanceRing" cx="60" cy="60" r="54" pathLength="100" stroke="url(#dialGrad)" />
+            </svg>
+            <div class="dial-read">
+              <span>Peak chance</span>
+              <strong><b id="chanceValue">—</b><i>%</i></strong>
+              <small>Right now <b id="nowValue">—</b></small>
             </div>
           </div>
-
-          <div class="forecast-note">
-            <strong id="summaryLabel">—</strong>
-            <p id="summaryText" class="muted">—</p>
+          <div class="verdict" aria-live="polite">
+            <strong id="summaryLabel">Reading the sky…</strong>
+            <p id="summaryText" class="muted">Fetching live space weather and cloud cover.</p>
           </div>
+          <div class="kp-block">
+            <div class="kp-head"><span>Planetary Kp</span><strong id="kpValue">—</strong><small id="kpLabel">—</small></div>
+            <div class="kp-scale" id="kpScale" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <dl class="stat-grid">
+            <div class="stat-card"><dt>Solar wind</dt><dd id="windValue">—</dd><small>km/s</small></div>
+            <div class="stat-card"><dt>Bz</dt><dd id="bzValue">—</dd><small id="bzLabel">nT</small></div>
+            <div class="stat-card"><dt>Cloud</dt><dd id="cloudValue">—</dd><small id="cloudLabel">—</small></div>
+          </dl>
         </aside>
-      </section>
+      </div>
+      <a class="scroll-cue" href="#forecast" aria-label="Scroll to the forecast"><span></span></a>
     </header>
 
     <main id="main-content">
       <noscript>
-        <div class="section"><div class="card page-card">JavaScript is required for live aurora data, but the site content, info pages, and navigation still work.</div></div>
+        <div class="section"><p class="card page-card">The live forecast needs JavaScript. The guides and FAQ below work without it.</p></div>
       </noscript>
+
       <section class="section" id="forecast">
         <div class="section-head">
-          <p class="eyebrow">Forecast</p>
-          <h2>Best viewing times tonight</h2>
+          <p class="eyebrow"><span class="num">01</span>Forecast</p>
+          <h2>Aurora forecast for <em>tonight</em></h2>
+          <p class="section-lede">The next 24 hours, hour by hour: NOAA’s Kp forecast, live cloud cover and how dark the sky gets where you are.</p>
         </div>
 
         <div class="forecast-layout">
           <article class="card window-card">
-            <h3 id="windowTitle">Best window</h3>
-            <p id="windowText" class="muted">Calculating…</p>
-            <div class="window-times">
-              <div>
-                <span>Sunset</span>
-                <strong id="sunsetValue">—</strong>
-              </div>
-              <div>
-                <span>Darkest hour</span>
-                <strong id="darkHourValue">—</strong>
-              </div>
-              <div>
-                <span>Sunrise</span>
-                <strong id="sunriseValue">—</strong>
-              </div>
-            </div>
+            <p class="card-kicker">Best viewing window</p>
+            <h3 id="windowTitle">Calculating…</h3>
+            <p id="windowText" class="muted">Working out when it is dark, clear and active.</p>
+            <dl class="window-times">
+              <div><dt>Sunset</dt><dd id="sunsetValue">—</dd></div>
+              <div><dt>Darkest</dt><dd id="darkHourValue">—</dd></div>
+              <div><dt>Sunrise</dt><dd id="sunriseValue">—</dd></div>
+            </dl>
+            <p id="tzNote" class="small muted"></p>
           </article>
 
           <article class="card timeline-card">
             <div class="card-head">
-              <h3>Hourly aurora forecast</h3>
-              <p>Chance by hour based on Kp, darkness, and cloud estimate.</p>
+              <h3>Hourly northern lights chance</h3>
+              <p class="muted small">% chance of seeing aurora · dimmed bars are daylight or twilight</p>
             </div>
-            <div id="timeline" class="timeline" aria-label="Hourly forecast chart"></div>
+            <ol id="timeline" class="timeline" aria-label="Hourly aurora chance for the next 24 hours"></ol>
           </article>
         </div>
 
+        <h3 class="sub-head">Best places tonight</h3>
         <div class="grid-3" id="cityRankings"></div>
       </section>
 
       <section class="section" id="calendar">
         <div class="section-head">
-          <p class="eyebrow">Calendar</p>
-          <h2>Monthly forecast calendar</h2>
+          <p class="eyebrow"><span class="num">02</span>Calendar</p>
+          <h2>27-day aurora <em>outlook</em></h2>
+          <p class="section-lede">NOAA’s 27-day Kp outlook, the moon, and how dark each night gets at your location. Cloud is included for the next 16 days; a <b>~</b> marks nights with no cloud forecast yet.</p>
         </div>
 
         <article class="card calendar-card">
           <div class="calendar-top">
-            <div>
-              <h3 id="calendarMonthLabel">—</h3>
-              <p class="muted">Color shows watch chance. Moon tags mark new moon and full moon.</p>
-            </div>
+            <h3 id="calendarMonthLabel">—</h3>
             <div class="calendar-actions">
-              <button type="button" id="calendarPrev" class="button secondary">←</button>
-              <button type="button" id="calendarNext" class="button secondary">→</button>
+              <button type="button" id="calendarPrev" class="button secondary icon" aria-label="Previous month">←</button>
+              <button type="button" id="calendarNext" class="button secondary icon" aria-label="Next month">→</button>
             </div>
           </div>
-
-          <div class="calendar-legend" aria-label="Calendar legend">
-            <span><i class="legend-swatch low"></i> Low</span>
-            <span><i class="legend-swatch medium"></i> Medium</span>
-            <span><i class="legend-swatch high"></i> High</span>
-            <span><i class="legend-swatch very-high"></i> Very high</span>
-            <span><i class="legend-moon new"></i> New moon</span>
-            <span><i class="legend-moon full"></i> Full moon</span>
-          </div>
-
+          <ul class="calendar-legend" aria-label="Legend">
+            <li><i class="legend-swatch low"></i>Low</li>
+            <li><i class="legend-swatch medium"></i>Possible</li>
+            <li><i class="legend-swatch high"></i>Good</li>
+            <li><i class="legend-swatch very-high"></i>Strong</li>
+          </ul>
           <div class="calendar-weekdays" aria-hidden="true">
-            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
           </div>
-
-          <div id="forecastCalendar" class="forecast-calendar" aria-label="Forecast calendar"></div>
+          <div id="forecastCalendar" class="forecast-calendar"></div>
 
           <div class="calendar-details-wrap">
             <article class="calendar-details" aria-live="polite">
-              <h4 id="calendarSelectedLabel">Select a day</h4>
-              <p id="calendarSelectedSummary" class="muted">Tap a day to see its watch score, moon phase, and night window.</p>
-              <div class="calendar-detail-grid">
-                <div><span>Watch chance</span><strong id="calendarSelectedScore">—</strong></div>
-                <div><span>Moon</span><strong id="calendarSelectedMoon">—</strong></div>
-                <div><span>Sunset</span><strong id="calendarSelectedSunset">—</strong></div>
-                <div><span>Sunrise</span><strong id="calendarSelectedSunrise">—</strong></div>
-              </div>
+              <h4 id="calendarSelectedLabel">Select a night</h4>
+              <p id="calendarSelectedSummary" class="muted">Pick a day to see its outlook, moon phase and night length.</p>
+              <dl class="calendar-detail-grid">
+                <div><dt>Outlook</dt><dd id="calendarSelectedScore">—</dd></div>
+                <div><dt>Largest Kp</dt><dd id="calendarSelectedKp">—</dd></div>
+                <div><dt>Cloud</dt><dd id="calendarSelectedCloud">—</dd></div>
+                <div><dt>Moon</dt><dd id="calendarSelectedMoon">—</dd></div>
+                <div><dt>Sunset</dt><dd id="calendarSelectedSunset">—</dd></div>
+                <div><dt>Sunrise</dt><dd id="calendarSelectedSunrise">—</dd></div>
+              </dl>
             </article>
-
             <article class="calendar-best">
               <h4>Best nights this month</h4>
-              <div id="calendarBestNights" class="calendar-best-list"></div>
+              <ol id="calendarBestNights" class="calendar-best-list"></ol>
             </article>
           </div>
         </article>
@@ -258,53 +266,45 @@
 
       <section class="section" id="planner">
         <div class="section-head">
-          <p class="eyebrow">Location planner</p>
-          <h2>Will I see it from here?</h2>
+          <p class="eyebrow"><span class="num">03</span>Planner</p>
+          <h2>Will I see it from <em>here?</em></h2>
+          <p class="section-lede">Search any town, or drop in coordinates. The forecast above re-computes for that exact spot.</p>
         </div>
 
         <div class="card planner-card">
-          <form id="locationForm" class="planner-form">
+          <form id="locationForm" class="planner-form" novalidate>
             <div class="preset-section">
-              <div class="preset-section-head">
-                <strong>Choose a city</strong>
-                <span class="muted">Selected city is highlighted</span>
-              </div>
-              <div class="preset-row" id="presetRow" aria-label="Preset locations"></div>
+              <p class="field-label">Aurora capitals</p>
+              <div class="preset-row" id="presetRow"></div>
             </div>
-            <label>
-              Search location
+            <div class="field search-field">
+              <label for="searchInput">Search a location</label>
               <div class="search-row">
-                <input id="searchInput" type="text" placeholder="Search by city or country" autocomplete="off" aria-autocomplete="list" aria-expanded="false" />
-                <button type="button" id="searchButton" class="button secondary search-button">Search</button>
+                <input id="searchInput" type="search" placeholder="City, town or region" autocomplete="off" maxlength="80" aria-controls="searchResults" aria-expanded="false" />
+                <button type="button" id="searchButton" class="button secondary">Search</button>
               </div>
+              <div id="searchResults" class="search-results"></div>
+            </div>
+            <div class="field-pair">
+              <label>Latitude <input id="latInput" type="number" step="0.0001" min="-90" max="90" value="59.3293" inputmode="decimal" /></label>
+              <label>Longitude <input id="lonInput" type="number" step="0.0001" min="-180" max="180" value="18.0686" inputmode="decimal" /></label>
+            </div>
+            <label class="range-field">
+              <span>Cloud cover <b id="cloudPreview">50%</b></span>
+              <input id="cloudInput" type="range" min="0" max="100" value="50" />
+              <small class="muted">Live from Open-Meteo. Drag to test a “what if the sky clears?” scenario.</small>
             </label>
-            <div id="searchResults" class="search-results" aria-label="Location search results"></div>
-            <label>
-              Latitude
-              <input id="latInput" type="number" step="0.0001" value="59.3293" />
-            </label>
-            <label>
-              Longitude
-              <input id="lonInput" type="number" step="0.0001" value="18.0686" />
-            </label>
-            <label>
-              Estimated cloud cover (%)
-              <input id="cloudInput" type="range" min="0" max="100" value="45" />
-              <span id="cloudPreview">45%</span>
-            </label>
-
             <div class="planner-actions">
               <button type="submit" class="button primary">Update forecast</button>
-              <button type="button" id="useCurrent" class="button secondary">Use current city</button>
+              <button type="button" id="useCurrent" class="button secondary">Use my location</button>
             </div>
+            <p id="plannerStatus" class="small muted" aria-live="polite"></p>
           </form>
 
-          <aside class="result-panel">
-            <div class="result-score">
-              <span>Visibility score</span>
-              <strong id="visibilityScore">—</strong>
-            </div>
-            <p id="resultSummary" class="muted">Enter a location to see the forecast.</p>
+          <aside class="result-panel" aria-live="polite">
+            <p class="card-kicker">Peak visibility tonight</p>
+            <strong class="result-score" id="visibilityScore">—</strong>
+            <p id="resultSummary">Choose a location to see the forecast.</p>
             <ul id="resultNotes" class="bullet-list"></ul>
           </aside>
         </div>
@@ -312,336 +312,271 @@
 
       <section class="section" id="map">
         <div class="section-head">
-          <p class="eyebrow">Map</p>
-          <h2>Aurora visibility map</h2>
+          <p class="eyebrow"><span class="num">04</span>Map</p>
+          <h2>Live aurora <em>oval</em> map</h2>
+          <p class="section-lede">Where the aurora is right now, from NOAA’s OVATION model, with the day–night line and the furthest-south viewing limit for the current Kp.</p>
         </div>
 
         <div class="map-layout">
           <article class="card map-card">
             <div class="map-top">
-              <div>
-                <h3>Aurora oval</h3>
-                <p class="muted">Watch the band shift south as geomagnetic activity rises.</p>
+              <div class="map-toolbar" role="group" aria-label="Map view">
+                <button type="button" class="map-filter active" data-map-focus="arctic">Arctic</button>
+                <button type="button" class="map-filter" data-map-focus="nordics">Nordics</button>
+                <button type="button" class="map-filter" data-map-focus="north-america">N. America</button>
+                <button type="button" class="map-filter" data-map-focus="iceland">Iceland</button>
               </div>
               <span class="map-badge" id="mapBadge">Kp —</span>
             </div>
-
-            <div class="map-toolbar" aria-label="Map focus options">
-              <button type="button" class="map-filter active" data-map-focus="global">Global</button>
-              <button type="button" class="map-filter" data-map-focus="nordics">Nordics</button>
-              <button type="button" class="map-filter" data-map-focus="north-america">North America</button>
-              <button type="button" class="map-filter" data-map-focus="iceland">Iceland</button>
+            <div class="globe-wrap">
+              <canvas id="globe" class="globe" width="640" height="640" tabindex="0" role="img" aria-label="Globe showing the current aurora oval over the Arctic. Drag or use the arrow keys to rotate. The same information is listed as text beside the map."></canvas>
             </div>
-
             <div class="map-metrics">
               <span class="map-chip" id="mapBzChip">Bz —</span>
               <span class="map-chip" id="mapWindChip">Wind —</span>
-              <span class="map-chip" id="mapDarkChip">Night —</span>
+              <span class="map-chip" id="mapDarkChip">—</span>
             </div>
-
-            <div class="map-canvas" id="mapCanvas" aria-label="Aurora visibility map">
-              <div class="map-night"></div>
-              <div class="map-silhouette" aria-hidden="true">
-                <span class="land north-america"></span>
-                <span class="land greenland"></span>
-                <span class="land europe"></span>
-                <span class="land asia"></span>
-                <span class="land south-america"></span>
-                <span class="land africa"></span>
-              </div>
-              <div class="map-grid"></div>
-              <div class="map-focus-ring"></div>
-              <div class="aurora-band" id="auroraBand"></div>
-              <div class="map-region region-north-america">North America</div>
-              <div class="map-region region-greenland">Greenland</div>
-              <div class="map-region region-nordics">Nordics</div>
-              <div class="map-region region-siberia">Siberia</div>
-              <div class="city-pin sweden">Stockholm</div>
-              <div class="city-pin norway">Tromsø</div>
-              <div class="city-pin iceland">Reykjavík</div>
-              <div class="city-pin canada">Fairbanks</div>
-            </div>
-
-            <div class="legend">
-              <span><i class="legend-glow"></i> Stronger aurora zone</span>
-              <span><i class="legend-line"></i> Approximate visibility edge</span>
-            </div>
+            <ul class="legend">
+              <li><i class="legend-glow"></i>Aurora probability</li>
+              <li><i class="legend-line"></i>Viewing limit at current Kp</li>
+              <li><i class="legend-here"></i>Your location</li>
+            </ul>
+            <p id="mapSource" class="small muted">Loading NOAA OVATION…</p>
           </article>
 
           <article class="card city-list-card">
-            <h3>Best places right now</h3>
-            <div id="bestCities" class="city-list"></div>
+            <h3>Where to be tonight</h3>
+            <p class="muted small">Peak chance over the next 24 hours, with live cloud. Tap a place to plan for it.</p>
+            <ol id="bestCities" class="city-list"></ol>
           </article>
         </div>
       </section>
 
       <section class="section" id="webcam">
         <div class="section-head">
-          <p class="eyebrow">Live Aurora</p>
-          <h2>Live aurora telecast</h2>
+          <p class="eyebrow"><span class="num">05</span>Live</p>
+          <h2>Live aurora <em>webcams</em></h2>
+          <p class="section-lede">Proof beats prediction. Watch the sky from under the oval while you decide.</p>
         </div>
 
         <div class="webcam-layout">
           <article class="card webcam-card featured">
             <div class="webcam-top">
               <div>
-                <h3 id="featuredCamTitle">Featured live cam</h3>
-                <p id="featuredCamMeta" class="muted">Kilpisjärvi, Finland · north view</p>
+                <h3 id="featuredCamTitle">Kilpisjärvi aurora cam</h3>
+                <p id="featuredCamMeta" class="muted small">Kilpisjärvi, Finland · north view</p>
               </div>
-              <a id="featuredCamLink" class="button secondary webcam-link" href="https://www.youtube.com/watch?v=ccTVAhJU5lg" target="_blank" rel="noreferrer noopener">Open live</a>
+              <a id="featuredCamLink" class="button secondary" href="https://www.youtube.com/watch?v=ccTVAhJU5lg" target="_blank" rel="noopener noreferrer">Open on YouTube</a>
             </div>
-
-            <div class="webcam-frame">
-              <iframe
-                id="featuredCamFrame"
-                src="https://www.youtube.com/embed/ccTVAhJU5lg?autoplay=0&mute=1&playsinline=1&rel=0&modestbranding=1"
-                title="Aurora webcam live stream from Kilpisjärvi, Finland"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin"
-                allowfullscreen></iframe>
+            <div class="webcam-frame" id="camStage">
+              <button type="button" class="cam-play" id="camPlay" data-webcam-id="ccTVAhJU5lg">
+                <span class="cam-play-icon" aria-hidden="true"></span>
+                <span>Play live stream</span>
+                <small>Loads YouTube in privacy-enhanced mode only when you press play</small>
+              </button>
             </div>
-
-            <p class="muted webcam-note">
-              If the sky is active, this is the live window. When it’s quiet here, the other cams may still be catching the glow.
-            </p>
           </article>
 
           <article class="card webcam-card">
             <h3>More live cameras</h3>
             <div class="cam-list">
-              <a class="cam-item" href="https://www.youtube.com/watch?v=8vZZMvqBNHQ" data-webcam-title="Northumberland Aurora Cam" data-webcam-meta="Cresswell, UK · live stream" data-webcam-id="8vZZMvqBNHQ" data-webcam-watch="https://www.youtube.com/watch?v=8vZZMvqBNHQ">
-                <strong>Northumberland Aurora Cam</strong>
-                <span>Cresswell, UK · live stream</span>
-              </a>
-              <a class="cam-item" href="https://www.youtube.com/watch?v=GzdFAwFtryQ" data-webcam-title="Iceland aurora live" data-webcam-meta="Severe storm coverage · northern lights" data-webcam-id="GzdFAwFtryQ" data-webcam-watch="https://www.youtube.com/watch?v=GzdFAwFtryQ">
-                <strong>Iceland aurora live</strong>
-                <span>Severe storm coverage · northern lights</span>
-              </a>
-              <a class="cam-item" href="https://www.youtube.com/watch?v=O52zDyxg5QI" data-webcam-title="Fairbanks Aurora Camera" data-webcam-meta="EXPLORE.org · Alaska" data-webcam-id="O52zDyxg5QI" data-webcam-watch="https://www.youtube.com/watch?v=O52zDyxg5QI">
-                <strong>Fairbanks Aurora Camera</strong>
-                <span>EXPLORE.org · Alaska</span>
-              </a>
+              <a class="cam-item active" href="https://www.youtube.com/watch?v=ccTVAhJU5lg" data-webcam-id="ccTVAhJU5lg" data-webcam-title="Kilpisjärvi aurora cam" data-webcam-meta="Kilpisjärvi, Finland · north view"><strong>Kilpisjärvi aurora cam</strong><span>Finland · 69°N</span></a>
+              <a class="cam-item" href="https://www.youtube.com/watch?v=O52zDyxg5QI" data-webcam-id="O52zDyxg5QI" data-webcam-title="Fairbanks aurora camera" data-webcam-meta="Fairbanks, Alaska · explore.org"><strong>Fairbanks aurora camera</strong><span>Alaska · 65°N</span></a>
+              <a class="cam-item" href="https://www.youtube.com/watch?v=GzdFAwFtryQ" data-webcam-id="GzdFAwFtryQ" data-webcam-title="Iceland aurora live" data-webcam-meta="Iceland · northern lights stream"><strong>Iceland aurora live</strong><span>Iceland · 64°N</span></a>
+              <a class="cam-item" href="https://www.youtube.com/watch?v=8vZZMvqBNHQ" data-webcam-id="8vZZMvqBNHQ" data-webcam-title="Northumberland aurora cam" data-webcam-meta="Cresswell, England · north-facing coast"><strong>Northumberland aurora cam</strong><span>England · 55°N</span></a>
             </div>
+            <p class="muted small">Streams are run by their owners and may be offline in daylight or bad weather.</p>
           </article>
         </div>
       </section>
 
       <section class="section" id="tours">
         <div class="section-head">
-          <p class="eyebrow">Tours</p>
-          <h2>Reputed aurora tour operators</h2>
+          <p class="eyebrow"><span class="num">06</span>Tours</p>
+          <h2>Aurora tour <em>operators</em></h2>
+          <p class="section-lede">Local guides chase clear skies so you don’t have to. These are independent links, not paid placements.</p>
         </div>
-
-        <div class="tours-layout">
-          <div class="tour-grid">
-            <article class="card tour-card">
-              <div>
-                <p class="tour-region">Tromsø, Norway</p>
-                <h3>Chasing Lights</h3>
-                <p class="muted">Aurora chase tours, private experiences, and small-group trips with local guides.</p>
-              </div>
-              <a class="button secondary tour-link" href="https://www.chasinglights.com/" target="_blank" rel="noreferrer noopener">View tour</a>
-            </article>
-
-            <article class="card tour-card">
-              <div>
-                <p class="tour-region">Iceland</p>
-                <h3>Arctic Adventures</h3>
-                <p class="muted">Northern lights tours, snowmobile add-ons, and adventure packages around Iceland.</p>
-              </div>
-              <a class="button secondary tour-link" href="https://www.arcticadventures.com/" target="_blank" rel="noreferrer noopener">Explore options</a>
-            </article>
-
-            <article class="card tour-card">
-              <div>
-                <p class="tour-region">Tromsø, Norway</p>
-                <h3>Tromsø Safari</h3>
-                <p class="muted">Aurora hunting, fjord trips, and winter experiences from Northern Norway.</p>
-              </div>
-              <a class="button secondary tour-link" href="https://www.tromsosafari.no/" target="_blank" rel="noreferrer noopener">View tour</a>
-            </article>
-
-            <article class="card tour-card">
-              <div>
-                <p class="tour-region">Nordics</p>
-                <h3>Best Arctic</h3>
-                <p class="muted">Guided aurora tours, boat trips, and seasonal packages across northern destinations.</p>
-              </div>
-              <a class="button secondary tour-link" href="https://bestarctic.com/" target="_blank" rel="noreferrer noopener">Explore options</a>
-            </article>
-          </div>
-
+        <div class="tour-grid">
+          <article class="card tour-card">
+            <p class="tour-region">Tromsø, Norway</p>
+            <h3>Chasing Lights</h3>
+            <p class="muted">Aurora chases, private experiences and small-group trips with local guides.</p>
+            <a class="tour-link" href="https://www.chasinglights.com/" target="_blank" rel="noopener noreferrer">Visit site<span aria-hidden="true"> ↗</span></a>
+          </article>
+          <article class="card tour-card">
+            <p class="tour-region">Iceland</p>
+            <h3>Arctic Adventures</h3>
+            <p class="muted">Northern lights tours and winter adventure packages around Iceland.</p>
+            <a class="tour-link" href="https://www.arcticadventures.com/" target="_blank" rel="noopener noreferrer">Visit site<span aria-hidden="true"> ↗</span></a>
+          </article>
+          <article class="card tour-card">
+            <p class="tour-region">Tromsø, Norway</p>
+            <h3>Tromsø Safari</h3>
+            <p class="muted">Aurora hunting, fjord trips and winter experiences from Northern Norway.</p>
+            <a class="tour-link" href="https://www.tromsosafari.no/" target="_blank" rel="noopener noreferrer">Visit site<span aria-hidden="true"> ↗</span></a>
+          </article>
+          <article class="card tour-card">
+            <p class="tour-region">Nordics</p>
+            <h3>Best Arctic</h3>
+            <p class="muted">Guided aurora tours, boat trips and seasonal packages across the north.</p>
+            <a class="tour-link" href="https://bestarctic.com/" target="_blank" rel="noopener noreferrer">Visit site<span aria-hidden="true"> ↗</span></a>
+          </article>
         </div>
+        <p class="muted small tour-foot">Run a tour? <a href="submit-operator.html">Suggest an operator</a>.</p>
       </section>
 
       <section class="section" id="alerts">
         <div class="section-head">
-          <p class="eyebrow">Alerts</p>
-          <h2>Save an alert and get notified</h2>
+          <p class="eyebrow"><span class="num">07</span>Alerts</p>
+          <h2>Set an aurora <em>watch</em></h2>
+          <p class="section-lede">Pick the chance that is worth leaving the sofa for. Your browser pings you when tonight’s peak crosses it.</p>
         </div>
-
-        <div class="alerts-layout">
-          <article class="card alert-card">
-            <form id="alertForm" class="alert-form" action="https://formspree.io/f/xqendboy" method="POST" data-formspree>
-              <label>
-                Email for alert setup
-                <input id="emailInput" name="email" type="email" placeholder="you@example.com" autocomplete="off" required />
-              </label>
-
-              <label>
-                Alert threshold: <strong id="thresholdValue">60%</strong>
-                <input id="thresholdInput" name="threshold" type="range" min="20" max="95" value="60" />
-              </label>
-
-              <div class="toggle-row">
-                <label class="toggle">
-                  <input id="notifyToggle" name="browser_notifications" type="checkbox" />
-                  <span>Browser notifications</span>
-                </label>
-                <label class="toggle">
-                  <input id="saveToggle" name="save_location" type="checkbox" checked />
-                  <span>Save this location</span>
-                </label>
-              </div>
-
-              <div class="planner-actions">
-                <button type="submit" class="button primary">Save watch</button>
-              </div>
-
-            <p id="alertStatus" class="muted small"></p>
+        <article class="card alert-card">
+          <form id="alertForm" class="alert-form" action="https://formspree.io/f/xqendboy" method="POST">
+            <div class="honeypot" aria-hidden="true"><label>Leave this field empty <input name="_gotcha" type="text" tabindex="-1" autocomplete="off" /></label></div>
+            <label class="range-field">
+              <span>Alert me above <b id="thresholdValue">60%</b></span>
+              <input id="thresholdInput" name="threshold" type="range" min="20" max="95" value="60" />
+            </label>
+            <div class="toggle-row">
+              <label class="toggle"><input id="notifyToggle" name="browser_notifications" type="checkbox" /><span>Browser notifications</span></label>
+              <label class="toggle"><input id="saveToggle" name="save_location" type="checkbox" checked /><span>Remember this location</span></label>
+            </div>
+            <label>
+              Email for storm alerts
+              <input id="emailInput" name="email" type="email" placeholder="you@example.com" autocomplete="email" maxlength="254" required />
+            </label>
+            <div class="planner-actions"><button type="submit" class="button primary">Join the alert list</button></div>
+            <p class="muted small">Browser notifications work while this tab is open. The email form sends your address, threshold and rounded location to us via Formspree — see the <a href="privacy.html">privacy policy</a>.</p>
+            <p id="alertStatus" class="small" aria-live="polite"></p>
           </form>
-          </article>
-
-        </div>
+        </article>
       </section>
 
       <section class="section" id="learn">
         <div class="section-head">
-          <p class="eyebrow">Learn</p>
-          <h2>What the numbers mean</h2>
+          <p class="eyebrow"><span class="num">08</span>Learn</p>
+          <h2>What the numbers <em>mean</em></h2>
+          <p class="section-lede">Four inputs decide every aurora night. Here is how to read them.</p>
         </div>
-
         <div class="learn-grid">
-          <article class="card info-card" data-expandable-card tabindex="0" role="button" aria-expanded="false" aria-controls="kp-details">
-            <h3>Kp Index</h3>
-            <p>
-              A quick measure of geomagnetic activity. Higher Kp can move auroras farther south...
-            </p>
-            <div id="kp-details" class="info-card-details" hidden>
-              <p>Think of Kp as the sky’s “storm strength” meter. Low Kp usually means auroras stay near the poles; higher values can bring them into more southern skies.</p>
-              <p>Kp is a 3-hour geomagnetic index derived from mid-latitude magnetometer disturbances on a quasi-logarithmic scale from 0 to 9. It summarizes how strongly Earth’s magnetic field is being pushed by solar wind energy.</p>
-              <p>We use it as the broad “how active is the magnetosphere?” input, then blend in darkness, clouds, and Bz so the forecast is more location-aware than raw Kp alone.</p>
+          <details class="card info-card">
+            <summary><h3>Kp index</h3><p>The planet-wide “storm strength” meter, from 0 (quiet) to 9 (extreme).</p></summary>
+            <div class="info-card-details">
+              <p>Kp is a 3-hour index of how disturbed Earth’s magnetic field is, measured by a network of magnetometers on a quasi-logarithmic 0–9 scale. Kp 5 and above are geomagnetic storms, labelled G1 to G5 by NOAA.</p>
+              <p>The higher the Kp, the further the auroral oval expands toward the equator. As a rule of thumb the aurora can be seen on the horizon down to about 66° geomagnetic latitude at Kp 0, 60° at Kp 3, 56° at Kp 5 and 52° at Kp 7.</p>
+              <p>Aurora Hunt uses the observed Kp for right now, NOAA’s 3-day Kp forecast for the hourly chart, and the 27-day outlook for the calendar.</p>
             </div>
-          </article>
-          <article class="card info-card" data-expandable-card tabindex="0" role="button" aria-expanded="false" aria-controls="bz-details">
-            <h3>Bz</h3>
-            <p>
-              Negative Bz usually means better aurora coupling with Earth’s magnetic field...
-            </p>
-            <div id="bz-details" class="info-card-details" hidden>
-              <p>Bz is the “direction” of the solar wind’s magnetic field. Negative Bz is generally good for auroras because it opens the door for energy to enter Earth’s system.</p>
-              <p>Bz is the north–south component of the interplanetary magnetic field (IMF) in geocentric solar magnetospheric coordinates. A sustained southward orientation (negative values) favors magnetic reconnection at the dayside magnetopause.</p>
-              <p>Short negative spikes are less useful than a steady southward period, so the forecast weighs Bz alongside solar wind speed and darkness rather than treating it as a yes/no flag.</p>
+          </details>
+          <details class="card info-card">
+            <summary><h3>Bz</h3><p>The direction of the solar wind’s magnetic field. Negative is good.</p></summary>
+            <div class="info-card-details">
+              <p>Bz is the north–south component of the interplanetary magnetic field. When it points south (negative) it reconnects with Earth’s field and lets solar wind energy pour into the magnetosphere.</p>
+              <p>A steady Bz of −5 nT or lower for an hour, with solar wind faster than about 500 km/s, is a classic recipe for a bright display. Short negative spikes matter less than sustained southward periods.</p>
+              <p>Bz is measured about 1.5 million km upstream of Earth, so it is the best 15–60 minute early warning there is.</p>
             </div>
-          </article>
-          <article class="card info-card" data-expandable-card tabindex="0" role="button" aria-expanded="false" aria-controls="cloud-details">
-            <h3>Cloud cover</h3>
-            <p>
-              Clouds can hide even a strong aurora, so clear skies matter a lot...
-            </p>
-            <div id="cloud-details" class="info-card-details" hidden>
-              <p>Clouds are the curtain in front of the show. Even a strong aurora won’t matter if the view is covered overhead.</p>
-              <p>We use an estimated cloud fraction to approximate optical obstruction. It’s not the same as visibility or transparency, but it’s a strong first-order blocker for seeing aurora from the ground.</p>
-              <p>The forecast combines cloud estimate with the actual observing window, because a clear sky for one hour can beat a mediocre all-night percentage.</p>
+          </details>
+          <details class="card info-card">
+            <summary><h3>Cloud cover</h3><p>The curtain in front of the show. Clear sky beats a strong storm.</p></summary>
+            <div class="info-card-details">
+              <p>The aurora happens 100–300 km up — far above every cloud. Low and mid-level cloud blocks it completely; thin high cloud only softens it.</p>
+              <p>Aurora Hunt reads total cloud cover from Open-Meteo for each hour of the night at your exact coordinates, so a two-hour clear gap shows up as a spike in the hourly chart.</p>
+              <p>If your spot is clouded over, the “where to be tonight” list compares live cloud at the classic aurora towns.</p>
             </div>
-          </article>
-          <article class="card info-card" data-expandable-card tabindex="0" role="button" aria-expanded="false" aria-controls="dark-details">
-            <h3>Dark sky window</h3>
-            <p>
-              The darkest part of the night gives aurora the best chance to stand out...
-            </p>
-            <div id="dark-details" class="info-card-details" hidden>
-              <p>This is the part of the night when the sky is truly dark enough for aurora to stand out.</p>
-              <p>We approximate the window using local solar geometry, looking for the interval between astronomical twilight boundaries and the darkest part of the night.</p>
-              <p>A decent aurora under a bright sky can look invisible, so we treat darkness as a separate ingredient from magnetic activity and cloud cover.</p>
+          </details>
+          <details class="card info-card">
+            <summary><h3>Darkness</h3><p>Aurora needs a properly dark sky — and that depends on season and latitude.</p></summary>
+            <div class="info-card-details">
+              <p>The forecast calculates the Sun’s real elevation for your location. Aurora starts to show once the Sun is about 6° below the horizon and is at its best below 12° (nautical darkness).</p>
+              <p>In midsummer the high Arctic never gets dark, so the chance stays at zero no matter how strong the storm. In midwinter the polar night can give 20 hours of viewing.</p>
+              <p>Moonlight lowers contrast for faint aurora, so the calendar gently favours nights near the new moon.</p>
             </div>
-          </article>
+          </details>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="section-head">
+          <p class="eyebrow"><span class="num">09</span>FAQ</p>
+          <h2>Northern lights, <em>answered</em></h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item" open>
+            <summary><h3>Will I see the northern lights tonight?</h3></summary>
+            <p>You need three things at once: enough geomagnetic activity for your latitude, a dark sky, and clear weather. Aurora Hunt scores all three hour by hour for your location using live NOAA and Open-Meteo data, and shows the best viewing window for tonight. <a href="#forecast">Check tonight’s forecast</a>.</p>
+          </details>
+          <details class="faq-item">
+            <summary><h3>What Kp index do I need to see the aurora?</h3></summary>
+            <p>It depends on your geomagnetic latitude. Kp 0–2 is enough under the auroral oval (Tromsø, Abisko, Iceland, Fairbanks, Yellowknife). Kp 3–4 reaches central Scandinavia, Scotland’s far north and southern Canada. Kp 5 (a G1 storm) reaches Stockholm, Oslo, Edinburgh and the northern United States. Kp 7 and above can bring aurora to northern England, Germany, Poland and the central United States.</p>
+          </details>
+          <details class="faq-item">
+            <summary><h3>What is the best time of night to see the northern lights?</h3></summary>
+            <p>Usually between about 22:00 and 02:00 local time, around magnetic midnight, when your location rotates under the most active part of the auroral oval. Aurora can appear at any time when the sky is dark, so check the hourly forecast.</p>
+          </details>
+          <details class="faq-item">
+            <summary><h3>What does Bz mean in an aurora forecast?</h3></summary>
+            <p>Bz is the north–south direction of the magnetic field carried by the solar wind. When Bz is negative (southward) it connects with Earth’s magnetic field and lets energy in, which powers the aurora. A sustained Bz of −5 nT or lower with fast solar wind is a strong sign.</p>
+          </details>
+          <details class="faq-item">
+            <summary><h3>What are the best months to see the aurora?</h3></summary>
+            <p>In the Arctic the season runs from late August to early April, when nights are dark. Geomagnetic activity is statistically highest around the equinoxes in March and September–October. Above the Arctic Circle the midnight sun hides the aurora from roughly May to July.</p>
+          </details>
+          <details class="faq-item">
+            <summary><h3>Does a full moon ruin the northern lights?</h3></summary>
+            <p>No. A bright moon washes out faint aurora and reduces contrast, but moderate and strong displays are easily visible. Cloud cover and city lights matter far more than the moon.</p>
+          </details>
+          <details class="faq-item">
+            <summary><h3>How accurate are aurora forecasts?</h3></summary>
+            <p>Short-range forecasts are the most reliable: satellites about 1.5 million km upstream of Earth measure the solar wind 15–60 minutes before it arrives. NOAA’s 3-day Kp forecast is a useful guide, and the 27-day outlook is based on the Sun’s rotation and should be treated as a tendency, not a promise.</p>
+          </details>
+          <details class="faq-item">
+            <summary><h3>Where does Aurora Hunt get its data, and is it free?</h3></summary>
+            <p>Aurora Hunt is free and needs no account. Space weather comes from the NOAA Space Weather Prediction Center (Kp index, Kp forecast, solar wind, Bz and the OVATION aurora model). Cloud cover and location search come from Open-Meteo. Everything is calculated in your browser.</p>
+          </details>
         </div>
       </section>
 
       <section class="section" id="compare">
         <div class="section-head">
-          <p class="eyebrow">Compare</p>
-          <h2>Why Aurora Hunt stands out</h2>
+          <p class="eyebrow"><span class="num">10</span>Method</p>
+          <h2>How the forecast is <em>made</em></h2>
         </div>
-
-        <div class="compare-layout">
-          <article class="card compare-card winner">
-            <div class="compare-head">
-              <h3>Aurora Hunt</h3>
-              <span class="compare-badge">Recommended</span>
-            </div>
-            <ul class="compare-list">
-              <li><strong>No backend required</strong><span>Works fully in the browser, with graceful fallbacks if feeds fail.</span></li>
-              <li><strong>Location-aware planning</strong><span>Search, reverse geocode, and presets make it easy to check any spot.</span></li>
-              <li><strong>Clearer guidance</strong><span>Turns Kp, Bz, clouds, and darkness into plain-language advice.</span></li>
-              <li><strong>Better for checking tonight</strong><span>Hourly chance bars, best-window timing, and a fast visibility summary.</span></li>
-            </ul>
-          </article>
-
-          <article class="card compare-card">
-            <div class="compare-head">
-              <h3>Typical forecast apps</h3>
-              <span class="compare-badge muted-badge">Often cluttered</span>
-            </div>
-            <ul class="compare-list">
-              <li><strong>More switching around</strong><span>Data, maps, and alerts are often split across multiple screens.</span></li>
-              <li><strong>Less context</strong><span>Numbers can be shown without explaining what they mean for your location.</span></li>
-              <li><strong>Heavier setups</strong><span>Many rely on accounts, logins, or extra services to unlock the useful parts.</span></li>
-              <li><strong>Weaker fallback behavior</strong><span>If a feed is down, the experience can break instead of degrading cleanly.</span></li>
-            </ul>
-          </article>
-        </div>
+        <ol class="method-list">
+          <li><strong>Reach</strong><span>Your geomagnetic latitude is compared with how far the auroral oval extends at the current and forecast Kp.</span></li>
+          <li><strong>Energy</strong><span>Live solar wind speed and Bz nudge the score up when the Sun is actually delivering.</span></li>
+          <li><strong>Darkness</strong><span>The Sun’s true elevation at your coordinates, minute by minute — polar night and midnight sun included.</span></li>
+          <li><strong>Sky</strong><span>Hourly cloud cover for your exact location. A cloudy sky scales the chance toward zero.</span></li>
+          <li><strong>Honesty</strong><span>If a feed is down the page says so and falls back to a quiet-sky estimate instead of inventing numbers.</span></li>
+        </ol>
       </section>
     </main>
 
     <footer class="footer">
-      <div class="footer-grid">
-        <a class="footer-card" href="about.html">
-          <h3>About us</h3>
-          <p>Learn what Aurora Hunt is for and how it helps aurora chasers.</p>
-        </a>
-        <a class="footer-card" href="submit-operator.html">
-          <h3>Submit new operator</h3>
-          <p>Add a tour company or partner suggestion using a form.</p>
-        </a>
-        <a class="footer-card" href="contact.html">
-          <h3>Contact us</h3>
-          <p>Find the best way to reach the team and send partnerships or support notes.</p>
-        </a>
-        <a class="footer-card" href="privacy.html">
-          <h3>Privacy policy</h3>
-          <p>See how we handle local storage, forms, and personal data.</p>
-        </a>
-        <a class="footer-card" href="cookies.html">
-          <h3>Cookies</h3>
-          <p>Understand the small amount of browser storage the site uses.</p>
-        </a>
+      <div class="footer-top">
+        <p class="footer-mark">Aurora <em>Hunt</em></p>
+        <p class="muted">A free, account-free aurora forecast made for people who would rather be outside looking up.</p>
       </div>
-      <div class="footer-bottom">
-        <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
-        <div class="footer-links">
-          <a href="privacy.html">Privacy policy</a>
-          <a href="terms.html">Terms</a>
-          <a href="cookies.html">Cookies</a>
-          <a href="#top">Back to top</a>
-        </div>
-      </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="submit-operator.html">Submit an operator</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="terms.html">Terms</a>
+        <button type="button" data-consent-open>Privacy choices</button>
+        <a href="#top">Back to top ↑</a>
+      </nav>
+      <p class="footer-credit small muted">
+        Space weather: <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener noreferrer">NOAA Space Weather Prediction Center</a>.
+        Weather and geocoding: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> (CC BY 4.0).
+        Forecasts are guidance, not a guarantee — the sky has the final say.
+      </p>
     </footer>
 
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="consent.js?v=2"></script>
-
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="script.js"></script>
+    <script src="monitoring.js?v=20261116" defer></script>
+    <script src="sky.js?v=20261116" defer></script>
+    <script src="globe.js?v=20261116" defer></script>
+    <script src="script.js?v=20261116" defer></script>
+    <script src="consent.js?v=20261116" defer></script>
   </body>
 </html>

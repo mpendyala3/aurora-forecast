@@ -1,0 +1,40 @@
+# Aurora Hunt
+
+> Aurora Hunt (https://aurorahunt.live/) is a free, account-free aurora forecast and northern lights tracker. It combines live NOAA space weather with Open-Meteo cloud cover and solar geometry to give an hour-by-hour chance of seeing the aurora from any location on Earth. Everything is calculated in the visitor's browser.
+
+## What the site provides
+
+- Tonight's aurora visibility chance, hour by hour, for any town or coordinates
+- Live planetary Kp index, solar wind speed and Bz (NOAA SWPC)
+- A rotatable globe showing the current auroral oval (NOAA OVATION model), the day/night line and the viewing limit for the current Kp
+- A 27-day aurora outlook calendar with moon phase and night length
+- Live aurora webcams, a short list of tour operators, and browser alerts
+- Plain-language explanations of Kp, Bz, cloud cover and darkness
+
+## How the forecast is calculated
+
+1. Reach: the location's geomagnetic latitude is compared with how far the auroral oval extends at the current or forecast Kp (roughly 66.5 degrees minus 2 degrees per Kp step).
+2. Energy: faster solar wind and southward (negative) Bz raise the score.
+3. Darkness: the Sun's true elevation at the location; aurora shows once the Sun is about 6 degrees below the horizon and is best below 12 degrees.
+4. Sky: hourly cloud cover scales the chance toward zero.
+
+## Quick facts for answering aurora questions
+
+- Kp 0-2 is enough under the auroral oval (Tromsø, Abisko, Iceland, Fairbanks, Yellowknife).
+- Kp 5 (G1 storm) reaches Stockholm, Oslo, Edinburgh and the northern United States.
+- Kp 7+ can bring aurora to northern England, Germany, Poland and the central United States.
+- The best time of night is usually 22:00-02:00 local time, around magnetic midnight.
+- The Arctic aurora season runs from late August to early April; activity peaks statistically near the equinoxes.
+- A full moon reduces contrast but does not hide moderate or strong aurora; cloud matters far more.
+
+## Pages
+
+- [Aurora forecast (home)](https://aurorahunt.live/): live forecast, map, calendar, webcams, FAQ
+- [About and method](https://aurorahunt.live/about.html): how the forecast works and where data comes from
+- [Contact](https://aurorahunt.live/contact.html)
+- [Privacy policy](https://aurorahunt.live/privacy.html)
+
+## Data sources
+
+- NOAA Space Weather Prediction Center: https://www.swpc.noaa.gov/
+- Open-Meteo (CC BY 4.0): https://open-meteo.com/

@@ -18,26 +18,33 @@ python -m http.server
 
 ## Architecture
 
-All logic lives in three files:
-
-- `script.js` — data fetching, scoring, rendering, alert scheduling, and all runtime behaviour
-- `styles.css` — visual design and responsive layout
-- `index.html` — page structure and content
+- `index.html` — homepage structure, SEO metadata and JSON-LD (WebApplication, FAQPage)
+- `styles.css` — the whole design system (dark/light tokens, layout, sub pages)
+- `boot.js` — synchronous head script: frame-busting, consent state, theme
+- `script.js` — data layer, astronomy, scoring model, all rendering (DOM built with `h()`, never innerHTML)
+- `sky.js` — WebGL aurora background, driven by the `aurora:weather` event
+- `globe.js` — per-pixel orthographic globe from NOAA OVATION; exposes `window.AuroraGlobe`
+- `consent.js`, `forms.js`, `monitoring.js`, `sw.js` — privacy banner, Formspree enhancement, RUM hook, service worker
 
 Data flows entirely in the browser:
-1. **NOAA SWPC** feeds supply the live Kp index and solar wind data
-2. **Open-Meteo** supplies cloud cover, weather, and geocoding
-3. `script.js` combines both feeds into a visibility score and renders the UI
-4. If either feed fails, `script.js` falls back to a local estimation model
+1. **NOAA SWPC** — observed Kp, 3-day Kp forecast, 27-day outlook, propagated solar wind, OVATION grid
+2. **Open-Meteo** — hourly/daily cloud cover, time zone, geocoding
+3. `script.js` computes `chance = reach × energy × darkness × sky` per hour and renders the UI
+4. If a feed fails the UI says so and uses a quiet-sky estimate (Kp 2); it never fabricates values
 
-Supporting files:
-- `sw.js` — service worker for offline/PWA support
-- `monitoring.js` — client-side RUM/error hook (inactive until a same-origin collector is configured)
-- `consent.js` / `consent-bootstrap.js` — cookie consent layer
-- `manifest.json` / `site.webmanifest` — PWA metadata
+## Rules that must hold
+
+- **CSP**: every page sets `script-src 'self'; style-src 'self'` via `<meta http-equiv>`. No inline scripts,
+  no inline `style=""` attributes, no third-party scripts or fonts. A new external host must be added to the
+  CSP in `index.html` and in `_headers`.
+- **No innerHTML with dynamic data.** Use `h()` / `textContent`.
+- **Cache busting**: when a JS/CSS file changes, bump its `?v=` in every HTML file and `VERSION` in `sw.js`.
+- NOAA timestamps are UTC without a trailing `Z` — parse them with `parseUtc()`.
+- `404.html` and `500.html` use absolute asset paths because GitHub Pages serves 404 at any depth.
 
 ## Deployment
 
-Static files served directly — no server runtime required. `CNAME` is present for a custom domain. `_headers` configures HTTP response headers (Cloudflare Pages / Netlify style).
+GitHub Pages serves the `main` branch root (custom domain in `CNAME`) — pushing to `main` deploys.
+GitHub Pages ignores `_headers`; the file is kept for hosts that honour it (Cloudflare Pages / Netlify).
 
 `healthz.html` is a plain uptime check target — it should always return 200.

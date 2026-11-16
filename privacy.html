@@ -1,78 +1,54 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#07111f" />
-    <meta name="description" content="Aurora Hunt stores only the minimum needed for preferences, alerts, and form submissions, with no account required and no ad-driven tracking or profiles." />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://formspree.io; connect-src 'self' https://formspree.io; img-src 'self' data:; font-src 'self'; frame-src 'none'; script-src 'self'; style-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>Privacy Policy | Aurora Hunt</title>
+    <meta name="description" content="How Aurora Hunt handles your data: no account, no analytics, no advertising. What is stored in your browser and which services your browser contacts." />
     <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#04060c" />
+    <meta name="color-scheme" content="dark light" />
     <link rel="canonical" href="https://aurorahunt.live/privacy.html" />
-    <meta property="og:title" content="Aurora Forecast Privacy Policy and Data Use | Aurora Hunt" />
-    <meta property="og:description" content="Aurora Hunt stores only the minimum needed for preferences, alerts, and form submissions, with no account required and no ad-driven tracking or profiles." />
+    <meta property="og:site_name" content="Aurora Hunt" />
+    <meta property="og:title" content="Privacy Policy | Aurora Hunt" />
+    <meta property="og:description" content="How Aurora Hunt handles your data: no account, no analytics, no advertising. What is stored in your browser and which services your browser contacts." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://aurorahunt.live/privacy.html" />
+    <meta property="og:image" content="https://aurorahunt.live/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Aurora Forecast Privacy Policy and Data Use | Aurora Hunt" />
-    <meta name="twitter:description" content="Aurora Hunt stores only the minimum needed for preferences, alerts, and form submissions, with no account required and no ad-driven tracking or profiles." />
+    <meta name="twitter:image" content="https://aurorahunt.live/assets/og-image.png" />
     <link rel="icon" href="favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=4" />
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
     <link rel="manifest" href="manifest.json" />
     <meta name="aurora-analytics-provider" content="privacy-first" />
     <meta name="aurora-telemetry-endpoint" content="/rum" />
-    <link rel="preload" as="image" href="assets/logo.svg?v=4" type="image/svg+xml" />
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" src="consent-bootstrap.js?v=2"></script>
-    <script src="monitoring.js"></script>
-    <script nonce="aurora-hunt-static-nonce-2026-05-08">
-      (() => {
-        try {
-          const consent = window.__auroraConsent || { preferences: false };
-          const pref = consent.preferences ? (JSON.parse(localStorage.getItem('aurora-forecast-v1') || '{}')?.themePreference || 'system') : 'system';
-          const theme = pref === 'system'
-            ? (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-            : pref;
-          document.documentElement.dataset.theme = theme;
-          const meta = document.querySelector('meta[name="theme-color"]');
-          if (meta) meta.setAttribute('content', theme === 'light' ? '#eef4ff' : '#07111f');
-        } catch {
-          document.documentElement.dataset.theme = 'dark';
-        }
-      })();
-    </script>
-    <title>Aurora Forecast Privacy Policy and Data Use | Aurora Hunt</title>
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Aurora Forecast Privacy Policy and Data Use | Aurora Hunt",
-        "url": "https://aurorahunt.live/privacy.html",
-        "description": "Aurora Hunt stores only the minimum needed for preferences, alerts, and form submissions, with no account required and no ad-driven tracking or profiles."
-      }
-    </script>
-    <script nonce="aurora-hunt-static-nonce-2026-05-08" type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        "itemListElement": [
-          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://aurorahunt.live/"},
-          {"@type": "ListItem", "position": 2, "name": "Privacy policy", "item": "https://aurorahunt.live/privacy.html"}
-        ]
-      }
-    </script>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/instrument-serif-400.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="assets/fonts/geist-var.woff2" crossorigin />
+    <link rel="stylesheet" href="styles.css?v=20261116" />
+    <script src="boot.js?v=20261116"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://aurorahunt.live/"},{"@type":"ListItem","position":2,"name":"Privacy policy","item":"https://aurorahunt.live/privacy.html"}]}</script>
   </head>
   <body id="top" class="subpage">
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <div class="stars" aria-hidden="true"></div>
+    <canvas id="sky" class="sky" aria-hidden="true"></canvas>
     <header>
       <nav class="topbar" aria-label="Primary">
         <a class="brand" href="index.html" aria-label="Aurora Hunt home">
-          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" aria-hidden="true" width="34" height="34" /></span>
-          <span>Aurora Hunt</span>
+          <span class="brand-mark"><img src="assets/logo.svg?v=4" alt="" width="30" height="30" /></span>
+          <span class="brand-name">Aurora <em>Hunt</em></span>
         </a>
         <div class="nav-links">
-          <a href="index.html">Home</a>
+          <a href="index.html#forecast">Forecast</a>
+          <a href="index.html#map">Map</a>
+          <a href="index.html#webcam">Live</a>
+          <a href="index.html#faq">FAQ</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
         </div>
       </nav>
     </header>
@@ -82,60 +58,73 @@
         <a href="index.html">Home</a><span aria-hidden="true">/</span><span aria-current="page">Privacy policy</span>
       </nav>
 
-      <nav class="page-toc" aria-label="On this page">
-        <a href="#local-storage">Local storage</a>
-        <a href="#submitted-information">Submitted info</a>
-        <a href="#what-we-do-not-do">What we do not do</a>
-      </nav>
-
       <section class="card page-hero">
         <p class="eyebrow">Privacy policy</p>
-        <h1>We keep personal data exposure low.</h1>
-        <p class="lede">
-          Aurora Hunt is designed to work with minimal storage and no account sign-in. This page explains what we keep and why.
-        </p>
+        <h1>Private by <em>default.</em></h1>
+        <p class="lede">Aurora Hunt has no accounts, no advertising and no analytics. The forecast is calculated in your browser. This page lists exactly what is stored and which services your browser talks to. Last updated 16 November 2026.</p>
       </section>
+
+      <nav class="page-toc" aria-label="On this page">
+        <a href="#local-storage">Stored in your browser</a>
+        <a href="#services">Services contacted</a>
+        <a href="#forms">Forms</a>
+        <a href="#location">Location</a>
+        <a href="#your-choices">Your choices</a>
+      </nav>
 
       <section class="page-grid">
         <article class="card page-card" id="local-storage">
-          <h2>Local storage</h2>
-          <p>
-            We may store preferences such as theme, location settings, watch thresholds, and saved watchlist entries in your browser so the site feels faster.
-          </p>
+          <h2>Stored in your browser</h2>
+          <p>Your consent choice is kept in local storage, plus one session cookie so the banner does not reappear while you browse. Only if you tick “Remember preferences” do we also save your theme, alert threshold and chosen location in local storage. Nothing is stored on a server.</p>
         </article>
-        <article class="card page-card" id="submitted-information">
-          <h2>Submitted information</h2>
-          <p>
-            Contact, alert, and operator forms may be sent to Formspree when you submit them.
-          </p>
+        <article class="card page-card" id="services">
+          <h2>Services your browser contacts</h2>
+          <ul class="page-list">
+            <li><strong>GitHub Pages</strong> hosts the site and, like any web host, sees your IP address</li>
+            <li><strong>NOAA SWPC</strong> — space weather data; receives your IP address only</li>
+            <li><strong>Open-Meteo</strong> — weather and place search; receives the coordinates or place name you look up</li>
+            <li><strong>YouTube (privacy-enhanced mode)</strong> — only after you press play on a webcam</li>
+            <li><strong>Formspree</strong> — only if you submit a form</li>
+          </ul>
+        </article>
+        <article class="card page-card" id="forms">
+          <h2>Forms</h2>
+          <p>The alert, contact and operator forms are delivered to our inbox by Formspree. The alert form sends your email address, your threshold and the location you selected, rounded to about one kilometre. We use this only to reply or send aurora alerts, and never sell or share it. To have it removed, use the <a href="contact.html">contact form</a>.</p>
+        </article>
+        <article class="card page-card" id="location">
+          <h2>Location</h2>
+          <p>“Use my location” asks your browser for a position only when you press it. The coordinates are rounded to about one kilometre before they are used, and are remembered only if you opted in to saved preferences.</p>
+        </article>
+        <article class="card page-card" id="your-choices">
+          <h2>Your choices</h2>
+          <ul class="page-list">
+            <li>Choose “Essential only” in the privacy banner to store no preferences at all</li>
+            <li>Reopen the banner any time from “Privacy choices” in the homepage footer</li>
+            <li>Clear this site’s data in your browser settings to reset everything</li>
+          </ul>
         </article>
       </section>
 
-      <section class="card page-card" id="what-we-do-not-do">
-        <h2>What we do not do</h2>
-        <ul class="page-list">
-          <li>No account is required to browse the site</li>
-          <li>No personal email is shown on the site</li>
-          <li>No tracking-heavy profile system is used</li>
-        </ul>
-      </section>
-
-      <div class="page-note">
-        Third-party embeds or services, if enabled, may have their own privacy policies. Optional preferences are only stored after you opt in through the consent banner.
-      </div>
+      <div class="page-note">We do not use advertising cookies, tracking pixels, fingerprinting or third-party fonts. If this ever changes, this page will say so first.</div>
     </main>
 
     <footer class="footer">
-      <div class="footer-bottom">
-        <p>Built for aurora hunters who want something cleaner than a cluttered app.</p>
-        <div class="footer-links">
-          <a href="privacy.html">Privacy policy</a>
-          <a href="terms.html">Terms</a>
-          <a href="cookies.html">Cookies</a>
-          <a href="#top">Back to top</a>
-        </div>
+      <div class="footer-top">
+        <p class="footer-mark">Aurora <em>Hunt</em></p>
+        <p class="muted">A free, account-free aurora forecast made for people who would rather be outside looking up.</p>
       </div>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Forecast</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="submit-operator.html">Submit an operator</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="cookies.html">Cookies</a>
+        <a href="terms.html">Terms</a>
+      </nav>
     </footer>
 
+    <script src="monitoring.js?v=20261116" defer></script>
+    <script src="sky.js?v=20261116" defer></script>
   </body>
 </html>

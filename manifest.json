@@ -1,21 +1,48 @@
 {
-  "name": "Aurora Hunt",
+  "name": "Aurora Hunt — Aurora Forecast",
   "short_name": "Aurora Hunt",
-  "start_url": "./",
-  "scope": "./",
+  "description": "Live aurora forecast and northern lights tracker.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#07111f",
-  "theme_color": "#07111f",
+  "orientation": "any",
+  "background_color": "#04060c",
+  "theme_color": "#04060c",
+  "lang": "en",
+  "categories": [
+    "weather",
+    "travel",
+    "education"
+  ],
   "icons": [
     {
       "src": "assets/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "assets/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Tonight's forecast",
+      "url": "/#forecast"
+    },
+    {
+      "name": "Aurora oval map",
+      "url": "/#map"
     }
   ]
 }

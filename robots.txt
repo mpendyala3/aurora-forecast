@@ -1,4 +1,7 @@
+# Aurora Hunt welcomes search engines and AI assistants.
 User-agent: *
 Allow: /
+Disallow: /healthz.html
+Disallow: /500.html
 
 Sitemap: https://aurorahunt.live/sitemap.xml
