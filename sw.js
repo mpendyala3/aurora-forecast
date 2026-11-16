@@ -1,7 +1,7 @@
 /* Aurora Hunt service worker.
  * Network-first for pages, scripts and styles (so a deploy is never masked by a stale cache),
  * cache-first for fonts and images. Only same-origin, successful, basic responses are cached. */
-const VERSION = '20261116';
+const VERSION = '20261117';
 const CACHE_NAME = `aurora-hunt-${VERSION}`;
 const PRECACHE = [
   '/', '/about.html', '/contact.html', '/cookies.html', '/privacy.html', '/terms.html', '/submit-operator.html', '/404.html',

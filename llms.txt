@@ -34,6 +34,23 @@
 - [Contact](https://aurorahunt.live/contact.html)
 - [Privacy policy](https://aurorahunt.live/privacy.html)
 
+## Aurora forecasts by location
+
+Each page has a live forecast for that place plus when to go, the Kp needed and where to watch.
+
+- [Tromsø, Norway](https://aurorahunt.live/aurora-forecast-tromso.html)
+- [Abisko, Sweden](https://aurorahunt.live/aurora-forecast-abisko.html)
+- [Kiruna, Sweden](https://aurorahunt.live/aurora-forecast-kiruna.html)
+- [Rovaniemi, Finland](https://aurorahunt.live/aurora-forecast-rovaniemi.html)
+- [Reykjavík, Iceland](https://aurorahunt.live/aurora-forecast-reykjavik.html)
+- [Fairbanks, Alaska, USA](https://aurorahunt.live/aurora-forecast-fairbanks.html)
+- [Anchorage, Alaska, USA](https://aurorahunt.live/aurora-forecast-anchorage.html)
+- [Yellowknife, Northwest Territories, Canada](https://aurorahunt.live/aurora-forecast-yellowknife.html)
+- [Whitehorse, Yukon, Canada](https://aurorahunt.live/aurora-forecast-whitehorse.html)
+- [Stockholm, Sweden](https://aurorahunt.live/aurora-forecast-stockholm.html)
+- [Oslo, Norway](https://aurorahunt.live/aurora-forecast-oslo.html)
+- [Edinburgh, Scotland, UK](https://aurorahunt.live/aurora-forecast-edinburgh.html)
+
 ## Data sources
 
 - NOAA Space Weather Prediction Center: https://www.swpc.noaa.gov/

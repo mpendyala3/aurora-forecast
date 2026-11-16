@@ -32,6 +32,14 @@ Data flows entirely in the browser:
 3. `script.js` computes `chance = reach × energy × darkness × sky` per hour and renders the UI
 4. If a feed fails the UI says so and uses a quiet-sky estimate (Kp 2); it never fabricates values
 
+## Generated pages
+
+- `aurora-forecast-<city>.html` — one landing page per city. They reuse `script.js`: the location is pinned by
+  `data-city-*` attributes on `<body>`, and elements a page does not have resolve to a detached stub.
+- City pages and the about/contact/legal/error pages are written by `tools/build-city-pages.js` and
+  `tools/build-sub-pages.js` (plain Node, no dependencies). Edit the generator, run it, commit the HTML.
+  Keep `mlat()` in the city generator in sync with `magneticLatitude()` in `script.js`.
+
 ## Rules that must hold
 
 - **CSP**: every page sets `script-src 'self'; style-src 'self'` via `<meta http-equiv>`. No inline scripts,

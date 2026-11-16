@@ -23,7 +23,8 @@ const DAY = 86400000;
 const CAM_ID = /^[\w-]{11}$/;
 
 const $ = (id) => document.getElementById(id);
-const els = new Proxy({}, { get: (cache, id) => (id in cache ? cache[id] : (cache[id] = $(id))) });
+// Elements missing from the current page resolve to a detached stub, so one script serves every page.
+const els = new Proxy({}, { get: (cache, id) => (id in cache ? cache[id] : (cache[id] = $(id) || document.createElement('input'))) });
 
 /** Tiny DOM builder: h('div', { class: 'x', text: 'safe' }, child, ...) */
 function h(tag, props = {}, ...children) {
@@ -65,6 +66,12 @@ const state = {
   mapFocus: 'arctic',
   themePreference: 'system',
 };
+
+/** City landing pages pin the location with data attributes on <body>. */
+const PAGE_CITY = document.body.dataset.cityLat
+  ? sanitizeLocation({ name: document.body.dataset.cityName, lat: document.body.dataset.cityLat, lon: document.body.dataset.cityLon })
+  : null;
+let savedRaw = null;
 
 /* ---------- maths & astronomy ---------- */
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -362,7 +369,7 @@ function limitingFactors(place, hourly) {
   const boundary = 66.5 - 2.05 * kp;
   const notes = [];
   notes.push(`${place.name} sits at roughly ${mlat.toFixed(0)}° geomagnetic latitude; at Kp ${kp.toFixed(1)} the aurora is typically visible down to about ${boundary.toFixed(0)}°.`);
-  if (mlat < boundary) notes.push(`You would need roughly Kp ${clamp(Math.ceil((66.5 - mlat) / 2.05), 1, 9)} or more for a realistic chance here.`);
+  if (mlat < boundary) notes.push(`You would need roughly Kp ${clamp(Math.round((66.5 - mlat) / 2.05), 1, 9)} or more for a realistic chance here.`);
   if (night.midnightSun) notes.push('The sun does not set here tonight — the sky never gets dark enough.');
   else if (night.minEl > -12) notes.push('The sky only reaches twilight tonight, so only bright aurora will show.');
   else notes.push(`True darkness runs ${fmtTime(night.darkStart)}–${fmtTime(night.darkEnd)} local time.`);
@@ -460,7 +467,7 @@ function renderPlanner() {
   setText('visibilityScore', `${peak.chance}%`);
   setText('resultSummary', `${place.name}: ${state.hourly[0].chance}% right now, peaking at ${peak.chance}% around ${fmtTime(peak.t)}.`);
   const notes = limitingFactors(place, state.hourly);
-  notes.push(peak.chance >= state.threshold ? `This clears your ${state.threshold}% alert threshold.` : `Below your ${state.threshold}% alert threshold.`);
+  if (!PAGE_CITY) notes.push(peak.chance >= state.threshold ? `This clears your ${state.threshold}% alert threshold.` : `Below your ${state.threshold}% alert threshold.`);
   clear(els.resultNotes).append(...notes.map((note) => h('li', { text: note })));
 }
 
@@ -630,13 +637,14 @@ function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
     if (!saved || typeof saved !== 'object') return;
+    savedRaw = saved;
     if (isNum(saved.threshold)) state.threshold = clamp(Math.round(saved.threshold), 20, 95);
     if (typeof saved.notify === 'boolean') state.notify = saved.notify;
     if (typeof saved.saveLocation === 'boolean') state.saveLocation = saved.saveLocation;
     if (typeof saved.lastNotifiedKey === 'string') state.lastNotifiedKey = saved.lastNotifiedKey.slice(0, 160);
     if (['arctic', 'nordics', 'north-america', 'iceland'].includes(saved.mapFocus)) state.mapFocus = saved.mapFocus;
     if (['dark', 'light', 'system'].includes(saved.themePreference)) state.themePreference = saved.themePreference;
-    const location = state.saveLocation ? sanitizeLocation(saved.location) : null;
+    const location = state.saveLocation && !PAGE_CITY ? sanitizeLocation(saved.location) : null;
     if (location) state.location = location;
   } catch { /* ignore corrupt storage */ }
 }
@@ -645,8 +653,9 @@ function saveState() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       threshold: state.threshold, notify: state.notify, saveLocation: state.saveLocation,
-      location: state.saveLocation ? state.location : undefined,
-      mapFocus: state.mapFocus, lastNotifiedKey: state.lastNotifiedKey, themePreference: state.themePreference,
+      // A city page must not overwrite the visitor's own saved place or map view.
+      location: PAGE_CITY ? savedRaw?.location : (state.saveLocation ? state.location : undefined),
+      mapFocus: PAGE_CITY ? savedRaw?.mapFocus : state.mapFocus, lastNotifiedKey: state.lastNotifiedKey, themePreference: state.themePreference,
     }));
   } catch { /* storage full or blocked */ }
 }
@@ -852,6 +861,11 @@ els.alertForm.addEventListener('submit', async (event) => {
 /* ---------- boot ---------- */
 renderPresets();
 loadState();
+if (PAGE_CITY) {
+  state.location = PAGE_CITY;
+  const focus = document.body.dataset.cityFocus;
+  if (['arctic', 'nordics', 'north-america', 'iceland'].includes(focus)) state.mapFocus = focus;
+}
 els.thresholdInput.value = state.threshold;
 setText('thresholdValue', `${state.threshold}%`);
 els.notifyToggle.checked = state.notify && 'Notification' in window && Notification.permission === 'granted';
