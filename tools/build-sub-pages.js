@@ -1,7 +1,7 @@
 // Dev helper (not needed to run the site): regenerates about, contact, legal and error pages from one shared template.
 // Usage: node tools/build-sub-pages.js   — then commit the generated HTML.
 const fs = require('fs'), path = require('path');
-const out = process.argv[2] || path.join(__dirname, '..'), V = '20261117', SITE = 'https://aurorahunt.live/';
+const out = process.argv[2] || path.join(__dirname, '..'), V = '20261118', SITE = 'https://aurorahunt.live/';
 const CSP = "default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://formspree.io; connect-src 'self' https://formspree.io; img-src 'self' data:; font-src 'self'; frame-src 'none'; script-src 'self'; style-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests";
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 
@@ -38,9 +38,9 @@ function page({ file, title, desc, crumbs, body, index = true, abs = false, ld =
     <meta name="robots" content="${index ? 'index, follow' : 'noindex, follow'}" />
     <meta name="theme-color" content="#04060c" />
     <meta name="color-scheme" content="dark light" />
-${social}    <link rel="icon" href="${p}favicon.ico" sizes="any" />
-    <link rel="icon" type="image/svg+xml" href="${p}assets/favicon.svg?v=4" />
-    <link rel="apple-touch-icon" href="${p}assets/apple-touch-icon.png" />
+${social}    <link rel="icon" href="${p}favicon.ico?v=5" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="${p}assets/favicon.svg?v=5" />
+    <link rel="apple-touch-icon" href="${p}assets/apple-touch-icon.png?v=5" />
     <link rel="manifest" href="${p}manifest.json" />
     <meta name="aurora-analytics-provider" content="privacy-first" />
     <meta name="aurora-telemetry-endpoint" content="/rum" />
@@ -56,7 +56,7 @@ ${blocks}
     <header>
       <nav class="topbar" aria-label="Primary">
         <a class="brand" href="${p}index.html" aria-label="Aurora Hunt home">
-          <span class="brand-mark"><img src="${p}assets/logo.svg?v=4" alt="" width="30" height="30" /></span>
+          <span class="brand-mark"><img src="${p}assets/logo.svg?v=5" alt="" width="30" height="30" /></span>
           <span class="brand-name">Aurora <em>Hunt</em></span>
         </a>
         <div class="nav-links">

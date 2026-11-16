@@ -1,13 +1,13 @@
 /* Aurora Hunt service worker.
  * Network-first for pages, scripts and styles (so a deploy is never masked by a stale cache),
  * cache-first for fonts and images. Only same-origin, successful, basic responses are cached. */
-const VERSION = '20261117';
+const VERSION = '20261118';
 const CACHE_NAME = `aurora-hunt-${VERSION}`;
 const PRECACHE = [
   '/', '/about.html', '/contact.html', '/cookies.html', '/privacy.html', '/terms.html', '/submit-operator.html', '/404.html',
   `/styles.css?v=${VERSION}`, `/boot.js?v=${VERSION}`, `/script.js?v=${VERSION}`, `/sky.js?v=${VERSION}`, `/globe.js?v=${VERSION}`,
   `/consent.js?v=${VERSION}`, `/monitoring.js?v=${VERSION}`, `/forms.js?v=${VERSION}`,
-  '/manifest.json', '/favicon.ico', '/assets/logo.svg?v=4', '/assets/favicon.svg?v=4', '/assets/land-110m.json',
+  '/manifest.json', '/favicon.ico?v=5', '/assets/logo.svg?v=5', '/assets/favicon.svg?v=5', '/assets/land-110m.json',
   '/assets/fonts/instrument-serif-400.woff2', '/assets/fonts/instrument-serif-400-italic.woff2',
   '/assets/fonts/geist-var.woff2', '/assets/fonts/geist-mono-var.woff2',
 ];
